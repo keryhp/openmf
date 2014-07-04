@@ -1,0 +1,138 @@
+/* body {
+	font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+}
+
+#content {
+	margin: 5em auto;
+	width: 40em;
+}
+
+form {
+	width: 25em;
+	margin: 0 2em;
+}
+
+form fieldset {
+	margin-bottom: 0.5em;
+}
+
+fieldset input {
+	margin: 0.6em 0;
+}
+
+.fieldError {
+	color: red;
+}
+ */
+/* Navigation changes */
+.navbar>.container .navbar-brand a,.navbar-inverse .navbar-nav>li>a {
+	color: whitesmoke;
+}
+
+.navbar-form .search-query {
+	border: 1px solid #626262;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) inset, 0 1px 0
+		rgba(255, 255, 255, 0.15);
+	color: #000000;
+	padding: 4px 14px;
+	margin-bottom: 0;
+	font-family: "Open Sans", Calibri, Candara, Arial, sans-serif;
+	font-size: 13px;
+	font-weight: normal;
+	line-height: 1;
+	-webkit-border-radius: 15px;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+	width: 250px;
+}
+
+/* Left Navigation */
+
+.left-nav
+{
+    position: fixed;
+    left: -13em;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(255,255,255, 0.3);
+    border-right: 2px solid #ffffff;
+    box-shadow: 4px 0 5px rgba(0,0,0,0.2);
+    z-index: 1;
+    cursor: pointer;
+    min-width: 226px;
+}
+
+.left-nav ul
+{
+    width: 16em;
+    list-style-type: none;
+    margin: 50px 0 0 0;
+    padding: 1em;
+}
+
+.left-nav ul > li
+{
+    position: relative;
+}
+
+.left-nav ul > li > a
+{
+    padding: 3px 0px;
+}
+
+.left-nav li i
+{
+    float: right;
+}
+
+.left-nav:hover
+{
+    left: 0;
+    background-color: #ffffff;
+    -webkit-transition: all .50s ease-in-out;
+    -moz-transition: all .50s ease-in-out;
+    -ms-transition: all .50s ease-in-out;
+    -o-transition: all .50s ease-in-out;
+    transition: all .50s ease-in-out;
+}
+
+.left-nav .divider {
+    background-color: #bbbbbb;
+    border-bottom: none;
+    height: 1px;
+    margin: 9px 1px;
+    overflow: hidden;
+    background-color: #e5e5e5;
+}
+
+.blockui{
+    pointer-events: none !important;
+    cursor: default !important;
+}
+
+.left-nav:hover:after{
+    border-color: transparent transparent transparent transparent;
+}
+
+/* Clients */
+
+.cstatusprogress{
+	color: red;
+}
+
+.cstatusactive{
+	color: green;
+}
+
+.cstatuscode{
+	color: red;
+}
+
+/* show and hide */
+.show{
+	display:inline;
+}
+
+.hide{
+	display:none;
+}
