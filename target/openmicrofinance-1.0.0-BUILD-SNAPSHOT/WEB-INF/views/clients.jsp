@@ -1,7 +1,24 @@
 <!DOCTYPE html>
+<%@page import="java.util.*"%>
+<%@page import="uk.ac.openmf.model.*"%>
+<%@page import="uk.ac.openmf.web.*"%>
 <%@ page language="java"
 	contentType="application/xhtml+xml; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@page session="false"%>
+<%@ page import="com.google.appengine.api.users.*"%>
+<%@ page
+	import="com.google.appengine.api.datastore.DatastoreNeedIndexException"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+								<%
+	UserService userService = UserServiceFactory.getUserService();
+	AppContext appContext = AppContext.getAppContext();
+	ConfigManager configManager = appContext.getConfigManager();
+	OpenMFUser currentUser = appContext.getCurrentUser();
+%>
+
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB" xml:lang="en-GB">
 <head>
 <meta charset="utf-8" />
@@ -39,7 +56,7 @@
 		<div class="container-fluid container">
 			<div class="collapse navbar-collapse"
 				id="bs-example-navbar-collapse-1">
-				<a class="navbar-brand" href="#">OpenMF</a>
+				<a class="navbar-brand" href="/">OpenMF</a>
 				<ul class="nav navbar-nav" id="main-menu-left">
 					<li class="dropdown"><a class="dropdown-toggle"
 						data-toggle="dropdown" href="#"><i class="fa fa-group"></i>
@@ -74,7 +91,7 @@
 				</ul>
 				<ul class="nav navbar-nav navbar-right" id="main-menu-right">
 					<li class="dropdown" id="user-menu"><a id="user-dropdown"
-						class="dropdown-toggle" data-toggle="dropdown" href="#">demo_user<b
+						class="dropdown-toggle" data-toggle="dropdown" href="#"><c:out value="<%=currentUser.getUsername() %>"></c:out><b
 							class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<li><a id="help" href="/help.htm"><i
@@ -83,7 +100,7 @@
 									Profile</a></li>
 							<li><a href="/usersetting.htm"><i class="fa fa-cog"></i>
 									Settings</a></li>
-							<li><a id="/logout.htm"><i class="fa fa-off"></i>Logout</a></li>
+							<li><a href="/logout.htm"><i class="fa fa-off"></i>Logout</a></li>
 						</ul></li>
 				</ul>
 				<form class="navbar-form navbar-right">
@@ -96,13 +113,13 @@
 
 	<div class="left-nav">
 		<ul class="nav nav-pills nav-stacked margin-nav">
-			<li><a class="black" href="/expertsearch.htm"><i
+			<li><a class="black" href="/"><i
 					class="fa fa-desktop fa-fw"></i>Dashboard</a></li>
 			<li class="divider"></li>
 			<li><a class="black" href="/advsearch.htm"><i
 					class="fa fa-search fa-fw"></i>Advanced Search</a></li>
 			<li class="divider"></li>
-			<li><a class="black" href="/nav/offices.htm"><i
+			<li><a class="black" href="/offices.htm"><i
 					class="fa fa-compass fa-fw"></i>Offices</a></li>
 			<li class="divider"></li>
 			<li><a class="black" href="/tasks.htm"><i
@@ -117,10 +134,10 @@
 			<li><a class="black" href="/journalentry.htm"><i
 					class="fa fa-plus fa-fw"></i>+ Journal Entry</a></li>
 			<li class="divider"></li>
-			<li><a class="black" href="/accounts_closure.htm"><i
+			<li><a class="black" href="/accountsclosure.htm"><i
 					class="fa fa-bell-o fa-fw"></i>Closing Entries</a></li>
 			<li class="divider"></li>
-			<li><a class="black" href="/accounting_coa.htm"><i
+			<li><a class="black" href="/accountingcoa.htm"><i
 					class="fa fa-sitemap fa-fw"></i>Chart of Accounts</a></li>
 			<li class="divider"></li>
 			<li><a class="black" href="/createclient.htm"><i
@@ -167,21 +184,42 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr class="pointer-main" onclick="viewClientFn();">
-										<td class="pointer" onclick="viewClientFn();">Client Name here</td>
-										<td class="pointer" onclick="viewClientFn();">Account # here</td>
-										<td class="pointer" onclick="viewClientFn();"><i class="fa fa-stop cstatusprogress"></i>Transfer
-											in Progress</td>
-										<td class="pointer" onclick="viewClientFn();">Office name here</td>
-										<td class="pointer" onclick="viewClientFn();">Field Staff here</td>
+								<%
+								OpenMFClientManager clientManager = appContext.getClientManager();
+								Iterable<OpenMFClient> clientsiter = clientManager.getAllClients();
+								ArrayList<OpenMFClient> clients = new ArrayList<OpenMFClient>();
+								try {
+									for (OpenMFClient client : clientsiter) {
+										clients.add(client);
+									}
+								} catch (DatastoreNeedIndexException e) {
+									pageContext
+											.forward(configManager
+													.getErrorPageUrl(ConfigManager.ERROR_CODE_DATASTORE_INDEX_NOT_READY));
+								}
+								int count = 0;
+								for (OpenMFClient client : clients) {
+									long clientId = client.getId().longValue();
+								%>
+									<tr class="pointer-main" onclick="viewClientFn(<%=clientId%>);">
+										<td class="pointer" onclick="viewClientFn(<%=clientId%>);"><c:out
+														value="<%=client.getForename() %>" escapeXml="true" /> <c:out
+														value="<%=client.getSurname() %>" escapeXml="true" /></td>
+										<td class="pointer" onclick="viewClientFn(<%=clientId%>);"><c:out value="<%=client.getAccountNumber() %>"></c:out></td>
+										<c:choose>
+																		<c:when test="${client.active == false }">
+																			<td class="pointer" onclick="viewClientFn(<%=clientId%>);"><i class="fa fa-stop cstatusprogress"></i>Closed</td>
+																		</c:when>
+																		<c:otherwise>
+																		<td class="pointer" onclick="viewClientFn(<%=clientId%>);"><i class="fa fa-stop cstatusactive"></i>Active</td>
+																		</c:otherwise>
+																	</c:choose>
+										<td class="pointer" onclick="viewClientFn(<%=clientId%>);"><c:out value="<%=client.getOffice() %>"></c:out></td>
+										<td class="pointer" onclick="viewClientFn(<%=clientId%>);"><c:out value="<%=client.getSupervisor() %>"></c:out></td>
 									</tr>
-									<tr class="pointer-main" onclick="viewClientFn();">
-										<td class="pointer" onclick="viewClientFn();">Client Name here</td>
-										<td class="pointer" onclick="viewClientFn();">Account # here</td>
-										<td class="pointer" onclick="viewClientFn();"><i class="fa fa-stop cstatusactive"></i>Active</td>
-										<td class="pointer" onclick="viewClientFn();">Office name here</td>
-										<td class="pointer" onclick="viewClientFn();">Field Staff here</td>
-									</tr>
+									<%
+								}
+									%>
 								</tbody>
 							</table>
 							<ul class="pager">

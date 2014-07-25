@@ -21,6 +21,12 @@ public class GaeUser implements Serializable {
     private final String nickname;
     private final String forename;
     private final String surname;
+    private final String main_office;
+    private final String contact;
+    private final String password;
+    /*can later change to address object*/
+    private final String address;
+    private final String supervisor;
     private final Set<AppRole> authorities;
     private final boolean enabled;
 
@@ -37,6 +43,11 @@ public class GaeUser implements Serializable {
         this.surname = null;
         this.email = email;
         this.enabled = true;
+        this.main_office = null;
+        this.contact = null;
+        this.password = null;
+        this.address = null;
+        this.supervisor = null;
     }
 
     /**
@@ -50,6 +61,11 @@ public class GaeUser implements Serializable {
         this.forename = forename;
         this.surname = surname;
         this.enabled= enabled;
+        this.main_office = null;
+        this.contact = null;
+        this.password = null;
+        this.address = null;
+        this.supervisor = null;
     }
 
     public String getUserId() {
@@ -79,15 +95,34 @@ public class GaeUser implements Serializable {
     public Collection<AppRole> getAuthorities() {
         return authorities;
     }
+    
+    public String getMain_office() {
+		return main_office;
+	}
 
-    @Override
-    public String toString() {
-        return "GaeUser{" +
-                "userId='" + userId + '\'' +
-                ", nickname='" + nickname + '\'' +
-                ", forename='" + forename + '\'' +
-                ", surname='" + surname + '\'' +
-                ", authorities=" + authorities +
-                '}';
-    }
+	public String getContact() {
+		return contact;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public String getSupervisor() {
+		return supervisor;
+	}
+
+	@Override
+	public String toString() {
+		return "GaeUser [userId=" + userId + ", email=" + email + ", nickname="
+				+ nickname + ", forename=" + forename + ", surname=" + surname
+				+ ", main_office=" + main_office + ", contact=" + contact
+				+ ", password=" + password + ", address=" + address + ", supervisor=" + supervisor
+				+ ", authorities=" + authorities + ", enabled=" + enabled + "]";
+	}
+
 }

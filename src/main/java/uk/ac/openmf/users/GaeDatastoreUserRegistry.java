@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import uk.ac.openmf.security.AppRole;
+import uk.ac.openmf.utils.OpenMFConstants;
 
 import java.util.*;
 
@@ -22,22 +23,15 @@ import java.util.*;
 public class GaeDatastoreUserRegistry implements UserRegistry {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private static final String USER_TYPE = "GaeUser";
-    private static final String USER_FORENAME = "forename";
-    private static final String USER_SURNAME = "surname";
-    private static final String USER_NICKNAME = "nickname";
-    private static final String USER_EMAIL = "email";
-    private static final String USER_ENABLED = "enabled";
-    private static final String USER_AUTHORITIES = "authorities";
 
     public GaeUser findUser(String userId) {
-        Key key = KeyFactory.createKey(USER_TYPE, userId);
+        Key key = KeyFactory.createKey(OpenMFConstants.ENTITY_USER_TYPE_GAE, userId);
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
         try {
             Entity user = datastore.get(key);
 
-            long binaryAuthorities = (Long)user.getProperty(USER_AUTHORITIES);
+            long binaryAuthorities = (Long)user.getProperty(OpenMFConstants.FIELD_NAME_USER_AUTHORITIES);
             Set<AppRole> roles = EnumSet.noneOf(AppRole.class);
 
             for (AppRole r : AppRole.values()) {
@@ -48,12 +42,12 @@ public class GaeDatastoreUserRegistry implements UserRegistry {
 
             GaeUser gaeUser = new GaeUser(
                     user.getKey().getName(),
-                    (String)user.getProperty(USER_NICKNAME),
-                    (String)user.getProperty(USER_EMAIL),
-                    (String)user.getProperty(USER_FORENAME),
-                    (String)user.getProperty(USER_SURNAME),
+                    (String)user.getProperty(OpenMFConstants.FIELD_NAME_USERNAME),
+                    (String)user.getProperty(OpenMFConstants.FIELD_NAME_EMAIL),
+                    (String)user.getProperty(OpenMFConstants.FIELD_NAME_FORENAME),
+                    (String)user.getProperty(OpenMFConstants.FIELD_NAME_SURNAME),
                     roles,
-                    (Boolean)user.getProperty(USER_ENABLED));
+                    (Boolean)user.getProperty(OpenMFConstants.FIELD_NAME_ENABLED));
 
             return gaeUser;
 
@@ -66,13 +60,13 @@ public class GaeDatastoreUserRegistry implements UserRegistry {
     public void registerUser(GaeUser newUser) {
         logger.debug("Attempting to create new user " + newUser);
 
-        Key key = KeyFactory.createKey(USER_TYPE, newUser.getUserId());
+        Key key = KeyFactory.createKey(OpenMFConstants.ENTITY_USER_TYPE_GAE, newUser.getUserId());
         Entity user = new Entity(key);
-        user.setProperty(USER_EMAIL, newUser.getEmail());
-        user.setProperty(USER_NICKNAME, newUser.getNickname());
-        user.setProperty(USER_FORENAME, newUser.getForename());
-        user.setProperty(USER_SURNAME, newUser.getSurname());
-        user.setUnindexedProperty(USER_ENABLED, newUser.isEnabled());
+        user.setProperty(OpenMFConstants.FIELD_NAME_EMAIL, newUser.getEmail());
+        user.setProperty(OpenMFConstants.FIELD_NAME_USERNAME, newUser.getNickname());
+        user.setProperty(OpenMFConstants.FIELD_NAME_FORENAME, newUser.getForename());
+        user.setProperty(OpenMFConstants.FIELD_NAME_SURNAME, newUser.getSurname());
+        user.setUnindexedProperty(OpenMFConstants.FIELD_NAME_ENABLED, newUser.isEnabled());
 
         Collection<AppRole> roles = newUser.getAuthorities();
 
@@ -82,7 +76,7 @@ public class GaeDatastoreUserRegistry implements UserRegistry {
             binaryAuthorities |= 1 << r.getBit();
         }
 
-        user.setUnindexedProperty(USER_AUTHORITIES, binaryAuthorities);
+        user.setUnindexedProperty(OpenMFConstants.FIELD_NAME_USER_AUTHORITIES, binaryAuthorities);
 
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         datastore.put(user);
@@ -90,7 +84,7 @@ public class GaeDatastoreUserRegistry implements UserRegistry {
 
     public void removeUser(String userId) {
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-        Key key = KeyFactory.createKey(USER_TYPE, userId);
+        Key key = KeyFactory.createKey(OpenMFConstants.ENTITY_USER_TYPE_GAE, userId);
 
         datastore.delete(key);
     }

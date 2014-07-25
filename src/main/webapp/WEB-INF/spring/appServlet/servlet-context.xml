@@ -31,7 +31,7 @@
     <context:annotation-config />
 
     <beans:bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
-        <beans:property name="basename" value="messages"></beans:property>
+        <beans:property name="basename" value="ValidationMessages"></beans:property>
     </beans:bean>
 
 

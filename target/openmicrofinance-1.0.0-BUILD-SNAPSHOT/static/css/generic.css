@@ -136,3 +136,7 @@ fieldset input {
 .hide{
 	display:none;
 }
+
+.navbar-brand{
+	color: floralwhite;
+}

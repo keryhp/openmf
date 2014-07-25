@@ -1,8 +1,24 @@
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <!DOCTYPE html>
+<%@page import="java.util.*"%>
+<%@page import="uk.ac.openmf.model.*"%>
+<%@page import="uk.ac.openmf.web.*"%>
 <%@ page language="java"
 	contentType="application/xhtml+xml; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@page session="false"%>
+<%@ page import="com.google.appengine.api.users.*"%>
+<%@ page
+	import="com.google.appengine.api.datastore.DatastoreNeedIndexException"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%
+	UserService userService = UserServiceFactory.getUserService();
+	AppContext appContext = AppContext.getAppContext();
+	ConfigManager configManager = appContext.getConfigManager();
+	OpenMFUser currentUser = appContext.getCurrentUser();
+	OpenMFClient client = (OpenMFClient) request.getAttribute("client");
+%>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB" xml:lang="en-GB">
 <head>
 <meta charset="utf-8" />
@@ -40,7 +56,7 @@
 		<div class="container-fluid container">
 			<div class="collapse navbar-collapse"
 				id="bs-example-navbar-collapse-1">
-				<a class="navbar-brand" href="#">OpenMF</a>
+				<a class="navbar-brand" href="/">OpenMF</a>
 				<ul class="nav navbar-nav" id="main-menu-left">
 					<li class="dropdown"><a class="dropdown-toggle"
 						data-toggle="dropdown" href="#"><i class="fa fa-group"></i>
@@ -75,8 +91,8 @@
 				</ul>
 				<ul class="nav navbar-nav navbar-right" id="main-menu-right">
 					<li class="dropdown" id="user-menu"><a id="user-dropdown"
-						class="dropdown-toggle" data-toggle="dropdown" href="#">demo_user<b
-							class="caret"></b></a>
+						class="dropdown-toggle" data-toggle="dropdown" href="#"><c:out
+								value="<%=currentUser.getUsername()%>"/><b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<li><a id="help" href="/help.htm"><i
 									class="fa fa-question-circle"></i> Help</a></li>
@@ -84,7 +100,7 @@
 									Profile</a></li>
 							<li><a href="/usersetting.htm"><i class="fa fa-cog"></i>
 									Settings</a></li>
-							<li><a id="/logout.htm"><i class="fa fa-off"></i>Logout</a></li>
+							<li><a href="/logout.htm"><i class="fa fa-off"></i>Logout</a></li>
 						</ul></li>
 				</ul>
 				<form class="navbar-form navbar-right">
@@ -97,13 +113,12 @@
 
 	<div class="left-nav">
 		<ul class="nav nav-pills nav-stacked margin-nav">
-			<li><a class="black" href="/expertsearch.htm"><i
-					class="fa fa-desktop fa-fw"></i>Dashboard</a></li>
+			<li><a class="black" href="/"><i class="fa fa-desktop fa-fw"></i>Dashboard</a></li>
 			<li class="divider"></li>
 			<li><a class="black" href="/advsearch.htm"><i
 					class="fa fa-search fa-fw"></i>Advanced Search</a></li>
 			<li class="divider"></li>
-			<li><a class="black" href="/nav/offices.htm"><i
+			<li><a class="black" href="/offices.htm"><i
 					class="fa fa-compass fa-fw"></i>Offices</a></li>
 			<li class="divider"></li>
 			<li><a class="black" href="/tasks.htm"><i
@@ -118,10 +133,10 @@
 			<li><a class="black" href="/journalentry.htm"><i
 					class="fa fa-plus fa-fw"></i>+ Journal Entry</a></li>
 			<li class="divider"></li>
-			<li><a class="black" href="/accounts_closure.htm"><i
+			<li><a class="black" href="/accountsclosure.htm"><i
 					class="fa fa-bell-o fa-fw"></i>Closing Entries</a></li>
 			<li class="divider"></li>
-			<li><a class="black" href="/accounting_coa.htm"><i
+			<li><a class="black" href="/accountingcoa.htm"><i
 					class="fa fa-sitemap fa-fw"></i>Chart of Accounts</a></li>
 			<li class="divider"></li>
 			<li><a class="black" href="/createclient.htm"><i
@@ -142,283 +157,323 @@
 		<div>
 			<div class="row whitebg">
 				<div class="col-md-12 pull-right whitebg">
-					<div class="whitebg">
-						<div class="col-md-12">
-							<div>
-								<ul class="breadcrumb">
-									<li>Office Name</li>
-									<li>Staff: name</li>
-								</ul>
-							</div>
-							<div class="row">
-								<div class="col-md-8 col-sm-8">
-									<h3 class="client-title">
-										<i class="fa fa-circle cstatuscode"></i> <strong>Client
-											Display name</strong> <small> Account# | externalId | Staff
-											name </small>
-									</h3>
-								</div>
-							</div>
-							<div class="overflowhidden marginbottom0 ">
-								<ul id="myTab" class="nav nav-tabs">
-									<li class="active"><a href="#general" data-toggle="tab">General</a></li>
-									<li class=""><a href="#address" data-toggle="tab">Address</a></li>
-									<li class=""><a href="#history" data-toggle="tab">History</a></li>
-									<li class=""><a href="#statistics" data-toggle="tab">Statistics</a></li>
+					<c:choose>
+						<c:when test="${client != null}">
+							<div class="whitebg">
+								<div class="col-md-12">
+									<div>
+										<ul class="breadcrumb">
+											<li><a href="/clients.htm">Clients</a></li>
+											<li class="active">View client</li>
+										</ul>
+									</div>
+									<div class="row">
+										<div class="col-md-8 col-sm-8">
+											<h3 class="client-title">
+												<i class="fa fa-circle cstatuscode"></i> <strong><c:out
+														value="${client.forename }" escapeXml="true" /> <c:out
+														value="${client.surname }" escapeXml="true" /></strong> <small>
+													<c:out value="<%=client.getAccountNumber()%>"></c:out> | <c:out
+														value="<%=client.getExternalId()%>"></c:out> | <c:out
+														value="<%=client.getSupervisor()%>"></c:out>
+												</small>
+											</h3>
+										</div>
+									</div>
+									<div class="overflowhidden marginbottom0 ">
+										<ul id="myTab" class="nav nav-tabs">
+											<li class="active"><a href="#general" data-toggle="tab">General</a></li>
+											<li class=""><a href="#address" data-toggle="tab">Address</a></li>
+											<li class=""><a href="#history" data-toggle="tab">History</a></li>
+											<!-- <li class=""><a href="#statistics" data-toggle="tab">Statistics</a></li>
 									<li class=""><a href="#tab" data-toggle="tab">Tab
-											5</a></li>
-								</ul>
-								<div class="tab-content">
-									<div class="tab-pane active" id="general">
-										<div class="col-md-12 col-sm-12">
-											<div class="row primarydiv">
-												<div class="pull-right">
-													<span> <a href="#/client/7/acceptclienttransfer"
-														class="btn btn-primary"> <i
-															class="fa fa-check fa-white"></i>Accept Transfer
-													</a>
-													</span> <span><a href="#/client/7/rejecttransfer"
-														class="btn btn-primary"><i
-															class="fa fa-times fa-white"></i>Reject Transfer</a> </span> <span>
+											5</a></li> -->
+										</ul>
+										<div class="tab-content">
+											<div class="tab-pane active" id="general">
+												<div class="col-md-12 col-sm-12">
+													<div class="row primarydiv">
+														<div class="pull-right">
+															<span> <a href="#/client/7/acceptclienttransfer"
+																class="btn btn-primary"> <i
+																	class="fa fa-arrow-right fa-white"></i>Apply New Loan
+															</a>
+															</span> <span><a href="#/client/7/rejecttransfer"
+																class="btn btn-primary"><i
+																	class="fa fa-arrow-right fa-white"></i>Add New Savings</a>
+															</span>
+															<!-- <span>
 														<a href="#/client/7/undotransfer" class="btn btn-primary"><i
 															class="fa fa-undo fa-white"></i>Undo Transfer</a>
-													</span>
-													<button type="button" class="btn btn-primary ">
-														<i class="fa fa-user fa-white"></i>Unassign Staff
-													</button>
+													</span> -->
+															<button type="button" class="btn btn-primary ">
+																<i class="fa fa-user fa-white"></i>Unassign Staff
+															</button>
+														</div>
+													</div>
+
+													<div class="row client">
+														<div class="col-sm-9 col-md-9 paddingleft0px">
+															<div style="display: none">
+																<h3>Client Closed</h3>
+															</div>
+															<div>
+																<div class="pull-right">
+																	<span class="">
+																		<button type="button" class="btn-primary btn btn-sm">View
+																			Closed Loans</button> <!-- <button type="button" class="btn-primary btn btn-sm">View
+																	Active Loans</button> -->
+																	</span>
+																</div>
+																<div>
+																	<div class="span gray-head">
+																		<span class="boldlabel"> <strong class="">Loan
+																				Account Overview</strong>
+																		</span>
+																	</div>
+																	<table class="table table-condensed">
+																		<tr class="graybg">
+																			<th>Account#</th>
+																			<th>Loan Account</th>
+																			<th>Loan Amount</th>
+																			<th>Outstd Amt.</th>
+																			<th>Due Amount</th>
+																			<th>Type</th>
+																			<th>Actions</th>
+																		</tr>
+																		<tr class="pointer-main"
+																			onclick="viewLoanAccountFn();">
+																			<td class="pointer" onclick="viewLoanAccountFn();"><i
+																				class="fa fa-stop cstatuscode"></i> 99999999</td>
+																			<td class="pointer" onclick="viewLoanAccountFn();">Loan
+																				Prod 1</td>
+																			<td class="pointer" onclick="viewLoanAccountFn();">-</td>
+																			<td class="pointer" onclick="viewLoanAccountFn();">-</td>
+																			<td class="pointer" onclick="viewLoanAccountFn();">-</td>
+																			<td class="pointer center"
+																				onclick="viewLoanAccountFn();"><i
+																				class="fa fa-user fa-1x"></i></td>
+																			<td class="pointer center"
+																				onclick="viewLoanAccountFn();"><a
+																				href="#/loanaccount/loanaccountid/repayment"
+																				class="btn btn-xs btn-primary "> <i
+																					class="fa fa-dollar fa-white"></i>
+																			</a></td>
+																		</tr>
+																		<tr class="pointer-main"
+																			onclick="viewLoanAccountFn();">
+																			<td class="pointer" onclick="viewLoanAccountFn();"><i
+																				class="fa fa-stop cstatuscode"></i> 99999999</td>
+																			<td class="pointer" onclick="viewLoanAccountFn();">Loan
+																				Prod 2</td>
+																			<td class="pointer" onclick="viewLoanAccountFn();">-</td>
+																			<td class="pointer" onclick="viewLoanAccountFn();">-</td>
+																			<td class="pointer" onclick="viewLoanAccountFn();">-</td>
+																			<td class="pointer center"
+																				onclick="viewLoanAccountFn();"><i
+																				class="fa fa-user fa-1x"></i></td>
+																			<td class="pointer center"
+																				onclick="viewLoanAccountFn();"><a
+																				href="#/loanaccount/loanaccountid/repayment"
+																				class="btn btn-xs btn-primary "> <i
+																					class="fa fa-flag fa-white"></i>
+																			</a></td>
+																		</tr>
+																	</table>
+																	<table class="table table-condensed">
+																		<tr class="graybg">
+																			<th>Account #</th>
+																			<th>Loan Account</th>
+																			<th class="center">Type</th>
+																			<th>Close Date</th>
+																		</tr>
+																		<tr class="pointer-main">
+																			<td class="pointer" onclick="viewLoanAccountFn();"><i
+																				class="fa fa-stop cstatuscode"></i> 8888888888</td>
+																			<td class="pointer" onclick="viewLoanAccountFn();">Loan
+																				Prod 2</td>
+																			<td class="pointer center"
+																				onclick="viewLoanAccountFn();"><i
+																				class="fa fa-user fa-1x"></i></td>
+																			<td class="pointer" onclick="viewLoanAccountFn();"><span>dd/mm/yyyy</span></td>
+																		</tr>
+																	</table>
+																</div>
+																<div>
+																	<div class="pull-right">
+																		<span>
+																			<button type="button" class="btn-primary btn btn-sm">
+																				View Closed Savings</button> <!-- <button type="button" class="btn-primary btn btn-sm">
+																		View Active Savings</button> -->
+																		</span>
+																	</div>
+																	<div class="span gray-head">
+																		<span class="boldlabel"> <strong>Savings
+																				Overview</strong>
+																		</span>
+																	</div>
+																	<table class="table table-condensed">
+																		<tr class="graybg">
+																			<th>Account#</th>
+																			<th>Savings Account</th>
+																			<th class="center">Balance</th>
+																			<th>Actions</th>
+																		</tr>
+																		<tr class="pointer-main">
+																			<td class="pointer"><i
+																				class="fa fa-stop savingstatuscode"></i>
+																				7777777777777</td>
+																			<td class="pointer">Savings Prod</td>
+																			<td class="pointer center">8888</td>
+																			<td class="pointer"><a
+																				href="#/savingaccount/savingaccountid/deposit"
+																				class="btn btn-xs btn-primary "> <i
+																					class="fa fa-arrow-right fa-white"></i>
+																			</a> <a
+																				href="#/recurringdepositaccount/savingaccountid/deposit"
+																				class="btn btn-xs btn-primary "> <i
+																					class="fa fa-check fa-white"></i>
+																			</a> <a
+																				href="#/savingaccount/savingaccountid/undoapproval"
+																				class="btn btn-xs btn-primary "> <i
+																					class="fa fa-undo fa-white"></i>
+																			</a></td>
+																		</tr>
+																	</table>
+																	<table class="table table-condensed">
+																		<tr class="graybg">
+																			<th>Account#</th>
+																			<th>Savings Account</th>
+																			<th>Closed Date</th>
+																		</tr>
+																		<tr class="pointer-main">
+																			<td class="pointer"><i
+																				class="fa fa-stop savingstatuscode"></i> 6666666666</td>
+																			<td class="pointer">Savings Prod2</td>
+																			<td class="pointer"><span>dd/mm/yyyy</span></td>
+																		</tr>
+																	</table>
+																</div>
+															</div>
+														</div>
+
+														<div class="col-sm-3 col-md-3">
+															<div class="thumbnail row">
+																<h4>
+																	<strong><c:out value="${client.forename }"
+																			escapeXml="true" />
+																		<c:out value="${client.midname }" escapeXml="true" />
+																		<c:out value="${client.surname }" escapeXml="true" />
+																	</strong>
+																</h4>
+																<img src="/static/images/demo_user.jpg" alt="Avatar" />
+																<table class="table-minified">
+																	<tr>
+																		<th class="table-bold">Activation Date</th>
+																		<td><span class="padded-td"><c:out
+																					value="<%=client.getActivationdate()%>"></c:out><span
+																				style="display: none">not activated</span></span></td>
+																	</tr>
+																	<tr>
+																		<th class="table-bold">Member of</th>
+																		<td><span class="padded-td"><c:out
+																					value="NA"></c:out></span></td>
+																	</tr>
+																	<tr>
+																		<th class="table-bold">Mobile number</th>
+																		<td><span class="padded-td"><c:out
+																					value="<%=client.getContact()%>"></c:out></span></td>
+																	</tr>
+																	<tr>
+																		<th class="table-bold">Gender</th>
+																		<td><span class="padded-td"><c:out
+																					value="<%=client.getGender()%>"></c:out></span></td>
+																	</tr>
+																	<tr>
+																		<th class="table-bold">Client Type</th>
+																		<td><span class="padded-td"><c:out
+																					value="<%=client.getClienttype()%>"></c:out> </span></td>
+																	</tr>
+																	<tr>
+																		<th class="table-bold">Client Classification</th>
+																		<td><span class="padded-td"><c:out
+																					value="<%=client.getClientclassification()%>"></c:out>
+																		</span></td>
+																	</tr>
+
+																	<tr>
+																		<th class="table-bold">Date of Birth</th>
+																		<td><span class="padded-td"><c:out
+																					value="<%=client.getDateofbirth()%>"></c:out></span></td>
+																	</tr>
+																	<c:choose>
+																		<c:when test="${client.active == false }">
+																			<tr>
+																				<th class="table-bold">Close Date</th>
+																				<td><span class="padded-td"><c:out
+																							value="NA"></c:out></span></td>
+																			</tr>
+																		</c:when>
+																	</c:choose>
+																	<tr>
+																		<td colspan="2"><img style="height: 55px"
+																			src="/static/images/demo_signature.jpg" alt="Avatar" /></td>
+																	</tr>
+																	<tr>
+																		<th class="whitebg" colspan="2">Performance
+																			History</th>
+																	</tr>
+																	<tr>
+																		<th># of Loan Cycle</th>
+																		<td><span class="padded-td">0</span></td>
+																	</tr>
+																	<tr>
+																		<th>Last Loan Amount</th>
+																		<td><span class="padded-td">0</span></td>
+																	</tr>
+																	<tr>
+																		<th>Num of Active loans</th>
+																		<td><span class="padded-td">1</span></td>
+																	</tr>
+																	<tr>
+																		<th>Total Savings</th>
+																		<td><span class="padded-td">0</span></td>
+																	</tr>
+																	<tr>
+																		<th># of Active Savings</th>
+																		<td><span class="padded-td">0</span></td>
+																	</tr>
+																</table>
+															</div>
+														</div>
+													</div>
 												</div>
+
 											</div>
-
-											<div class="row client">
-												<div class="col-sm-9 col-md-9 paddingleft0px">
-													<div style="display: none">
-														<h3>Client Closed</h3>
-													</div>
-													<div>
-														<div class="pull-right">
-															<span class="">
-																<button type="button" class="btn-primary btn btn-sm">View
-																	Closed Loans</button>
-																<button type="button" class="btn-primary btn btn-sm">View
-																	Active Loans</button>
-															</span>
-														</div>
-														<div>
-															<div class="span gray-head">
-																<span class="boldlabel"> <strong class="">Loan
-																		Account Overview</strong>
-																</span>
-															</div>
-															<table class="table table-condensed">
-																<tr class="graybg">
-																	<th>Account#</th>
-																	<th>Loan Account</th>
-																	<th>Loan Amount</th>
-																	<th>Outstd Amt.</th>
-																	<th>Due Amount</th>
-																	<th>Type</th>
-																	<th>Actions</th>
-																</tr>
-																<tr class="pointer-main"  onclick="viewLoanAccountFn();">
-																	<td class="pointer"  onclick="viewLoanAccountFn();"><i
-																		class="fa fa-stop cstatuscode"></i> 99999999</td>
-																	<td class="pointer"  onclick="viewLoanAccountFn();">Loan Prod 1</td>
-																	<td class="pointer"  onclick="viewLoanAccountFn();">-</td>
-																	<td class="pointer"  onclick="viewLoanAccountFn();">-</td>
-																	<td class="pointer"  onclick="viewLoanAccountFn();">-</td>
-																	<td class="pointer center"  onclick="viewLoanAccountFn();"><i
-																		class="fa fa-user fa-1x"></i></td>
-																	<td class="pointer center"  onclick="viewLoanAccountFn();"><a
-																		href="#/loanaccount/loanaccountid/repayment"
-																		class="btn btn-xs btn-primary "> <i
-																			class="fa fa-dollar fa-white"></i>
-																	</a></td>
-																</tr>
-																<tr class="pointer-main"  onclick="viewLoanAccountFn();">
-																	<td class="pointer"  onclick="viewLoanAccountFn();"><i
-																		class="fa fa-stop cstatuscode"></i> 99999999</td>
-																	<td class="pointer"  onclick="viewLoanAccountFn();">Loan Prod 2</td>
-																	<td class="pointer"  onclick="viewLoanAccountFn();">-</td>
-																	<td class="pointer"  onclick="viewLoanAccountFn();">-</td>
-																	<td class="pointer"  onclick="viewLoanAccountFn();">-</td>
-																	<td class="pointer center"  onclick="viewLoanAccountFn();"><i
-																		class="fa fa-user fa-1x"></i></td>
-																	<td class="pointer center"  onclick="viewLoanAccountFn();"><a
-																		href="#/loanaccount/loanaccountid/repayment"
-																		class="btn btn-xs btn-primary "> <i
-																			class="fa fa-flag fa-white"></i>
-																	</a></td>
-																</tr>
-															</table>
-															<table class="table table-condensed">
-																<tr class="graybg">
-																	<th>Account #</th>
-																	<th>Loan Account</th>
-																	<th class="center">Type</th>
-																	<th>Close Date</th>
-																</tr>
-																<tr class="pointer-main">
-																	<td class="pointer"  onclick="viewLoanAccountFn();"><i
-																		class="fa fa-stop cstatuscode"></i> 8888888888</td>
-																	<td class="pointer"  onclick="viewLoanAccountFn();">Loan Prod 2</td>
-																	<td class="pointer center"  onclick="viewLoanAccountFn();"><i
-																		class="fa fa-user fa-1x"></i></td>
-																	<td class="pointer"  onclick="viewLoanAccountFn();"><span>dd/mm/yyyy</span></td>
-																</tr>
-															</table>
-														</div>
-														<div>
-															<div class="pull-right">
-																<span>
-																	<button type="button" class="btn-primary btn btn-sm">
-																		View Closed Savings</button>
-																	<button type="button" class="btn-primary btn btn-sm">
-																		View Active Savings</button>
-																</span>
-															</div>
-															<div class="span gray-head">
-																<span class="boldlabel"> <strong>Savings
-																		Overview</strong>
-																</span>
-															</div>
-															<table class="table table-condensed">
-																<tr class="graybg">
-																	<th>Account#</th>
-																	<th>Savings Account</th>
-																	<th class="center">Balance</th>
-																	<th>Actions</th>
-																</tr>
-																<tr class="pointer-main">
-																	<td class="pointer"><i
-																		class="fa fa-stop savingstatuscode"></i> 7777777777777
-																	</td>
-																	<td class="pointer">Savings Prod</td>
-																	<td class="pointer center">8888</td>
-																	<td class="pointer"><a
-																		href="#/savingaccount/savingaccountid/deposit"
-																		class="btn btn-xs btn-primary "> <i
-																			class="fa fa-arrow-right fa-white"></i>
-																	</a> <a
-																		href="#/recurringdepositaccount/savingaccountid/deposit"
-																		class="btn btn-xs btn-primary "> <i
-																			class="fa fa-check fa-white"></i>
-																	</a> <a
-																		href="#/savingaccount/savingaccountid/undoapproval"
-																		class="btn btn-xs btn-primary "> <i
-																			class="fa fa-undo fa-white"></i>
-																	</a></td>
-																</tr>
-															</table>
-															<table class="table table-condensed">
-																<tr class="graybg">
-																	<th>Account#</th>
-																	<th>Savings Account</th>
-																	<th>Closed Date</th>
-																</tr>
-																<tr class="pointer-main">
-																	<td class="pointer"><i
-																		class="fa fa-stop savingstatuscode"></i> 6666666666</td>
-																	<td class="pointer">Savings Prod2</td>
-																	<td class="pointer"><span>dd/mm/yyyy</span></td>
-																</tr>
-															</table>
-														</div>
-													</div>
-												</div>
-
-												<div class="col-sm-3 col-md-3">
-													<div class="thumbnail row">
-														<h4>
-															<strong>Client Display Name</strong>
-														</h4>
-														<img src="/static/images/demo_user.jpg"
-															alt="Avatar"/>
-														<table class="table-minified">
-															<tr>
-																<th class="table-bold">Activation Date</th>
-																<td><span class="padded-td">dd/mm/yyyy<span
-																		style="display: none">not activated</span></span></td>
-															</tr>
-															<tr>
-																<th class="table-bold">Member of</th>
-																<td><span class="padded-td">Individual</span></td>
-															</tr>
-															<tr>
-																<th class="table-bold">Mobile number</th>
-																<td><span class="padded-td">6687676822</span></td>
-															</tr>
-															<tr>
-																<th class="table-bold">Gender</th>
-																<td><span class="padded-td">Male</span></td>
-															</tr>
-															<tr>
-																<th class="table-bold">Client Type</th>
-																<td><span class="padded-td">-</span></td>
-															</tr>
-															<tr>
-																<th class="table-bold">Client Classification</th>
-																<td><span class="padded-td">-</span></td>
-															</tr>
-
-															<tr>
-																<th class="table-bold">Date of Birth</th>
-																<td><span class="padded-td">dd/mm/yyyy</span></td>
-															</tr>
-															<tr>
-																<th class="table-bold">Close Date</th>
-																<td><span class="padded-td">dd/mm/yyyy</span></td>
-															</tr>
-															<tr>
-																<td colspan="2"><img style="height: 55px"
-																	src="/static/images/demo_signature.jpg" alt="Avatar"/></td>
-															</tr>
-															<tr>
-																<th class="whitebg" colspan="2">Performance History</th>
-															</tr>
-															<tr>
-																<th># of Loan Cycle</th>
-																<td><span class="padded-td">0</span></td>
-															</tr>
-															<tr>
-																<th>Last Loan Amount</th>
-																<td><span class="padded-td">0</span></td>
-															</tr>
-															<tr>
-																<th>Num of Active loans</th>
-																<td><span class="padded-td">1</span></td>
-															</tr>
-															<tr>
-																<th>Total Savings</th>
-																<td><span class="padded-td">0</span></td>
-															</tr>
-															<tr>
-																<th># of Active Savings</th>
-																<td><span class="padded-td">0</span></td>
-															</tr>
-														</table>
-													</div>
-												</div>
+											<!-- end of general tab -->
+											<div class="tab-pane" id="address">
+											<br></br>
+												<p>
+													<c:out value="<%=client.getAddress()%>"></c:out>
+												</p>
 											</div>
+											<div class="tab-pane" id="history">
+											<br></br>
+												<p>Sample tab data.</p>
+											</div>
+											<!-- <div class="tab-pane" id="statistics">
+											<p>Sample tab data.</p>
 										</div>
-
-									</div>
-									<!-- end of general tab -->
-									<div class="tab-pane" id="address">
-										<p>Sample tab data.</p>
-									</div>
-									<div class="tab-pane" id="history">
-										<p>Sample tab data.</p>
-									</div>
-									<div class="tab-pane" id="statistics">
-										<p>Sample tab data.</p>
-									</div>
-									<div class="tab-pane" id="tab">
-										<p>Sample tab data.</p>
+										<div class="tab-pane" id="tab">
+											<p>Sample tab data.</p>
+										</div> -->
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-					</div>
+						</c:when>
+					</c:choose>
+
 				</div>
 				<!-- Footer -->
 			</div>

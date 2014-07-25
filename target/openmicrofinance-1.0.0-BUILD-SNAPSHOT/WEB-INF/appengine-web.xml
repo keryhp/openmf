@@ -9,6 +9,9 @@
   <threadsafe>true</threadsafe>
     <system-properties>
         <property name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>
+        		<property name="entityManagerFactory"
+			value="uk.ac.openmf.model.nosql.OpenMFEntityManagerNoSqlFactory" />
+        
     </system-properties>
 	<precompilation-enabled>false</precompilation-enabled>
     <sessions-enabled>true</sessions-enabled>

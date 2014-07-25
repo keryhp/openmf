@@ -10,16 +10,16 @@
     <!-- / is at webapp level -->
     <http pattern="/static/**" security="none" />
     <http pattern="/favicon.ico" security="none" />
-    <http pattern="/loggedout.htm" security="none" />
+    <http pattern="/logout.htm" security="none" />
     <http pattern="/disabled.htm" security="none" />
     <!--  this pattern /_ah/** is required for local dev server -->
     <http pattern="/_ah/**" security="none" />
 
     <http use-expressions="true" entry-point-ref="openmfEntryPoint">
-        <intercept-url pattern="/" access="permitAll" />
+        <intercept-url pattern="/" access="hasAnyRole('USER', 'ADMIN')" />
         <intercept-url pattern="/logout.htm" access="permitAll" />
-        <intercept-url pattern="/register.htm*" access="hasRole('NEW_USER')" />
-        <intercept-url pattern="/**" access="hasRole('USER')" />
+        <intercept-url pattern="/register.htm*" access="hasAnyRole('NEW_USER', 'USER', 'ADMIN')" />
+        <intercept-url pattern="/**" access="hasAnyRole('USER', 'ADMIN')" />
         <custom-filter position="PRE_AUTH_FILTER" ref="openmfFilter" />
     </http>
 
