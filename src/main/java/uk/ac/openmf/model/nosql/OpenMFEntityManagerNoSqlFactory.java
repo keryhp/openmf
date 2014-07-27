@@ -2,6 +2,7 @@ package uk.ac.openmf.model.nosql;
 
 import uk.ac.openmf.model.OpenMFClientManager;
 import uk.ac.openmf.model.OpenMFEntityManagerFactory;
+import uk.ac.openmf.model.OpenMFLoanAccountManager;
 import uk.ac.openmf.model.OpenMFLoanProductManager;
 import uk.ac.openmf.model.OpenMFRolesManager;
 import uk.ac.openmf.model.OpenMFSavingsProductManager;
@@ -20,6 +21,7 @@ public class OpenMFEntityManagerNoSqlFactory implements OpenMFEntityManagerFacto
   private OpenMFLoanProductManagerNoSql openMFLoanProductManager;
   private OpenMFSavingsProductManagerNoSql openMFSavingsProductManager;
   private OpenMFClientManagerNoSql openMFClientManager;
+  private OpenMFLoanAccountManagerNoSql openMFLoanAccountManager;
   
   private boolean initialized;
 
@@ -47,6 +49,7 @@ public class OpenMFEntityManagerNoSqlFactory implements OpenMFEntityManagerFacto
       openMFLoanProductManager = new OpenMFLoanProductManagerNoSql(openMFUserManager);
       openMFClientManager = new OpenMFClientManagerNoSql(openMFUserManager);
       openMFSavingsProductManager = new OpenMFSavingsProductManagerNoSql(openMFUserManager);
+      openMFLoanAccountManager = new OpenMFLoanAccountManagerNoSql(openMFUserManager);      
       initialized = true;
     } else {
       throw new IllegalStateException("Should not initialize the factory more than once.");
@@ -63,4 +66,8 @@ public OpenMFSavingsProductManager getSavingsProductManager() {
 	return openMFSavingsProductManager;
 }
 
+@Override
+public OpenMFLoanAccountManager getLoanAccountManager() {
+  return openMFLoanAccountManager;
+}
 }

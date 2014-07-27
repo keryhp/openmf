@@ -66,6 +66,7 @@ public class LoanProductController {
 			loanProduct.setRepaymentfrequency(form.getRepaymentfrequency());
 			loanProduct.setRepaymentperiod(form.getRepaymentperiod());
 			loanProduct.setLoanamount(form.getLoanamount());
+			loanProduct.setLoantype(form.getLoantype());			
 			loanProduct.setTimestamp(System.currentTimeMillis());
 			loanProduct.setActive(form.isActive());			
 			loanProductManager.upsertEntity(loanProduct);

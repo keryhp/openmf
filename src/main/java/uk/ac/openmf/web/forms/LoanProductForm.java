@@ -21,6 +21,8 @@ public class LoanProductForm {
 	private String repaymentfrequency;
 	private String loanamount;	
 	private boolean active;
+	private String loantype;
+
 	
 	public String getProductname() {
 		return productname;
@@ -111,5 +113,11 @@ public class LoanProductForm {
 	}
 	public void setLoanamount(String loanamount) {
 		this.loanamount = loanamount;
+	}
+	public String getLoantype() {
+		return loantype;
+	}
+	public void setLoantype(String loantype) {
+		this.loantype = loantype;
 	}
 }

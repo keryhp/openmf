@@ -16,7 +16,15 @@ public class GenerateAccountNumber {
 	  return generateAccNumber;
   }
 
-  public String generateAccNumber(int nextAvail){
+  public String generateClientAccNumber(int nextAvail){
 	  return "OMF-HO-GEN-00" + nextAvail;
+  }
+  
+  public String generateLoanAccNumber(int nextAvail){
+	  return "OMF-HO-LNA-00" + nextAvail;
+  }
+  
+  public String generateSavingsAccNumber(int nextAvail){
+	  return "OMF-HO-SVG-00" + nextAvail;
   }
 }

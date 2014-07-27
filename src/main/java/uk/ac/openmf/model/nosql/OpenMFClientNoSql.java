@@ -206,4 +206,34 @@ public class OpenMFClientNoSql extends OpenMFEntityNoSql  implements OpenMFClien
 		return entity.getKey().getId();
 	}
 
+	@Override
+	public boolean isEligible() {
+		return (boolean) entity.getProperty(OpenMFConstants.FIELD_NAME_ELIGIBLE);
+	}
+
+	@Override
+	public void setEligible(boolean eligible) {
+		entity.setProperty(OpenMFConstants.FIELD_NAME_ELIGIBLE, eligible);		
+	}
+
+	@Override
+	public boolean isBlacklisted() {
+		return (boolean) entity.getProperty(OpenMFConstants.FIELD_NAME_BLACKLISTED);
+	}
+
+	@Override
+	public void setBlacklisted(boolean blacklisted) {
+		entity.setProperty(OpenMFConstants.FIELD_NAME_BLACKLISTED, blacklisted);		
+	}
+
+	@Override
+	public String getBalance() {
+		return (String) entity.getProperty(OpenMFConstants.FIELD_NAME_BALANCE);
+	}
+
+	@Override
+	public void setBalance(String balance) {
+		entity.setProperty(OpenMFConstants.FIELD_NAME_BALANCE, balance);
+	}
+
 }

@@ -12,7 +12,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-								<%
+<%
 	UserService userService = UserServiceFactory.getUserService();
 	AppContext appContext = AppContext.getAppContext();
 	ConfigManager configManager = appContext.getConfigManager();
@@ -95,8 +95,8 @@
 				</ul>
 				<ul class="nav navbar-nav navbar-right" id="main-menu-right">
 					<li class="dropdown" id="user-menu"><a id="user-dropdown"
-						class="dropdown-toggle" data-toggle="dropdown" href="#"><c:out value="<%=currentUser.getUsername() %>"></c:out><b
-							class="caret"></b></a>
+						class="dropdown-toggle" data-toggle="dropdown" href="#"><c:out
+								value="<%=currentUser.getUsername()%>"></c:out><b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<li><a id="help" href="/help.htm"><i
 									class="fa fa-question-circle"></i> Help</a></li>
@@ -255,7 +255,7 @@
 										<form:label class="control-label col-sm-2" path="dateofbirth">Date of Birth</form:label>
 
 										<div class="col-sm-3">
-											<form:input path="dateofbirth" class="form-control"/>
+											<form:input path="dateofbirth" class="form-control" />
 										</div>
 										<form:label class="control-label col-sm-2" path="gender">Gender</form:label>
 
@@ -317,16 +317,24 @@
 												</form:label>
 
 												<div class="col-sm-3">
-													<form:input path="activationdate" class="form-control date-picker"/>
+													<form:input path="activationdate"
+														class="form-control date-picker" />
 												</div>
 											</div>
 										</div>
 									</div>
 									<div class="form-group">
+										<form:label class="control-label col-sm-2" path="eligible">Eligible for Loans?</form:label>
+
+										<div class="col-sm-3">
+											<form:checkbox path="eligible" />
+										</div>
+
 										<form:label class="control-label col-sm-2" path="submittedon">Submitted on</form:label>
 
 										<div class="col-sm-3">
-											<form:input path="submittedon" class="form-control date-picker"/>
+											<form:input path="submittedon"
+												class="form-control date-picker" />
 										</div>
 									</div>
 									<!-- <div class="form-group">

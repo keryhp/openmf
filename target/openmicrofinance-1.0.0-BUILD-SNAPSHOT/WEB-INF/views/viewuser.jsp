@@ -228,35 +228,39 @@
 											escapeXml="true" /> <c:out value="${omfuser.surname }"
 											escapeXml="true" /></strong>
 								</h3>
-								<table class="table table-striped">
-									<tr>
-										<td  class="graybg" width="20%">userId</td>
-										<td width="80%"><c:out value="${omfuser.username }"
-												escapeXml="true" /></td>
-									</tr>
-									<tr>
-										<td  class="graybg">Email</td>
-										<td><c:out value="${omfuser.email }" escapeXml="true" /></td>
-									</tr>
-									<tr>
-										<td  class="graybg">Contact#</td>
-										<td><c:out value="${omfuser.contact }" escapeXml="true" /></td>
-									</tr>
-									<tr>
-										<td  class="graybg">Office</td>
-										<td><c:out value="${omfuser.main_office }"
-												escapeXml="true" /></td>
-									</tr>
-									<tr>
-										<td  class="graybg">Supervisor</td>
-										<td><c:out value="${omfuser.supervisor }"
-												escapeXml="true" /></td>
-									</tr>
-									<tr>
-										<td valign="top"  class="graybg">Role:</td>
-										<td><c:out value="${omfuser.role }" escapeXml="true" /></td>
-									</tr>
-								</table>
+								<div class="row span">
+									<div class="col-sm-6 col-md-6">
+										<table class="table table-striped table-bordered">
+											<tr>
+												<td class="graybg" width="20%">userId</td>
+												<td width="80%"><c:out value="${omfuser.username }"
+														escapeXml="true" /></td>
+											</tr>
+											<tr>
+												<td class="graybg">Email</td>
+												<td><c:out value="${omfuser.email }" escapeXml="true" /></td>
+											</tr>
+											<tr>
+												<td class="graybg">Contact#</td>
+												<td><c:out value="${omfuser.contact }" escapeXml="true" /></td>
+											</tr>
+											<tr>
+												<td class="graybg">Office</td>
+												<td><c:out value="${omfuser.main_office }"
+														escapeXml="true" /></td>
+											</tr>
+											<tr>
+												<td class="graybg">Supervisor</td>
+												<td><c:out value="${omfuser.supervisor }"
+														escapeXml="true" /></td>
+											</tr>
+											<tr>
+												<td valign="top" class="graybg">Role:</td>
+												<td><c:out value="${omfuser.role }" escapeXml="true" /></td>
+											</tr>
+										</table>
+									</div>
+								</div>
 							</div>
 						</c:when>
 					</c:choose>

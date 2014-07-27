@@ -12,11 +12,15 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-								<%
+<%
 	UserService userService = UserServiceFactory.getUserService();
 	AppContext appContext = AppContext.getAppContext();
 	ConfigManager configManager = appContext.getConfigManager();
 	OpenMFUser currentUser = appContext.getCurrentUser();
+	OpenMFLoanAccount lnaccdetails = (OpenMFLoanAccount) request
+			.getAttribute("lnaccdetails");
+	OpenMFClient client = (OpenMFClient) request.getAttribute("client");
+	OpenMFLoanProduct loanproduct = (OpenMFLoanProduct) request.getAttribute("loanproduct");
 %>
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB" xml:lang="en-GB">
@@ -91,8 +95,8 @@
 				</ul>
 				<ul class="nav navbar-nav navbar-right" id="main-menu-right">
 					<li class="dropdown" id="user-menu"><a id="user-dropdown"
-						class="dropdown-toggle" data-toggle="dropdown" href="#"><c:out value="<%=currentUser.getUsername() %>"></c:out><b
-							class="caret"></b></a>
+						class="dropdown-toggle" data-toggle="dropdown" href="#"><c:out
+								value="<%=currentUser.getUsername()%>"></c:out><b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<li><a id="help" href="/help.htm"><i
 									class="fa fa-question-circle"></i> Help</a></li>
@@ -113,8 +117,7 @@
 
 	<div class="left-nav">
 		<ul class="nav nav-pills nav-stacked margin-nav">
-			<li><a class="black" href="/"><i
-					class="fa fa-desktop fa-fw"></i>Dashboard</a></li>
+			<li><a class="black" href="/"><i class="fa fa-desktop fa-fw"></i>Dashboard</a></li>
 			<li class="divider"></li>
 			<li><a class="black" href="/advsearch.htm"><i
 					class="fa fa-search fa-fw"></i>Advanced Search</a></li>
@@ -162,33 +165,33 @@
 						<div class="col-md-12">
 							<div>
 								<ul class="breadcrumb">
-								<li><a href="/loanproducts.htm">Loan Account</a></li>
-								<li class="active">View Loan Account</li>
-							</ul>
+									<li><a href="/clients.htm">Clients</a></li>
+									<li class="active">View Loan Account</li>
+								</ul>
 							</div>
 							<div>
 
 								<div class="span gray-head" style="margin-left: 0%;">
 									<span style="margin-left: 10px; font-size: 20px"> <strong>
-											<i class="fa fa-stop cstatuscode"></i>Loan Id-Name |
-											Account#
+											<i class="fa fa-stop cstatuscode"></i>Loan Acc# <%=lnaccdetails.getLoanaccountnumber()%>
+											| <%=lnaccdetails.getLoancode()%> | Client Acc# <%=client.getAccountNumber()%>
 									</strong>
 									</span>
 								</div>
 
 								<div class="col-sm-12 col-md-12 primarydiv">
 									<div class="pull-right">
-										<span> <a href="#/client/7/acceptclienttransfer"
+										<span> <a
+											onclick="assignfieldofficer(<%=lnaccdetails.getId()%>);"
 											class="btn btn-primary"><i class="fa fa-user fa-white"></i>Assign
-												Loan Officer</a>
-										</span> <span> <a href="#/client/7/acceptclienttransfer"
+												Field Officer</a>
+										</span> <span> <a
+											onclick="loanDisburse(<%=lnaccdetails.getId()%>);"
 											class="btn btn-primary"> <i class="fa fa-check fa-white"></i>Disburse
 										</a>
-										</span> <span><a href="#/client/7/rejecttransfer"
-											class="btn btn-primary"><i class="fa fa-times fa-white"></i>Disburse
-												To Savings</a> </span> <span> <a href="#/client/7/undotransfer"
-											class="btn btn-primary"><i class="fa fa-undo fa-white"></i>Undo
-												Approval</a>
+										</span> <span><a
+											onclick="loanRepayment(<%=lnaccdetails.getId()%>);"
+											class="btn btn-primary"><i class="fa fa-times fa-white"></i>Repayment</a>
 										</span>
 									</div>
 								</div>
@@ -200,23 +203,21 @@
 											<tbody>
 												<tr>
 													<th class="table-bold-loan">Disbursement Date</th>
-													<td><span class="padded-td">dd/mm/yyyy<span
+													<td><span class="padded-td"><%=lnaccdetails.getDisbursedon()%><span
 															class="hide">Not Available</span></span></td>
 												</tr>
 												<tr>
 													<th class="table-bold-loan">Currency</th>
-													<td><span class="padded-td">GBP ?</span></td>
+													<td><span class="padded-td">GBP</span></td>
 												</tr>
 												<tr>
-													<th class="table-bold-loan">Loan Officer</th>
-													<td><span class="padded-td"><span
-															class="hide">Unassigned</span>Loan Officer Name <span>
-																<a><i class="fa fa-times"></i></a>
+													<th class="table-bold-loan">Loan Supervisor/Manager</th>
+													<td><span class="padded-td"><span class="hide">Unassigned</span><%=lnaccdetails.getLoanofficer()%><span> <a onclick="unassignloansupervisor(<%=lnaccdetails.getId()%>)"><i class="fa fa-times"></i></a>
 														</span> </span></td>
 												</tr>
 												<tr>
 													<th class="table-bold-loan">ExternalId</th>
-													<td><span class="padded-td">ExternalId</span></td>
+													<td><span class="padded-td"><%=client.getExternalId() %></span></td>
 												</tr>
 											</tbody>
 										</table>
@@ -226,20 +227,20 @@
 											<tbody>
 												<tr>
 													<th class="table-bold-loan">Loan Purpose</th>
-													<td><span class="padded-td">Loan Purpose Name <span
+													<td><span class="padded-td"><%=lnaccdetails.getLoanpurpose() %><span
 															class="hide">Not provided</span></span></td>
 												</tr>
 												<tr>
 													<th class="table-bold-loan">Approved Amount</th>
-													<td><span class="padded-td">1000.00</span></td>
+													<td><span class="padded-td"><%=lnaccdetails.getApprovedamount() %></span></td>
 												</tr>
 												<tr>
 													<th class="table-bold-loan">Disburse Amount</th>
-													<td><span class="padded-td">500</span></td>
+													<td><span class="padded-td"><%=lnaccdetails.getDisbursedamount() %></span></td>
 												</tr>
 												<tr>
 													<th class="table-bold-loan">Arrears By</th>
-													<td><span class="padded-td">-200<span
+													<td><span class="padded-td"><%=lnaccdetails.getArrearsby() %><span
 															class="hide">Not Provided</span></span></td>
 												</tr>
 											</tbody>
@@ -278,12 +279,21 @@
 														<tbody>
 															<tr>
 																<td>Repayment Strategy</td>
-																<td><span class="padded-td">Transaction
-																		Processing Strategy Name</span></td>
+																<td><span class="padded-td">Manual collection and submission by field officer</span></td>
 															</tr>
 															<tr>
-																<td># of Repayments</td>
-																<td><span class="padded-td">16 (frequency ?)</span>
+																<td>Total Number of Repayments</td>
+																<td><span class="padded-td"><%=lnaccdetails.getTotalnumrepayments() %></span>
+																</td>
+															</tr>
+															<tr>
+																<td>Number of Repayments made</td>
+																<td><span class="padded-td"><%=lnaccdetails.getNumrepaymentsmade() %></span>
+																</td>
+															</tr>
+															<tr>
+																<td>Number of Repayments missed</td>
+																<td><span class="padded-td"><%=lnaccdetails.getNumpaymentsmissed() %></span>
 																</td>
 															</tr>
 															<tr>
@@ -292,30 +302,12 @@
 																		Installments</span></td>
 															</tr>
 															<tr>
-																<td>Interest</td>
-																<td><span class="padded-td">60 per annum (5%
-																		per month ) - Interest Type</span></td>
-															</tr>
-															<tr>
-																<td>Grace: On principal payment</td>
-																<td><span class="padded-td">?</span></td>
-															</tr>
-															<tr>
-																<td>Grace: On interest payment</td>
-																<td><span class="padded-td">?</span></td>
-															</tr>
-															<tr>
-																<td>Grace: Arrears ageing</td>
-																<td><span class="padded-td">?</span></td>
+																<td>% Rate of Interest</td>
+																<td><span class="padded-td"><%=loanproduct.getRateofinterest()%> % per annum | Flat</span></td>
 															</tr>
 															<tr>
 																<td>Fund source</td>
-																<td><span class="padded-td">Fund Souce Id -
-																		Name</span></td>
-															</tr>
-															<tr>
-																<td>Interest Free Period</td>
-																<td><span class="padded-td">3 months</span></td>
+																<td><span class="padded-td">OpenMF Institution</span></td>
 															</tr>
 															<tr>
 																<td>Interest Calculation Period</td>
@@ -323,26 +315,17 @@
 																		repayment period</span></td>
 															</tr>
 															<tr>
-																<td>Interest Type</td>
-																<td><span class="padded-td">Flat</span></td>
-															</tr>
-															<tr>
 																<td>Submitted on</td>
-																<td><span class="padded-td">dd/mm/yyyy</span></td>
+																<td><span class="padded-td"><%=lnaccdetails.getSubmittedon() %></span></td>
 															</tr>
 															<tr>
 																<td>Approved on</td>
-																<td><span class="padded-td">dd/mm/yyyy</span></td>
+																<td><span class="padded-td"><%=lnaccdetails.getApprovedon()%></span></td>
 															</tr>
 															<tr>
 																<td>Disbursed on</td>
-																<td><span class="padded-td">dd/mm/yyyy</span></td>
+																<td><span class="padded-td"><%=lnaccdetails.getDisbursedon()%></span></td>
 															</tr>
-															<tr>
-																<td>Matures on</td>
-																<td><span class="padded-td">dd/mm/yyyy</span></td>
-															</tr>
-
 														</tbody>
 													</table>
 												</div>

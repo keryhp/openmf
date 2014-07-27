@@ -149,4 +149,15 @@ public class OpenMFLoanProductNoSql extends OpenMFEntityNoSql  implements OpenMF
 	public Long getId() {
 		return entity.getKey().getId();
 	}
+	
+	@Override
+	public String getLoantype() {
+		return (String) entity.getProperty(OpenMFConstants.FIELD_NAME_LOANTYPE);
+	}
+
+	@Override
+	public void setLoantype(String loantype) {
+		entity.setProperty(OpenMFConstants.FIELD_NAME_LOANTYPE, loantype);		
+	}
+
 }

@@ -1,5 +1,8 @@
 package uk.ac.openmf.web.controllers;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.security.core.Authentication;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import uk.ac.openmf.model.OpenMFUser;
 import uk.ac.openmf.model.OpenMFUserManager;
 import uk.ac.openmf.users.GaeUser;
+import uk.ac.openmf.utils.PasswordHash;
 import uk.ac.openmf.utils.ServletUtils;
 import uk.ac.openmf.web.AppContext;
 import uk.ac.openmf.web.forms.UserForm;
@@ -47,9 +51,11 @@ public class UserController {
 
 	/**
 	 * Simply selects the home view to render by returning its name.
+	 * @throws InvalidKeySpecException 
+	 * @throws NoSuchAlgorithmException 
 	 */
 	@RequestMapping(value="/createuser.htm", method = RequestMethod.POST)
-	public String createuser(UserForm form, BindingResult result) {
+	public String createuser(UserForm form, BindingResult result) throws NoSuchAlgorithmException, InvalidKeySpecException {
 		if (result.hasErrors()) {
 			return null;
 		}
@@ -69,7 +75,7 @@ public class UserController {
 			user.setForename(form.getForename());
 			user.setSurname(form.getSurname());
 			user.setMain_office(form.getMainoffice());
-			user.setPassword(form.getPassword());
+			user.setPassword(PasswordHash.createHash(form.getPassword()));
 			user.setRole(form.getRole());
 			user.setSupervisor(form.getSupervisor());
 			user.setEmail(form.getEmail());

@@ -2,13 +2,17 @@ package uk.ac.openmf.model.nosql;
 
 import uk.ac.openmf.model.OpenMFLoanProduct;
 import uk.ac.openmf.model.OpenMFLoanProductManager;
+import uk.ac.openmf.model.OpenMFUser;
 import uk.ac.openmf.utils.OpenMFConstants;
 
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.SortDirection;
 
 /**
@@ -17,54 +21,82 @@ import com.google.appengine.api.datastore.Query.SortDirection;
  */
 public class OpenMFLoanProductManagerNoSql extends OpenMFEntityManagerNoSql<OpenMFLoanProduct> implements OpenMFLoanProductManager {
 
-	  private final OpenMFUserManagerNoSql userManager;
+	private final OpenMFUserManagerNoSql userManager;
 
-	  public OpenMFLoanProductManagerNoSql(OpenMFUserManagerNoSql userManager) {
-	    super(OpenMFLoanProduct.class);
-	    this.userManager = userManager;
-	  }
+	public OpenMFLoanProductManagerNoSql(OpenMFUserManagerNoSql userManager) {
+		super(OpenMFLoanProduct.class);
+		this.userManager = userManager;
+	}
 
-	  @Override
-	  public OpenMFLoanProduct getLoanProduct(Long loanProductId) {
-	    return getEntity(createLoanProductKey(null, loanProductId));
-	  }
+	@Override
+	public OpenMFLoanProduct getLoanProduct(Long loanProductId) {
+		return getEntity(createLoanProductKey(null, loanProductId));
+	}
 
-	  @Override
-	  public Iterable<OpenMFLoanProduct> getAllLoanProduct() {
-	    Query query = new Query(getKind());
-	    query.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
-	    FetchOptions options = FetchOptions.Builder.withLimit(100);
-	    return queryEntities(query, options);
-	  }
+	@Override
+	public Iterable<OpenMFLoanProduct> getAllLoanProduct() {
+		Query query = new Query(getKind());
+		query.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
+		FetchOptions options = FetchOptions.Builder.withLimit(100);
+		return queryEntities(query, options);
+	}
 
-	  /**
-	   * Creates a role entity key.
-	   *
-	   * @param userId the user id. If null, no parent key is set.
-	   * @param roleId
-	   * @return a datastore key object.
-	   */
-	  public Key createLoanProductKey(String userId, Long loanproductid) {
-		  if (userId != null) {
-		      Key parentKey = KeyFactory.createKey(OpenMFConstants.ENTITY_USER_TYPE_GAE, userId);
-		      return KeyFactory.createKey(parentKey, getKind(), loanproductid);
-		    } else {
-		      return KeyFactory.createKey(getKind(), loanproductid);
-		    }
-	  }
+	/**
+	 * Creates a role entity key.
+	 *
+	 * @param userId the user id. If null, no parent key is set.
+	 * @param roleId
+	 * @return a datastore key object.
+	 */
+	public Key createLoanProductKey(String userId, Long loanproductid) {
+		if (userId != null) {
+			Key parentKey = KeyFactory.createKey(OpenMFConstants.ENTITY_USER_TYPE_GAE, userId);
+			return KeyFactory.createKey(parentKey, getKind(), loanproductid);
+		} else {
+			return KeyFactory.createKey(getKind(), loanproductid);
+		}
+	}
 
-	  @Override
-	  public OpenMFLoanProductNoSql fromParentKey(Key parentKey) {
-	    return new OpenMFLoanProductNoSql(parentKey, getKind());
-	  }
+	@Override
+	public OpenMFLoanProductNoSql fromParentKey(Key parentKey) {
+		return new OpenMFLoanProductNoSql(parentKey, getKind());
+	}
 
-	  @Override
-	  public OpenMFLoanProductNoSql newLoanProduct(String userId) {
-	    return new OpenMFLoanProductNoSql(null, getKind());
-	  }
+	@Override
+	public OpenMFLoanProductNoSql newLoanProduct(String userId) {
+		return new OpenMFLoanProductNoSql(null, getKind());
+	}
 
-	  @Override
-	  protected OpenMFLoanProductNoSql fromEntity(Entity entity) {
-	    return new OpenMFLoanProductNoSql(entity);
-	  }
+	@Override
+	protected OpenMFLoanProductNoSql fromEntity(Entity entity) {
+		return new OpenMFLoanProductNoSql(entity);
+	}
+
+	@Override
+	public OpenMFLoanProduct getLoanProductByLoanCode(String loancode) {
+		Query qry = new Query(getKind());
+		qry.setFilter(FilterOperator.EQUAL.of(OpenMFConstants.FIELD_NAME_LOANCODE, loancode));
+		PreparedQuery pq = DatastoreServiceFactory.getDatastoreService().prepare(qry);
+		OpenMFLoanProduct loanproduct = null; 
+		for (Entity result : pq.asIterable()) {
+			if(loanproduct == null){
+				loanproduct = new OpenMFLoanProductNoSql(result);
+				loanproduct.setClosedate((String)result.getProperty(OpenMFConstants.FIELD_NAME_CLOSEDATE));
+				loanproduct.setCreatedById((String)result.getProperty(OpenMFConstants.FIELD_NAME_CREATEDBY));
+				loanproduct.setDescription((String)result.getProperty(OpenMFConstants.FIELD_NAME_DESCRIPTION));
+				loanproduct.setLoancode((String)result.getProperty(OpenMFConstants.FIELD_NAME_LOANCODE));
+				loanproduct.setProductname((String)result.getProperty(OpenMFConstants.FIELD_NAME_PRODUCTNAME));
+				loanproduct.setRateofinterest((String)result.getProperty(OpenMFConstants.FIELD_NAME_RATEOFINTEREST));
+				loanproduct.setStartdate((String)result.getProperty(OpenMFConstants.FIELD_NAME_STARTDATE));
+				loanproduct.setRepaymentfrequency((String)result.getProperty(OpenMFConstants.FIELD_NAME_REPAYMENTFREQUENCY));
+				loanproduct.setRepaymentperiod((String)result.getProperty(OpenMFConstants.FIELD_NAME_REPAYMENTPERIOD));
+				loanproduct.setLoanamount((String)result.getProperty(OpenMFConstants.FIELD_NAME_LOANAMOUNT));
+				loanproduct.setLoantype((String)result.getProperty(OpenMFConstants.FIELD_NAME_LOANTYPE));			
+				loanproduct.setTimestamp(System.currentTimeMillis());
+				loanproduct.setActive((boolean)result.getProperty(OpenMFConstants.FIELD_NAME_ACTIVE));			
+				break;
+			}
+		}
+		return loanproduct;
+	}
 }

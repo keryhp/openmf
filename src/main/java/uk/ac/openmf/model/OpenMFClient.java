@@ -44,4 +44,10 @@ public interface OpenMFClient extends OpenMFEntity {
 	void setAccountNumber(String accountnumber);
 	String getAddress();
 	void setAddress(String address);
+	boolean isEligible();
+	void setEligible(boolean eligible);
+	boolean isBlacklisted();
+	void setBlacklisted(boolean blacklisted);
+	String getBalance();
+	void setBalance(String balance);
 }

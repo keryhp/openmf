@@ -22,6 +22,9 @@ public class ClientForm {
     private String submittedon;
     private String accountnumber;
     private String address;
+    private boolean eligible;
+    private boolean blacklisted;
+    private String balance;
     
 	public String getOffice() {
 		return office;
@@ -118,5 +121,23 @@ public class ClientForm {
 	}
 	public void setAddress(String address) {
 		this.address = address;
-	}   
+	}
+	public boolean isEligible() {
+		return eligible;
+	}
+	public void setEligible(boolean eligible) {
+		this.eligible = eligible;
+	}
+	public boolean isBlacklisted() {
+		return blacklisted;
+	}
+	public void setBlacklisted(boolean blacklisted) {
+		this.blacklisted = blacklisted;
+	}
+	public String getBalance() {
+		return balance;
+	}
+	public void setBalance(String balance) {
+		this.balance = balance;
+	}
 }

@@ -32,4 +32,6 @@ public interface OpenMFLoanProduct extends OpenMFEntity {
 	void setActive(boolean active);
 	String getLoanamount();
 	void setLoanamount(String loanamount);
+	public String getLoantype();
+	public void setLoantype(String loantype);
 }

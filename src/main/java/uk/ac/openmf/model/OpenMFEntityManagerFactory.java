@@ -31,4 +31,6 @@ public interface OpenMFEntityManagerFactory {
 	OpenMFSavingsProductManager getSavingsProductManager();
 	
 	OpenMFClientManager getClientManager();
+	
+	OpenMFLoanAccountManager getLoanAccountManager();
 }

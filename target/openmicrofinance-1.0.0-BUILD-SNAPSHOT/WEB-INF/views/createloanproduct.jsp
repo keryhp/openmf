@@ -188,6 +188,14 @@
 											<form:input type="text" path="loancode" class="form-control"
 												maxlength="4" />
 										</div>
+										<form:label class="control-label col-sm-2" path="loantype">Type</form:label>
+										<div class="col-sm-2">
+											<form:select data-placeholder="Choose a Type"
+												class="form-control chosen-select" path="loantype" tabindex="2">
+												<form:option value="SHORTTERM" selected="selected">Short term</form:option>
+												<form:option value="REPETITIVE">Repetitive</form:option>
+											</form:select>
+										</div>
 									</div>
 									<div class="form-group">
 										<form:label class="control-label col-sm-2" path="description">Description</form:label>

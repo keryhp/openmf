@@ -199,9 +199,8 @@
 										<div class="col-sm-2">
 											<form:select data-placeholder="Choose a Type"
 												class="form-control chosen-select" path="savingstype" tabindex="2">
-												<form:option value="FIXED" selected="selected">Fixed</form:option>
-												<form:option value="RECURRING">Recurring</form:option>
-												<form:option value="REGULAR">Regular</form:option>
+												<form:option value="VOLUNTARY" selected="selected">Voluntary</form:option>
+												<form:option value="COMPULSORY">Compulsory</form:option>
 											</form:select>
 										</div>
 									</div>

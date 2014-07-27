@@ -50,11 +50,6 @@ public class GaeAppController {
     public String loggedOut() {
         return "loggedout";
     }
-        
-    @RequestMapping(value = "/viewloanaccount.htm", method= RequestMethod.GET)
-    public String viewLoanAccount() {
-        return "viewloanaccount";
-    }
     
     @RequestMapping(value = "/help.htm", method= RequestMethod.GET)
     public String help() {

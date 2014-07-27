@@ -18,6 +18,8 @@
 	ConfigManager configManager = appContext.getConfigManager();
 	OpenMFUser currentUser = appContext.getCurrentUser();
 	OpenMFClient client = (OpenMFClient) request.getAttribute("client");
+	ArrayList<OpenMFLoanAccount> loanAccounts = (ArrayList<OpenMFLoanAccount>) request
+			.getAttribute("loanAccounts");
 %>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB" xml:lang="en-GB">
 <head>
@@ -92,7 +94,7 @@
 				<ul class="nav navbar-nav navbar-right" id="main-menu-right">
 					<li class="dropdown" id="user-menu"><a id="user-dropdown"
 						class="dropdown-toggle" data-toggle="dropdown" href="#"><c:out
-								value="<%=currentUser.getUsername()%>"/><b class="caret"></b></a>
+								value="<%=currentUser.getUsername()%>" /><b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<li><a id="help" href="/help.htm"><i
 									class="fa fa-question-circle"></i> Help</a></li>
@@ -170,7 +172,7 @@
 									<div class="row">
 										<div class="col-md-8 col-sm-8">
 											<h3 class="client-title">
-												<i class="fa fa-circle cstatuscode"></i> <strong><c:out
+												<i class="fa fa-user fa-white"></i> <strong><c:out
 														value="${client.forename }" escapeXml="true" /> <c:out
 														value="${client.surname }" escapeXml="true" /></strong> <small>
 													<c:out value="<%=client.getAccountNumber()%>"></c:out> | <c:out
@@ -194,11 +196,13 @@
 												<div class="col-md-12 col-sm-12">
 													<div class="row primarydiv">
 														<div class="pull-right">
-															<span> <a href="#/client/7/acceptclienttransfer"
+															<span> <a
+																onclick="createLoanAccountFn(<%=client.getId()%>)"
 																class="btn btn-primary"> <i
 																	class="fa fa-arrow-right fa-white"></i>Apply New Loan
 															</a>
-															</span> <span><a href="#/client/7/rejecttransfer"
+															</span> <span><a
+																onclick="createSavingsAccountFn(<%=client.getId()%>)"
 																class="btn btn-primary"><i
 																	class="fa fa-arrow-right fa-white"></i>Add New Savings</a>
 															</span>
@@ -206,9 +210,9 @@
 														<a href="#/client/7/undotransfer" class="btn btn-primary"><i
 															class="fa fa-undo fa-white"></i>Undo Transfer</a>
 													</span> -->
-															<button type="button" class="btn btn-primary ">
+															<!-- <button type="button" class="btn btn-primary ">
 																<i class="fa fa-user fa-white"></i>Unassign Staff
-															</button>
+															</button> -->
 														</div>
 													</div>
 
@@ -220,8 +224,9 @@
 															<div>
 																<div class="pull-right">
 																	<span class="">
-																		<button type="button" class="btn-primary btn btn-sm">View
-																			Closed Loans</button> <!-- <button type="button" class="btn-primary btn btn-sm">View
+																		<button type="button" class="btn-primary btn btn-sm"
+																			onclick="showClosedLoans();">View Closed
+																			Loans</button> <!-- <button type="button" class="btn-primary btn btn-sm">View
 																	Active Loans</button> -->
 																	</span>
 																</div>
@@ -233,70 +238,112 @@
 																	</div>
 																	<table class="table table-condensed">
 																		<tr class="graybg">
-																			<th>Account#</th>
-																			<th>Loan Account</th>
-																			<th>Loan Amount</th>
+																			<th>Loan Account#</th>
+																			<th>Loan Code</th>
+																			<th>Approved Amount</th>
 																			<th>Outstd Amt.</th>
-																			<th>Due Amount</th>
-																			<th>Type</th>
+																			<th>Start Date</th>
 																			<th>Actions</th>
 																		</tr>
+																		<%
+																			for (OpenMFLoanAccount loanAccount : loanAccounts) {
+																						long laId = loanAccount.getId();
+																						if (loanAccount.isActive()) {
+																		%>
 																		<tr class="pointer-main"
-																			onclick="viewLoanAccountFn();">
-																			<td class="pointer" onclick="viewLoanAccountFn();"><i
-																				class="fa fa-stop cstatuscode"></i> 99999999</td>
-																			<td class="pointer" onclick="viewLoanAccountFn();">Loan
-																				Prod 1</td>
-																			<td class="pointer" onclick="viewLoanAccountFn();">-</td>
-																			<td class="pointer" onclick="viewLoanAccountFn();">-</td>
-																			<td class="pointer" onclick="viewLoanAccountFn();">-</td>
+																			onclick="viewLoanAccountFn(<%=laId%>);">
+																			<%
+																				if (loanAccount.isDefaulted()) {
+																			%>
+																			<td class="pointer"
+																				onclick="viewLoanAccountFn(<%=laId%>);"><i
+																				class="fa fa-stop cstatusprogress"></i> <c:out
+																					value="<%=loanAccount.getLoanaccountnumber()%>"
+																					escapeXml="true" /></td>
+																			<%
+																				} else {
+																			%>
+																			<td class="pointer"
+																				onclick="viewLoanAccountFn(<%=laId%>);"><i
+																				class="fa fa-circle cstatusactive"></i> <c:out
+																					value="<%=loanAccount.getLoanaccountnumber()%>"
+																					escapeXml="true" /></td>
+																			<%
+																				}
+																			%>
+																			<td class="pointer"
+																				onclick="viewLoanAccountFn(<%=laId%>);"><c:out
+																					value="<%=loanAccount.getLoancode()%>"
+																					escapeXml="true" /></td>
+																			<td class="pointer"
+																				onclick="viewLoanAccountFn(<%=laId%>);"><c:out
+																					value="<%=loanAccount.getApprovedamount()%>"
+																					escapeXml="true" /></td>
+																			<td class="pointer"
+																				onclick="viewLoanAccountFn(<%=laId%>);"><c:out
+																					value="<%=loanAccount.getBalanceoutstandingamount()%>"
+																					escapeXml="true" /></td>
+																			<td class="pointer"
+																				onclick="viewLoanAccountFn(<%=laId%>);"><c:out
+																					value="<%=loanAccount.getLoanstartdate()%>"
+																					escapeXml="true" /></td>
 																			<td class="pointer center"
-																				onclick="viewLoanAccountFn();"><i
-																				class="fa fa-user fa-1x"></i></td>
-																			<td class="pointer center"
-																				onclick="viewLoanAccountFn();"><a
-																				href="#/loanaccount/loanaccountid/repayment"
+																				onclick="viewLoanAccountFn(<%=laId%>);"><a
+																				onclick="loanRepayment(<%=laId%>);"
 																				class="btn btn-xs btn-primary "> <i
 																					class="fa fa-dollar fa-white"></i>
-																			</a></td>
-																		</tr>
-																		<tr class="pointer-main"
-																			onclick="viewLoanAccountFn();">
-																			<td class="pointer" onclick="viewLoanAccountFn();"><i
-																				class="fa fa-stop cstatuscode"></i> 99999999</td>
-																			<td class="pointer" onclick="viewLoanAccountFn();">Loan
-																				Prod 2</td>
-																			<td class="pointer" onclick="viewLoanAccountFn();">-</td>
-																			<td class="pointer" onclick="viewLoanAccountFn();">-</td>
-																			<td class="pointer" onclick="viewLoanAccountFn();">-</td>
-																			<td class="pointer center"
-																				onclick="viewLoanAccountFn();"><i
-																				class="fa fa-user fa-1x"></i></td>
-																			<td class="pointer center"
-																				onclick="viewLoanAccountFn();"><a
-																				href="#/loanaccount/loanaccountid/repayment"
+																			</a> <a onclick="loanDisburse(<%=laId%>);"
 																				class="btn btn-xs btn-primary "> <i
-																					class="fa fa-flag fa-white"></i>
+																					class="fa fa-check fa-white"></i>
+																			</a> <a onclick="loanPenalty(<%=laId%>);"
+																				class="btn btn-xs btn-primary "> <i
+																					class="fa fa-flag fa-red"></i>
 																			</a></td>
 																		</tr>
+																		<%
+																			}
+																					}
+																		%>
+
 																	</table>
-																	<table class="table table-condensed">
+																	<table id="closedLoans"
+																		class="table table-condensed hide">
 																		<tr class="graybg">
-																			<th>Account #</th>
-																			<th>Loan Account</th>
-																			<th class="center">Type</th>
+																			<th>Loan Account#</th>
+																			<th>Loan Code</th>
+																			<th>Approved Amount</th>
 																			<th>Close Date</th>
 																		</tr>
+																		<%
+																			for (OpenMFLoanAccount loanAccount : loanAccounts) {
+																						long laId = loanAccount.getId();
+																						if (!loanAccount.isActive()) {
+																		%>
 																		<tr class="pointer-main">
-																			<td class="pointer" onclick="viewLoanAccountFn();"><i
-																				class="fa fa-stop cstatuscode"></i> 8888888888</td>
-																			<td class="pointer" onclick="viewLoanAccountFn();">Loan
-																				Prod 2</td>
-																			<td class="pointer center"
-																				onclick="viewLoanAccountFn();"><i
-																				class="fa fa-user fa-1x"></i></td>
-																			<td class="pointer" onclick="viewLoanAccountFn();"><span>dd/mm/yyyy</span></td>
+																			<td class="pointer"
+																				onclick="viewLoanAccountFn(<%=laId%>);"><i
+																				class="fa fa-stop cstatuscode"></i> <c:out
+																					value="<%=loanAccount.getLoanaccountnumber()%>"
+																					escapeXml="true" /></td>
+																			<td class="pointer"
+																				onclick="viewLoanAccountFn(<%=laId%>);"><c:out
+																					value="<%=loanAccount.getLoancode()%>"
+																					escapeXml="true" /></td>
+																			<td class="pointer"
+																				onclick="viewLoanAccountFn(<%=laId%>);"><c:out
+																					value="<%=loanAccount.getApprovedamount()%>"
+																					escapeXml="true" /></td>
+																			<td class="pointer"
+																				onclick="viewLoanAccountFn(<%=laId%>);"><span><c:out
+																						value="<%=loanAccount.getLoanclosedate()%>"
+																						escapeXml="true" /></span></td>
 																		</tr>
+
+
+																		<%
+																			}
+																					}
+																		%>
 																	</table>
 																</div>
 																<div>
@@ -361,10 +408,9 @@
 															<div class="thumbnail row">
 																<h4>
 																	<strong><c:out value="${client.forename }"
-																			escapeXml="true" />
-																		<c:out value="${client.midname }" escapeXml="true" />
-																		<c:out value="${client.surname }" escapeXml="true" />
-																	</strong>
+																			escapeXml="true" /> <c:out
+																			value="${client.midname }" escapeXml="true" /> <c:out
+																			value="${client.surname }" escapeXml="true" /> </strong>
 																</h4>
 																<img src="/static/images/demo_user.jpg" alt="Avatar" />
 																<table class="table-minified">
@@ -452,13 +498,13 @@
 											</div>
 											<!-- end of general tab -->
 											<div class="tab-pane" id="address">
-											<br></br>
+												<br></br>
 												<p>
 													<c:out value="<%=client.getAddress()%>"></c:out>
 												</p>
 											</div>
 											<div class="tab-pane" id="history">
-											<br></br>
+												<br></br>
 												<p>Sample tab data.</p>
 											</div>
 											<!-- <div class="tab-pane" id="statistics">
