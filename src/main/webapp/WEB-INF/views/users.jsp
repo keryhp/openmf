@@ -12,11 +12,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-								<%
-	UserService userService = UserServiceFactory.getUserService();
-	AppContext appContext = AppContext.getAppContext();
-	ConfigManager configManager = appContext.getConfigManager();
-	OpenMFUser currentUser = appContext.getCurrentUser();
+<%
+	OpenMFUser currentUser = (OpenMFUser) request
+			.getAttribute("currentUser");
+	pageContext.setAttribute("currentUser", currentUser);
+	ArrayList<OpenMFUser> omfusers = (ArrayList<OpenMFUser>) request
+			.getAttribute("omfusers");
+	pageContext.setAttribute("omfusers", omfusers);
 %>
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB" xml:lang="en-GB">
@@ -91,12 +93,11 @@
 				<ul class="nav navbar-nav navbar-right" id="main-menu-right">
 					<li class="dropdown" id="user-menu"><a id="user-dropdown"
 						class="dropdown-toggle" data-toggle="dropdown" href="#"><c:out
-								value="<%=currentUser.getUsername()%>"/><b
-							class="caret"></b></a>
+								value="<%=currentUser.getUsername()%>" /><b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<li><a id="help" href="/help.htm"><i
 									class="fa fa-question-circle"></i> Help</a></li>
-							<li><a href="/profile.htm"><i class="fa fa-user"></i>
+							<li><a href="/viewuser.htm?omfuId=<%=currentUser.getId()%>"><i class="fa fa-user"></i>
 									Profile</a></li>
 							<li><a href="/usersetting.htm"><i class="fa fa-cog"></i>
 									Settings</a></li>
@@ -113,8 +114,7 @@
 
 	<div class="left-nav">
 		<ul class="nav nav-pills nav-stacked margin-nav">
-			<li><a class="black" href="/"><i
-					class="fa fa-desktop fa-fw"></i>Dashboard</a></li>
+			<li><a class="black" href="/"><i class="fa fa-desktop fa-fw"></i>Dashboard</a></li>
 			<li class="divider"></li>
 			<li><a class="black" href="/advsearch.htm"><i
 					class="fa fa-search fa-fw"></i>Advanced Search</a></li>
@@ -158,7 +158,7 @@
 		<div>
 			<div class="row whitebg">
 				<div class="col-md-12 pull-right whitebg">
-										<div class="whitebg">
+					<div class="whitebg">
 						<div class="col-md-12">
 							<ul class="breadcrumb">
 								<li class="active">Users</li>
@@ -173,7 +173,7 @@
 								class="light-table-filter marginbottom0px form-control"
 								data-table="order-table"
 								placeholder="Filter by Name/Account#/Staff/Office" />
-								
+
 							<table class="order-table table">
 								<thead>
 									<tr class="graybg">
@@ -185,33 +185,26 @@
 									</tr>
 								</thead>
 								<tbody>
-								<%
-								OpenMFUserManager userManager = appContext.getUserManager();
-								Iterable<OpenMFUser> useriter = userManager.getAllUsers();
-								ArrayList<OpenMFUser> users= new ArrayList<OpenMFUser>();
-								try {
-									for (OpenMFUser user : useriter) {
-										users.add(user);
-									}
-								} catch (DatastoreNeedIndexException e) {
-									pageContext
-											.forward(configManager
-													.getErrorPageUrl(ConfigManager.ERROR_CODE_DATASTORE_INDEX_NOT_READY));
-								}
-								int count = 0;
-								for (OpenMFUser user : users) {
-									long omfuId = user.getId();
-								%>
-									<tr class="pointer-main" onclick="viewUserDetailsFn(<%=omfuId%>);">
-										<td class="pointer" onclick="viewUserDetailsFn(<%=omfuId%>);"><c:out value="<%=user.getUsername()%>" escapeXml="true" /></td>
-										<td class="pointer" onclick="viewUserDetailsFn(<%=omfuId%>);"><c:out value="<%=user.getEmail()%>" escapeXml="true" /></td>
-										<td class="pointer" onclick="viewUserDetailsFn(<%=omfuId%>);"><c:out value="<%=user.getMain_office()%>" escapeXml="true" /></td>
-										<td class="pointer" onclick="viewUserDetailsFn(<%=omfuId%>);"><c:out value="<%=user.getContact()%>" escapeXml="true" /></td>
-										<td class="pointer" onclick="viewUserDetailsFn(<%=omfuId%>);"><c:out value="<%=user.getRole()%>" escapeXml="true" /></td>
+									<%
+										int count = 0;
+										for (OpenMFUser user : omfusers) {
+											long omfuId = user.getId();
+									%>
+									<tr class="pointer-main"
+										onclick="viewUserDetailsFn(<%=omfuId%>);">
+										<td class="pointer" onclick="viewUserDetailsFn(<%=omfuId%>);"><c:out
+												value="<%=user.getUsername()%>" escapeXml="true" /></td>
+										<td class="pointer" onclick="viewUserDetailsFn(<%=omfuId%>);"><c:out
+												value="<%=user.getEmail()%>" escapeXml="true" /></td>
+										<td class="pointer" onclick="viewUserDetailsFn(<%=omfuId%>);"><c:out
+												value="<%=user.getMain_office()%>" escapeXml="true" /></td>
+										<td class="pointer" onclick="viewUserDetailsFn(<%=omfuId%>);"><c:out
+												value="<%=user.getContact()%>" escapeXml="true" /></td>
+										<td class="pointer" onclick="viewUserDetailsFn(<%=omfuId%>);"><c:out
+												value="<%=user.getRole()%>" escapeXml="true" /></td>
 									</tr>
 									<%
-								}
-									
+										}
 									%>
 								</tbody>
 							</table>

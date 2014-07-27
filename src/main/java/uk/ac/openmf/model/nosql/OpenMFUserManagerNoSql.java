@@ -4,7 +4,7 @@ import uk.ac.openmf.model.OpenMFModelException;
 import uk.ac.openmf.model.OpenMFUser;
 import uk.ac.openmf.model.OpenMFUserManager;
 import uk.ac.openmf.utils.OpenMFConstants;
-import uk.ac.openmf.utils.Utils;
+import uk.ac.openmf.utils.OMFUtils;
 
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -106,7 +106,7 @@ public class OpenMFUserManagerNoSql extends OpenMFEntityManagerNoSql<OpenMFUser>
 
 	@Override
 	public OpenMFUser getUser(Long userId) {
-		Utils.assertTrue(userId != null, "userId is null!");
+		OMFUtils.assertTrue(userId != null, "userId is null!");
 		return getEntity(createOpenMFUserKey(null, userId));
 	}
 

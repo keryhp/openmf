@@ -28,7 +28,7 @@ public class LoanAccountForm {
 	private String approvedby;
 	private String fieldofficer;
 	private String loanofficer;	
-	private String totalrepaymentamount;
+	private String totalrepaymentamount;//amount paid till date
 	private String interestrepaymentamount;
 	private String numpaymentsmissed;
 	private boolean defaulted;

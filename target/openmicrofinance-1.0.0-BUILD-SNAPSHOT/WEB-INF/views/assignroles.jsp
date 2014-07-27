@@ -12,11 +12,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-								<%
-	UserService userService = UserServiceFactory.getUserService();
-	AppContext appContext = AppContext.getAppContext();
-	ConfigManager configManager = appContext.getConfigManager();
-	OpenMFUser currentUser = appContext.getCurrentUser();
+<%
+	OpenMFUser currentUser = (OpenMFUser) request
+			.getAttribute("currentUser");
+	pageContext.setAttribute("currentUser", currentUser);
+	ArrayList<OpenMFRoles> roles = (ArrayList<OpenMFRoles>) request
+			.getAttribute("roles");
+	pageContext.setAttribute("roles", roles);
 %>
 
 
@@ -92,12 +94,12 @@
 				</ul>
 				<ul class="nav navbar-nav navbar-right" id="main-menu-right">
 					<li class="dropdown" id="user-menu"><a id="user-dropdown"
-						class="dropdown-toggle" data-toggle="dropdown" href="#"><c:out value="<%=currentUser.getUsername() %>"></c:out><b
-							class="caret"></b></a>
+						class="dropdown-toggle" data-toggle="dropdown" href="#"><c:out
+								value="<%=currentUser.getUsername()%>"></c:out><b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<li><a id="help" href="/help.htm"><i
 									class="fa fa-question-circle"></i> Help</a></li>
-							<li><a href="/profile.htm"><i class="fa fa-user"></i>
+							<li><a href="/viewuser.htm?omfuId=<%=currentUser.getId()%>"><i class="fa fa-user"></i>
 									Profile</a></li>
 							<li><a href="/usersetting.htm"><i class="fa fa-cog"></i>
 									Settings</a></li>
@@ -114,8 +116,7 @@
 
 	<div class="left-nav">
 		<ul class="nav nav-pills nav-stacked margin-nav">
-			<li><a class="black" href="/"><i
-					class="fa fa-desktop fa-fw"></i>Dashboard</a></li>
+			<li><a class="black" href="/"><i class="fa fa-desktop fa-fw"></i>Dashboard</a></li>
 			<li class="divider"></li>
 			<li><a class="black" href="/advsearch.htm"><i
 					class="fa fa-search fa-fw"></i>Advanced Search</a></li>
@@ -159,7 +160,7 @@
 		<div>
 			<div class="row whitebg">
 				<div class="col-md-12 pull-right whitebg">
-										<div class="whitebg">
+					<div class="whitebg">
 						<div class="col-md-12">
 							<ul class="breadcrumb">
 								<li class="active">Roles</li>
@@ -172,8 +173,7 @@
 							</div>
 							<input type="search"
 								class="light-table-filter marginbottom0px form-control"
-								data-table="order-table"
-								placeholder="Filter by Name" />
+								data-table="order-table" placeholder="Filter by Name" />
 							<table class="order-table table">
 								<thead>
 									<tr class="graybg">
@@ -182,28 +182,18 @@
 									</tr>
 								</thead>
 								<tbody>
-								<%
-								OpenMFRolesManager rolesManager = appContext.getRolesManager();
-								Iterable<OpenMFRoles> rolesiter = rolesManager.getAllRoles();
-								ArrayList<OpenMFRoles> roles = new ArrayList<OpenMFRoles>();
-								try {
-									for (OpenMFRoles role : rolesiter) {
-										roles.add(role);
-									}
-								} catch (DatastoreNeedIndexException e) {
-									pageContext
-											.forward(configManager
-													.getErrorPageUrl(ConfigManager.ERROR_CODE_DATASTORE_INDEX_NOT_READY));
-								}
-								int count = 0;
-								for (OpenMFRoles role : roles) {
-								%>
+									<%
+										int count = 0;
+										for (OpenMFRoles role : roles) {
+									%>
 									<tr class="pointer-main" onclick="viewRolesFn();">
-										<td class="pointer" onclick="viewRolesFn();"><c:out value="<%=role.getRoleId()%>" escapeXml="true" /></td>
-										<td class="pointer" onclick="viewRolesFn();"><c:out value="<%=role.getDescription()%>" escapeXml="true" /></td>
+										<td class="pointer" onclick="viewRolesFn();"><c:out
+												value="<%=role.getRoleId()%>" escapeXml="true" /></td>
+										<td class="pointer" onclick="viewRolesFn();"><c:out
+												value="<%=role.getDescription()%>" escapeXml="true" /></td>
 									</tr>
 									<%
-								}
+										}
 									%>
 								</tbody>
 							</table>

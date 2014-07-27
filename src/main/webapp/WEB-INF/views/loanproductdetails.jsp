@@ -13,15 +13,12 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%
-	UserService userService = UserServiceFactory.getUserService();
-	AppContext appContext = AppContext.getAppContext();
-	ConfigManager configManager = appContext.getConfigManager();
-	OpenMFUser currentUser = appContext.getCurrentUser();
+	OpenMFUser currentUser = (OpenMFUser) request
+			.getAttribute("currentUser");
+	pageContext.setAttribute("currentUser", currentUser);
 	OpenMFLoanProduct lpdetails = (OpenMFLoanProduct) request
 			.getAttribute("lpdetails");
-	if (currentUser != null) {
-		pageContext.setAttribute("lpdetails", lpdetails);
-	}
+	pageContext.setAttribute("lpdetails", lpdetails);
 %>
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB" xml:lang="en-GB">
@@ -101,7 +98,7 @@
 						<ul class="dropdown-menu">
 							<li><a id="help" href="/help.htm"><i
 									class="fa fa-question-circle"></i> Help</a></li>
-							<li><a href="/profile.htm"><i class="fa fa-user"></i>
+							<li><a href="/viewuser.htm?omfuId=<%=currentUser.getId()%>"><i class="fa fa-user"></i>
 									Profile</a></li>
 							<li><a href="/usersetting.htm"><i class="fa fa-cog"></i>
 									Settings</a></li>

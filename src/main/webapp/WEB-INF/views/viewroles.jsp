@@ -12,11 +12,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-								<%
-	UserService userService = UserServiceFactory.getUserService();
-	AppContext appContext = AppContext.getAppContext();
-	ConfigManager configManager = appContext.getConfigManager();
-	OpenMFUser currentUser = appContext.getCurrentUser();
+<%
+								OpenMFUser currentUser = (OpenMFUser) request
+								.getAttribute("currentUser");
+						pageContext.setAttribute("currentUser", currentUser);
 %>
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB" xml:lang="en-GB">
@@ -91,12 +90,12 @@
 				</ul>
 				<ul class="nav navbar-nav navbar-right" id="main-menu-right">
 					<li class="dropdown" id="user-menu"><a id="user-dropdown"
-						class="dropdown-toggle" data-toggle="dropdown" href="#"><c:out value="<%=currentUser.getUsername() %>"></c:out><b
-							class="caret"></b></a>
+						class="dropdown-toggle" data-toggle="dropdown" href="#"><c:out
+								value="<%=currentUser.getUsername() %>"></c:out><b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<li><a id="help" href="/help.htm"><i
 									class="fa fa-question-circle"></i> Help</a></li>
-							<li><a href="/profile.htm"><i class="fa fa-user"></i>
+							<li><a href="/viewuser.htm?omfuId=<%=currentUser.getId()%>"><i class="fa fa-user"></i>
 									Profile</a></li>
 							<li><a href="/usersetting.htm"><i class="fa fa-cog"></i>
 									Settings</a></li>

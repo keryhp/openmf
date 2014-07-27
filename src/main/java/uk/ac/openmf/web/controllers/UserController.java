@@ -17,6 +17,7 @@ import uk.ac.openmf.model.OpenMFUserManager;
 import uk.ac.openmf.users.GaeUser;
 import uk.ac.openmf.utils.PasswordHash;
 import uk.ac.openmf.utils.ServletUtils;
+import uk.ac.openmf.utils.OMFUtils;
 import uk.ac.openmf.web.AppContext;
 import uk.ac.openmf.web.forms.UserForm;
 
@@ -28,12 +29,15 @@ public class UserController {
 
 
 	@RequestMapping(value = "/users.htm", method= RequestMethod.GET)
-	public String users() {
+	public String users(HttpServletRequest req) {
+		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
+		req.setAttribute("omfusers", OMFUtils.getUsersList());
 		return "users";
 	}
 
 	@RequestMapping(value = "/viewuser.htm", method= RequestMethod.GET)
 	public String viewuser(HttpServletRequest req) {
+		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		String omfuId = req.getParameter("omfuId");
 		req.setAttribute("omfuId", omfuId);
 		OpenMFUser omfuser = null;
@@ -45,7 +49,9 @@ public class UserController {
 	}
 
 	@RequestMapping(value="/createuser.htm", method= RequestMethod.GET)
-	public UserForm userForm() {
+	public UserForm userForm(HttpServletRequest req) {
+		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
+		req.setAttribute("omfusers", OMFUtils.getUsersList());
 		return new UserForm();
 	}
 

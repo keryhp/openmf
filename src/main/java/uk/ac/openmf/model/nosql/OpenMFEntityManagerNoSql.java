@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 import uk.ac.openmf.model.OpenMFClient;
 import uk.ac.openmf.model.OpenMFEntity;
 import uk.ac.openmf.model.OpenMFEntityManager;
-import uk.ac.openmf.utils.Utils;
+import uk.ac.openmf.utils.OMFUtils;
 
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -53,7 +53,7 @@ public abstract class OpenMFEntityManagerNoSql<T extends OpenMFEntity> implement
 
 	@Override
 	public T deleteEntity(T demoEntity) {
-		Utils.assertTrue(demoEntity != null, "entity cannot be null");
+		OMFUtils.assertTrue(demoEntity != null, "entity cannot be null");
 		OpenMFEntityNoSql entityNoSql = downCastEntity(demoEntity);
 		DatastoreService ds = getDatastoreService();
 		Transaction txn = ds.beginTransaction();
@@ -76,7 +76,7 @@ public abstract class OpenMFEntityManagerNoSql<T extends OpenMFEntity> implement
 
 	@Override
 	public T upsertEntity(T esEntity) {
-		Utils.assertTrue(esEntity != null, "demoEntity cannot be null");
+		OMFUtils.assertTrue(esEntity != null, "demoEntity cannot be null");
 		DatastoreService ds = getDatastoreService();
 		MemcacheService memcache = MemcacheServiceFactory.getMemcacheService();
 		OpenMFEntityNoSql entityNoSql = downCastEntity(esEntity);
@@ -186,7 +186,7 @@ public abstract class OpenMFEntityManagerNoSql<T extends OpenMFEntity> implement
 	 * @return the downcast NoSQL base entity.
 	 */
 	private OpenMFEntityNoSql downCastEntity(T demoEntity) {
-		Utils.assertTrue(
+		OMFUtils.assertTrue(
 				demoEntity instanceof OpenMFEntityNoSql, "entity has to be a valid NoSQL entity");
 		OpenMFEntityNoSql entityNoSql = (OpenMFEntityNoSql) demoEntity;
 		return entityNoSql;

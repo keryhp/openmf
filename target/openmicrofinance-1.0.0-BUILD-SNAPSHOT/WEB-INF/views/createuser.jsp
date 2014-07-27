@@ -12,11 +12,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-								<%
-	UserService userService = UserServiceFactory.getUserService();
-	AppContext appContext = AppContext.getAppContext();
-	ConfigManager configManager = appContext.getConfigManager();
-	OpenMFUser currentUser = appContext.getCurrentUser();
+<%
+	OpenMFUser currentUser = (OpenMFUser) request
+			.getAttribute("currentUser");
+	pageContext.setAttribute("currentUser", currentUser);
+	ArrayList<OpenMFUser> omfusers = (ArrayList<OpenMFUser>) request
+			.getAttribute("omfusers");
+	pageContext.setAttribute("omfusers", omfusers);
 %>
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB" xml:lang="en-GB">
@@ -91,12 +93,12 @@
 				</ul>
 				<ul class="nav navbar-nav navbar-right" id="main-menu-right">
 					<li class="dropdown" id="user-menu"><a id="user-dropdown"
-						class="dropdown-toggle" data-toggle="dropdown" href="#"><c:out value="<%=currentUser.getUsername() %>"></c:out><b
-							class="caret"></b></a>
+						class="dropdown-toggle" data-toggle="dropdown" href="#"><c:out
+								value="<%=currentUser.getUsername()%>"></c:out><b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<li><a id="help" href="/help.htm"><i
 									class="fa fa-question-circle"></i> Help</a></li>
-							<li><a href="/profile.htm"><i class="fa fa-user"></i>
+							<li><a href="/viewuser.htm?omfuId=<%=currentUser.getId()%>"><i class="fa fa-user"></i>
 									Profile</a></li>
 							<li><a href="/usersetting.htm"><i class="fa fa-cog"></i>
 									Settings</a></li>
@@ -206,17 +208,6 @@
 											</div>
 										</div>
 									</div>
-									<!-- 									<div>
-										<div class="form-group">
-											<label class="control-label col-sm-2" for="email1">Input
-												Email</label>
-
-											<div class="col-sm-3">
-												<input type="email" id="email1" name="email1"
-													class="form-control" />
-											</div>
-										</div>
-									</div> -->
 								</div>
 								<div>
 									<div class="form-group">
@@ -225,11 +216,11 @@
 										</form:label>
 
 										<div class="col-sm-3">
-											<form:input path="contact" class="form-control" />
+											<form:input type="number" path="contact" class="form-control" />
 										</div>
 									</div>
 								</div>
-																<div>
+								<div>
 									<div class="form-group">
 										<form:label class="control-label col-sm-2" path="address">Address<span
 												class="required">*</span>
@@ -285,12 +276,18 @@
 									<form:label class="control-label col-sm-2" path="supervisor">Input Staff</form:label>
 
 									<div class="col-sm-3">
-										<form:select class="form-control chosen-select"
-											path="supervisor" tabindex="2">
-											<form:option value="none" selected="selected">None</form:option>
-											<!-- <form:option value="staff2">Staff two</form:option>
-											<form:option value="staff3">Staff three</form:option>
-											<form:option value="staff4">Staff four</form:option> -->
+										<form:select data-placeholder="Choose a Supervisor"
+											class="form-control chosen-select" path="supervisor"
+											tabindex="2">
+											<%
+												for (OpenMFUser omfuser : omfusers) {
+											%>
+											<form:option value="<%=omfuser.getUsername()%>">
+												<c:out value="<%=omfuser.getUsername()%>" escapeXml="true" />
+											</form:option>
+											<%
+												}
+											%>
 										</form:select>
 									</div>
 								</div>

@@ -13,10 +13,12 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%
-	UserService userService = UserServiceFactory.getUserService();
-	AppContext appContext = AppContext.getAppContext();
-	ConfigManager configManager = appContext.getConfigManager();
-	OpenMFUser currentUser = appContext.getCurrentUser();
+	OpenMFUser currentUser = (OpenMFUser) request
+			.getAttribute("currentUser");
+	pageContext.setAttribute("currentUser", currentUser);
+	ArrayList<OpenMFLoanProduct> loanProducts = (ArrayList<OpenMFLoanProduct>) request
+			.getAttribute("loanProducts");
+	pageContext.setAttribute("loanProducts", loanProducts);
 %>
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB" xml:lang="en-GB">
@@ -96,7 +98,7 @@
 						<ul class="dropdown-menu">
 							<li><a id="help" href="/help.htm"><i
 									class="fa fa-question-circle"></i> Help</a></li>
-							<li><a href="/profile.htm"><i class="fa fa-user"></i>
+							<li><a href="/viewuser.htm?omfuId=<%=currentUser.getId()%>"><i class="fa fa-user"></i>
 									Profile</a></li>
 							<li><a href="/usersetting.htm"><i class="fa fa-cog"></i>
 									Settings</a></li>
@@ -182,39 +184,31 @@
 								</thead>
 								<tbody>
 									<%
-										OpenMFLoanProductManager loanProductManager = appContext
-												.getLoanProductManager();
-										Iterable<OpenMFLoanProduct> loanProductiter = loanProductManager
-												.getAllLoanProduct();
-										ArrayList<OpenMFLoanProduct> loanProducts = new ArrayList<OpenMFLoanProduct>();
-										try {
-											for (OpenMFLoanProduct loanProduct : loanProductiter) {
-												loanProducts.add(loanProduct);
-											}
-										} catch (DatastoreNeedIndexException e) {
-											pageContext
-													.forward(configManager
-															.getErrorPageUrl(ConfigManager.ERROR_CODE_DATASTORE_INDEX_NOT_READY));
-										}
 										int count = 0;
 										for (OpenMFLoanProduct loanProduct : loanProducts) {
 											long lpId = loanProduct.getId();
 									%>
-									<tr class="pointer-main" onclick="viewLoanDetailsFn(<%=lpId%>);">
+									<tr class="pointer-main"
+										onclick="viewLoanDetailsFn(<%=lpId%>);">
 										<td class="pointer" onclick="viewLoanDetailsFn(<%=lpId%>);"><c:out
 												value="<%=loanProduct.getProductname()%>" escapeXml="true"></c:out></td>
 										<td class="pointer" onclick="viewLoanDetailsFn(<%=lpId%>);"><c:out
 												value="<%=loanProduct.getLoancode()%>" escapeXml="true"></c:out></td>
 										<td class="pointer" onclick="viewLoanDetailsFn(<%=lpId%>);"><c:out
 												value="<%=loanProduct.getClosedate()%>" escapeXml="true"></c:out></td>
-										<%if(loanProduct.isActive()){
-											%>
-												<td class="pointer" onclick="viewLoanDetailsFn(<%=lpId%>);"><i
-													class="fa fa-circle cstatusactive"></i>Active</td>
-											<% }else{ %>
-												<td class="pointer" onclick="viewLoanDetailsFn(<%=lpId%>);"><i
-													class="fa fa-stop cstatusprogress"></i>Closed or Stopped</td>
-											<% } %>
+										<%
+											if (loanProduct.isActive()) {
+										%>
+										<td class="pointer" onclick="viewLoanDetailsFn(<%=lpId%>);"><i
+											class="fa fa-circle cstatusactive"></i>Active</td>
+										<%
+											} else {
+										%>
+										<td class="pointer" onclick="viewLoanDetailsFn(<%=lpId%>);"><i
+											class="fa fa-stop cstatusprogress"></i>Closed or Stopped</td>
+										<%
+											}
+										%>
 									</tr>
 									<%
 										}

@@ -18,6 +18,7 @@ import uk.ac.openmf.users.GaeUser;
 import uk.ac.openmf.utils.GenerateAccountNumber;
 import uk.ac.openmf.utils.OpenMFConstants;
 import uk.ac.openmf.utils.ServletUtils;
+import uk.ac.openmf.utils.OMFUtils;
 import uk.ac.openmf.web.AppContext;
 import uk.ac.openmf.web.forms.ClientForm;
 
@@ -30,12 +31,15 @@ import com.google.appengine.api.datastore.DatastoreNeedIndexException;
 public class ClientController {
 
 	@RequestMapping(value = "/clients.htm", method= RequestMethod.GET)
-	public String clients() {
+	public String clients(HttpServletRequest req) {
+		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
+		req.setAttribute("clients", OMFUtils.getAllClientsList());
 		return "clients";
 	}
 
 	@RequestMapping(value = "/viewclient.htm", method= RequestMethod.GET)
 	public String viewClient(HttpServletRequest req) {
+		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		String clientId = req.getParameter("clientId");
 		req.setAttribute("eventId", clientId);
 		OpenMFClient client = null;
@@ -43,23 +47,15 @@ public class ClientController {
 			client = AppContext.getAppContext().getClientManager().getClient(ServletUtils.validateEventId(clientId));
 		}
 		req.setAttribute("client", client);    
-		
-		Iterable<OpenMFLoanAccount> loanAccountiter = AppContext.getAppContext().getLoanAccountManager().getAllLoanAccountsByClient(clientId);
-		ArrayList<OpenMFLoanAccount> loanAccounts = new ArrayList<OpenMFLoanAccount>();
-		try {
-			for (OpenMFLoanAccount loanAccount : loanAccountiter) {
-				loanAccounts.add(loanAccount);
-			}
-		} catch (DatastoreNeedIndexException e) {
-			//log the error
-		}
-		req.setAttribute("loanAccounts", loanAccounts);
+		req.setAttribute("loanAccounts", OMFUtils.getLoanAccountsByClientList(clientId));
 		
 		return "viewclient";
 	}
 
 	@RequestMapping(value="/createclient.htm", method= RequestMethod.GET)
-	public ClientForm clientForm() {
+	public ClientForm clientForm(HttpServletRequest req) {
+		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
+		req.setAttribute("omfusers", OMFUtils.getUsersList());
 		return new ClientForm();
 	}
 

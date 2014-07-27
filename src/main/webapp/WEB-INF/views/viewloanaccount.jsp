@@ -13,14 +13,17 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%
-	UserService userService = UserServiceFactory.getUserService();
-	AppContext appContext = AppContext.getAppContext();
-	ConfigManager configManager = appContext.getConfigManager();
-	OpenMFUser currentUser = appContext.getCurrentUser();
+	OpenMFUser currentUser = (OpenMFUser) request
+			.getAttribute("currentUser");
+	pageContext.setAttribute("currentUser", currentUser);
 	OpenMFLoanAccount lnaccdetails = (OpenMFLoanAccount) request
 			.getAttribute("lnaccdetails");
 	OpenMFClient client = (OpenMFClient) request.getAttribute("client");
-	OpenMFLoanProduct loanproduct = (OpenMFLoanProduct) request.getAttribute("loanproduct");
+	OpenMFLoanProduct loanproduct = (OpenMFLoanProduct) request
+			.getAttribute("loanproduct");
+	ArrayList<OpenMFLoanRepayment> repaymentschedules = (ArrayList<OpenMFLoanRepayment>) request
+			.getAttribute("repaymentschedules");
+	pageContext.setAttribute("repaymentschedules", repaymentschedules);
 %>
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB" xml:lang="en-GB">
@@ -100,7 +103,7 @@
 						<ul class="dropdown-menu">
 							<li><a id="help" href="/help.htm"><i
 									class="fa fa-question-circle"></i> Help</a></li>
-							<li><a href="/profile.htm"><i class="fa fa-user"></i>
+							<li><a href="/viewuser.htm?omfuId=<%=currentUser.getId()%>"><i class="fa fa-user"></i>
 									Profile</a></li>
 							<li><a href="/usersetting.htm"><i class="fa fa-cog"></i>
 									Settings</a></li>
@@ -173,8 +176,11 @@
 
 								<div class="span gray-head" style="margin-left: 0%;">
 									<span style="margin-left: 10px; font-size: 20px"> <strong>
-											<i class="fa fa-stop cstatuscode"></i>Loan Acc# <%=lnaccdetails.getLoanaccountnumber()%>
-											| <%=lnaccdetails.getLoancode()%> | Client Acc# <%=client.getAccountNumber()%>
+											<i class="fa fa-stop cstatuscode"></i>Loan Acc# <c:out
+												value="${lnaccdetails.loanaccountnumber}" escapeXml="true"></c:out>
+											| <c:out value="${lnaccdetails.loancode}" escapeXml="true"></c:out>
+											| Client Acc# <c:out value="${client.accountNumber}"
+												escapeXml="true"></c:out>
 									</strong>
 									</span>
 								</div>
@@ -203,7 +209,8 @@
 											<tbody>
 												<tr>
 													<th class="table-bold-loan">Disbursement Date</th>
-													<td><span class="padded-td"><%=lnaccdetails.getDisbursedon()%><span
+													<td><span class="padded-td"><c:out
+																value="${lnaccdetails.disbursedon}" escapeXml="true"></c:out><span
 															class="hide">Not Available</span></span></td>
 												</tr>
 												<tr>
@@ -211,13 +218,23 @@
 													<td><span class="padded-td">GBP</span></td>
 												</tr>
 												<tr>
-													<th class="table-bold-loan">Loan Supervisor/Manager</th>
-													<td><span class="padded-td"><span class="hide">Unassigned</span><%=lnaccdetails.getLoanofficer()%><span> <a onclick="unassignloansupervisor(<%=lnaccdetails.getId()%>)"><i class="fa fa-times"></i></a>
+													<th class="table-bold-loan">Loan Supervisor</th>
+													<td><span class="padded-td"><span class="hide">Unassigned</span>
+															<c:out value="${lnaccdetails.loanofficer}"
+																escapeXml="true"></c:out><span> <a
+																onclick="unassignloansupervisor(<%=lnaccdetails.getId()%>)"><i
+																	class="fa fa-times"></i></a>
 														</span> </span></td>
 												</tr>
 												<tr>
+													<th class="table-bold-loan">Field Officer</th>
+													<td><span class="padded-td"><c:out
+																value="${client.supervisor}" escapeXml="true"></c:out></span></td>
+												</tr>
+												<tr>
 													<th class="table-bold-loan">ExternalId</th>
-													<td><span class="padded-td"><%=client.getExternalId() %></span></td>
+													<td><span class="padded-td"><c:out
+																value="${client.externalId}" escapeXml="true"></c:out></span></td>
 												</tr>
 											</tbody>
 										</table>
@@ -227,21 +244,31 @@
 											<tbody>
 												<tr>
 													<th class="table-bold-loan">Loan Purpose</th>
-													<td><span class="padded-td"><%=lnaccdetails.getLoanpurpose() %><span
+													<td><span class="padded-td"><c:out
+																value="${lnaccdetails.loanpurpose}" escapeXml="true"></c:out><span
 															class="hide">Not provided</span></span></td>
 												</tr>
 												<tr>
 													<th class="table-bold-loan">Approved Amount</th>
-													<td><span class="padded-td"><%=lnaccdetails.getApprovedamount() %></span></td>
+													<td><span class="padded-td"><c:out
+																value="${lnaccdetails.approvedamount}" escapeXml="true"></c:out></span></td>
 												</tr>
 												<tr>
 													<th class="table-bold-loan">Disburse Amount</th>
-													<td><span class="padded-td"><%=lnaccdetails.getDisbursedamount() %></span></td>
+													<td><span class="padded-td"><c:out
+																value="${lnaccdetails.disbursedamount}" escapeXml="true"></c:out></span></td>
 												</tr>
 												<tr>
 													<th class="table-bold-loan">Arrears By</th>
-													<td><span class="padded-td"><%=lnaccdetails.getArrearsby() %><span
+													<td><span class="padded-td"><c:out
+																value="${lnaccdetails.arrearsby}" escapeXml="true"></c:out><span
 															class="hide">Not Provided</span></span></td>
+												</tr>
+												<tr>
+													<th class="table-bold-loan">Frequency</th>
+													<td><span class="padded-td"><c:out
+																value="${loanproduct.repaymentfrequency}"
+																escapeXml="true"></c:out></span></td>
 												</tr>
 											</tbody>
 										</table>
@@ -279,22 +306,26 @@
 														<tbody>
 															<tr>
 																<td>Repayment Strategy</td>
-																<td><span class="padded-td">Manual collection and submission by field officer</span></td>
+																<td><span class="padded-td">Manual
+																		collection and submission by field officer</span></td>
 															</tr>
 															<tr>
 																<td>Total Number of Repayments</td>
-																<td><span class="padded-td"><%=lnaccdetails.getTotalnumrepayments() %></span>
-																</td>
+																<td><span class="padded-td"><c:out
+																			value="${lnaccdetails.totalnumrepayments}"
+																			escapeXml="true"></c:out></span></td>
 															</tr>
 															<tr>
 																<td>Number of Repayments made</td>
-																<td><span class="padded-td"><%=lnaccdetails.getNumrepaymentsmade() %></span>
-																</td>
+																<td><span class="padded-td"><c:out
+																			value="${lnaccdetails.numrepaymentsmade}"
+																			escapeXml="true"></c:out></span></td>
 															</tr>
 															<tr>
 																<td>Number of Repayments missed</td>
-																<td><span class="padded-td"><%=lnaccdetails.getNumpaymentsmissed() %></span>
-																</td>
+																<td><span class="padded-td"><c:out
+																			value="${lnaccdetails.numpaymentsmissed}"
+																			escapeXml="true"></c:out></span></td>
 															</tr>
 															<tr>
 																<td>Amortization</td>
@@ -303,11 +334,14 @@
 															</tr>
 															<tr>
 																<td>% Rate of Interest</td>
-																<td><span class="padded-td"><%=loanproduct.getRateofinterest()%> % per annum | Flat</span></td>
+																<td><span class="padded-td"><c:out
+																			value="${loanproduct.rateofinterest}"
+																			escapeXml="true"></c:out> % per annum | Flat</span></td>
 															</tr>
 															<tr>
 																<td>Fund source</td>
-																<td><span class="padded-td">OpenMF Institution</span></td>
+																<td><span class="padded-td">OpenMF
+																		Institution</span></td>
 															</tr>
 															<tr>
 																<td>Interest Calculation Period</td>
@@ -316,15 +350,18 @@
 															</tr>
 															<tr>
 																<td>Submitted on</td>
-																<td><span class="padded-td"><%=lnaccdetails.getSubmittedon() %></span></td>
+																<td><span class="padded-td"><c:out
+																			value="${lnaccdetails.submittedon}" escapeXml="true"></c:out></span></td>
 															</tr>
 															<tr>
 																<td>Approved on</td>
-																<td><span class="padded-td"><%=lnaccdetails.getApprovedon()%></span></td>
+																<td><span class="padded-td"><c:out
+																			value="${lnaccdetails.approvedon}" escapeXml="true"></c:out></span></td>
 															</tr>
 															<tr>
 																<td>Disbursed on</td>
-																<td><span class="padded-td"><%=lnaccdetails.getDisbursedon()%></span></td>
+																<td><span class="padded-td"><c:out
+																			value="${lnaccdetails.disbursedon}" escapeXml="true"></c:out></span></td>
 															</tr>
 														</tbody>
 													</table>
@@ -343,149 +380,86 @@
 															</tr>
 															<tr>
 																<th scope="col">#</th>
-																<th scope="col">Days</th>
-																<th scope="col">Date</th>
+																<!-- <th scope="col">Days</th> -->
+																<th scope="col">Scheduled Date</th>
 																<th scope="col">Paid Date</th>
 																<th scope="col"></th>
 																<th scope="col">Principal due</th>
-																<th scope="col">Balance of Loan</th>
+																<!-- <th scope="col">Balance of Loan</th> -->
 																<th scope="col">Interest</th>
 																<th scope="col">Fees</th>
 																<th scope="col">Penalties</th>
 																<th scope="col">Due</th>
 																<th scope="col">Paid</th>
-																<th scope="col">In Advance</th>
+																<!-- <th scope="col">In Advance</th>
 																<th scope="col">Late</th>
-																<th scope="col">Waived</th>
+																<th scope="col">Waived</th> -->
 																<th scope="col">Outstanding</th>
 															</tr>
 														</thead>
 														<tbody>
+															<%
+																for (OpenMFLoanRepayment schedule : repaymentschedules) {
+																	if (schedule.isActive()) {
+															%>
 															<tr>
-																<td scope="row">1</td>
-																<td>7</td>
-																<td>dd/mm/yyyy</td>
-																<td>dd/mm/yyyy</td>
+																<td scope="row"><c:out
+																		value="<%=schedule.getSerialnumber()%>"
+																		escapeXml="true"></c:out></td>
+																<td><c:out value="<%=schedule.getScheduledate()%>"
+																		escapeXml="true"></c:out></td>
+																<td><c:out value="<%=schedule.getPaiddate()%>"
+																		escapeXml="true"></c:out></td>
 																<td>
+																	<!-- paid -->
+																	<%
+																	if(schedule.isPaid()){
+																	%>
 																	<div>
-																		<i class="fa fa-check fa-white"></i>
+																		<i class="fa fa-check fa-green"></i>
 																	</div>
-																</td>
-																<td>1000.00</td>
-																<td>500.00</td>
-																<td>100.00</td>
-																<td>0.00</td>
-																<td>0.00</td>
-																<td>700.00</td>
-																<td>0.00</td>
-																<td>0.00</td>
-																<td>0.00</td>
-																<td>0.00</td>
-																<td>700.00</td>
-															</tr>
-															<tr>
-																<td scope="row">1</td>
-																<td>7</td>
-																<td>dd/mm/yyyy</td>
-																<td>dd/mm/yyyy</td>
-																<td>
+																	<%
+																	}else{
+																	%>
 																	<div>
-																		<i class="fa fa-check fa-white"></i>
+																		<i class="fa fa-times fa-red"></i>
 																	</div>
+																	<%
+																	}
+																	%>
+																	
 																</td>
-																<td>1000.00</td>
-																<td>500.00</td>
-																<td>100.00</td>
-																<td>0.00</td>
-																<td>0.00</td>
-																<td>700.00</td>
-																<td>0.00</td>
-																<td>0.00</td>
-																<td>0.00</td>
-																<td>0.00</td>
-																<td>700.00</td>
+																<td><c:out value="<%=schedule.getPrincipaldue()%>"
+																		escapeXml="true"></c:out></td>
+																<td><c:out
+																		value="<%=schedule.getInterestamount()%>"
+																		escapeXml="true"></c:out></td>
+																<td><c:out value="<%=schedule.getFees()%>"
+																		escapeXml="true"></c:out></td>
+																<td><c:out value="<%=schedule.getPenalties()%>"
+																		escapeXml="true"></c:out></td>
+																<td><c:out value="<%=schedule.getDueamount()%>"
+																		escapeXml="true"></c:out></td>
+																<td><c:out value="<%=schedule.getPaidamount()%>"
+																		escapeXml="true"></c:out></td>
+																<td><c:out
+																		value="<%=schedule.getBalanceoutstandingamount()%>"
+																		escapeXml="true"></c:out></td>
 															</tr>
-															<tr>
-																<td scope="row">1</td>
-																<td>7</td>
-																<td>dd/mm/yyyy</td>
-																<td>dd/mm/yyyy</td>
-																<td>
-																	<div>
-																		<i class="fa fa-check fa-white"></i>
-																	</div>
-																</td>
-																<td>1000.00</td>
-																<td>500.00</td>
-																<td>100.00</td>
-																<td>0.00</td>
-																<td>0.00</td>
-																<td>700.00</td>
-																<td>0.00</td>
-																<td>0.00</td>
-																<td>0.00</td>
-																<td>0.00</td>
-																<td>700.00</td>
-															</tr>
-															<tr>
-																<td scope="row">1</td>
-																<td>7</td>
-																<td>dd/mm/yyyy</td>
-																<td>dd/mm/yyyy</td>
-																<td>
-																	<div>
-																		<i class="fa fa-check fa-white"></i>
-																	</div>
-																</td>
-																<td>1000.00</td>
-																<td>500.00</td>
-																<td>100.00</td>
-																<td>0.00</td>
-																<td>0.00</td>
-																<td>700.00</td>
-																<td>0.00</td>
-																<td>0.00</td>
-																<td>0.00</td>
-																<td>0.00</td>
-																<td>700.00</td>
-															</tr>
-															<tr>
-																<td scope="row">1</td>
-																<td>7</td>
-																<td>dd/mm/yyyy</td>
-																<td>dd/mm/yyyy</td>
-																<td>
-																	<div>
-																		<i class="fa fa-check fa-white"></i>
-																	</div>
-																</td>
-																<td>1000.00</td>
-																<td>500.00</td>
-																<td>100.00</td>
-																<td>0.00</td>
-																<td>0.00</td>
-																<td>700.00</td>
-																<td>0.00</td>
-																<td>0.00</td>
-																<td>0.00</td>
-																<td>0.00</td>
-																<td>700.00</td>
-															</tr>
+															<%
+																}
+																}
+															%>
 														</tbody>
 														<tfoot class="ui-widget-header">
 															<tr>
 																<th></th>
-																<th>14</th>
 																<th colspan="3">Total</th>
+																<th>1000.00</th>
 
 																<th>1000.00</th>
-																<th></th>
-																<th>1000.00</th>
-																<th>0.00</th>
 																<th>0.00</th>
 																<th>1000.00</th>
-																<th>0.00</th>
-																<th>0.00</th>
 																<th>0.00</th>
 																<th>0.00</th>
 																<th>1000.00</th>

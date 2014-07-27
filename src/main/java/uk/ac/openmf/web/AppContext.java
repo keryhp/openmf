@@ -6,6 +6,7 @@ import uk.ac.openmf.model.OpenMFClientManager;
 import uk.ac.openmf.model.OpenMFEntityManagerFactory;
 import uk.ac.openmf.model.OpenMFLoanAccountManager;
 import uk.ac.openmf.model.OpenMFLoanProductManager;
+import uk.ac.openmf.model.OpenMFLoanRepaymentManager;
 import uk.ac.openmf.model.OpenMFRolesManager;
 import uk.ac.openmf.model.OpenMFSavingsProductManager;
 import uk.ac.openmf.model.OpenMFUser;
@@ -83,6 +84,10 @@ public class AppContext {
 
 	public OpenMFLoanAccountManager getLoanAccountManager() {
 		return entityManagerFactory.getLoanAccountManager();
+	}
+	
+	public OpenMFLoanRepaymentManager getLoanRepaymentManager() {
+		return entityManagerFactory.getLoanRepaymentManager();
 	}
 
 

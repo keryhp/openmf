@@ -13,10 +13,9 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%
-	UserService userService = UserServiceFactory.getUserService();
-	AppContext appContext = AppContext.getAppContext();
-	ConfigManager configManager = appContext.getConfigManager();
-	OpenMFUser currentUser = appContext.getCurrentUser();
+	OpenMFUser currentUser = (OpenMFUser) request
+			.getAttribute("currentUser");
+	pageContext.setAttribute("currentUser", currentUser);
 %>
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB" xml:lang="en-GB">
@@ -100,7 +99,7 @@
 						<ul class="dropdown-menu">
 							<li><a id="help" href="/help.htm"><i
 									class="fa fa-question-circle"></i> Help</a></li>
-							<li><a href="/profile.htm"><i class="fa fa-user"></i>
+							<li><a href="/viewuser.htm?omfuId=<%=currentUser.getId()%>"><i class="fa fa-user"></i>
 									Profile</a></li>
 							<li><a href="/usersetting.htm"><i class="fa fa-cog"></i>
 									Settings</a></li>
@@ -188,14 +187,6 @@
 											<form:input type="text" path="loancode" class="form-control"
 												maxlength="4" />
 										</div>
-										<form:label class="control-label col-sm-2" path="loantype">Type</form:label>
-										<div class="col-sm-2">
-											<form:select data-placeholder="Choose a Type"
-												class="form-control chosen-select" path="loantype" tabindex="2">
-												<form:option value="SHORTTERM" selected="selected">Short term</form:option>
-												<form:option value="REPETITIVE">Repetitive</form:option>
-											</form:select>
-										</div>
 									</div>
 									<div class="form-group">
 										<form:label class="control-label col-sm-2" path="description">Description</form:label>
@@ -216,7 +207,16 @@
 									<div class="form-group">
 										<form:label class="control-label col-sm-2" path="loanamount">Loan Amount in GBP</form:label>
 										<div class="col-sm-2">
-											<form:input rows="2" class="form-control" path="loanamount" />
+											<form:input rows="2" type="number" class="form-control" path="loanamount" />
+										</div>
+										<form:label class="control-label col-sm-2" path="loantype">Type</form:label>
+										<div class="col-sm-2">
+											<form:select data-placeholder="Choose a Type"
+												class="form-control chosen-select" path="loantype"
+												tabindex="2">
+												<form:option value="SHORTTERM" selected="selected">Short term</form:option>
+												<form:option value="REPETITIVE">Repetitive</form:option>
+											</form:select>
 										</div>
 									</div>
 									<div class="form-group">
@@ -255,7 +255,7 @@
 												class="required">*</span>
 										</form:label>
 										<div class="col-sm-2">
-											<form:input type="text" path="repaymentperiod"
+											<form:input type="number" path="repaymentperiod"
 												class="form-control" />
 										</div>
 										<form:label class="control-label col-sm-2"
@@ -264,11 +264,12 @@
 										</form:label>
 										<div class="col-sm-2">
 											<form:select data-placeholder="Choose a frequency"
-												class="form-control chosen-select" path="repaymentfrequency" tabindex="2">
-												<form:option value="WEEKLY" selected="selected">Weekly</form:option>
-												<form:option value="FORTNIGHT">Fortnight</form:option>
-												<form:option value="MONTHLY">Monthly</form:option>
-												<form:option value="THREE_MONTH">Three Months</form:option>												
+												class="form-control chosen-select" path="repaymentfrequency"
+												tabindex="2">
+												<form:option value="7" selected="selected">Weekly</form:option>
+												<form:option value="15">Fortnight</form:option>
+												<form:option value="30">Monthly</form:option>
+												<form:option value="90">Three Months</form:option>
 											</form:select>
 										</div>
 									</div>
@@ -281,7 +282,7 @@
 											<p>Same as repayment period</p>
 										</div>
 										<form:label class="control-label col-sm-2"
-											path="rateofinterest">% Rate of Interest<span
+											path="rateofinterest" type="number">% Rate of Interest<span
 												class="required">*</span>
 										</form:label>
 										<div class="col-sm-2">
@@ -300,9 +301,8 @@
 											<form:select data-placeholder="Choose a charge"
 												class="form-control chosen-select" path="chargesapplicable"
 												tabindex="2">
-												<form:option value="headoffice" selected="selected">Late
+												<form:option value="1" selected="selected">Late
 													Payment charges @ 1% per installment</form:option>
-												<!-- <option value="branch1">other charges 2</option> -->
 											</form:select>
 										</div>
 										<form:label class="control-label col-sm-2" path="active">Active ?</form:label>

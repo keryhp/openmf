@@ -13,6 +13,7 @@ import uk.ac.openmf.model.OpenMFSavingsProduct;
 import uk.ac.openmf.model.OpenMFSavingsProductManager;
 import uk.ac.openmf.users.GaeUser;
 import uk.ac.openmf.utils.ServletUtils;
+import uk.ac.openmf.utils.OMFUtils;
 import uk.ac.openmf.web.AppContext;
 import uk.ac.openmf.web.forms.SavingsProductForm;
 
@@ -24,6 +25,7 @@ public class SavingsProductController {
 
 	@RequestMapping(value = "/savingsproductdetails.htm", method= RequestMethod.GET)
 	public String savingsproductdetails(HttpServletRequest req) {
+		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		String spId = req.getParameter("spId");
 		req.setAttribute("spId", spId);
 		OpenMFSavingsProduct spdetails = null;
@@ -35,12 +37,15 @@ public class SavingsProductController {
 	}
 
     @RequestMapping(value = "/savingsproducts.htm", method= RequestMethod.GET)
-    public String savingsproducts() {
+    public String savingsproducts(HttpServletRequest req) {
+		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
+		req.setAttribute("savingsProducts", OMFUtils.getSavingsProductsList());
         return "savingsproducts";
     }
     
 	@RequestMapping(value="/createsavingsproduct.htm", method= RequestMethod.GET)
-	public SavingsProductForm savingsProductForm() {
+	public SavingsProductForm savingsProductForm(HttpServletRequest req) {
+		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		return new SavingsProductForm();
 	}
 

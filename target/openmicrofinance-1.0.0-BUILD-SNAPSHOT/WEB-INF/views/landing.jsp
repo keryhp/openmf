@@ -12,11 +12,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-								<%
-	UserService userService = UserServiceFactory.getUserService();
-	AppContext appContext = AppContext.getAppContext();
-	ConfigManager configManager = appContext.getConfigManager();
-	OpenMFUser currentUser = appContext.getCurrentUser();
+<%
+	OpenMFUser currentUser = (OpenMFUser) request
+			.getAttribute("currentUser");
+	pageContext.setAttribute("currentUser", currentUser);
 %>
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB" xml:lang="en-GB">
@@ -85,12 +84,12 @@
 				</ul>
 				<ul class="nav navbar-nav navbar-right" id="main-menu-right">
 					<li class="dropdown" id="user-menu"><a id="user-dropdown"
-						class="dropdown-toggle" data-toggle="dropdown" href="#"><c:out value="<%=currentUser.getUsername() %>"></c:out><b
-							class="caret"></b></a>
+						class="dropdown-toggle" data-toggle="dropdown" href="#"><c:out
+								value="<%=currentUser.getUsername()%>"></c:out><b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<li><a id="help" href="/help.htm"><i
 									class="fa fa-question-circle"></i> Help</a></li>
-							<li><a href="/profile.htm"><i class="fa fa-user"></i>
+							<li><a href="/viewuser.htm?omfuId=<%=currentUser.getId()%>"><i class="fa fa-user"></i>
 									Profile</a></li>
 							<li><a href="/usersetting.htm"><i class="fa fa-cog"></i>
 									Settings</a></li>
@@ -107,8 +106,7 @@
 
 	<div class="left-nav">
 		<ul class="nav nav-pills nav-stacked margin-nav">
-			<li><a class="black" href="/"><i
-					class="fa fa-desktop fa-fw"></i>Dashboard</a></li>
+			<li><a class="black" href="/"><i class="fa fa-desktop fa-fw"></i>Dashboard</a></li>
 			<li class="divider"></li>
 			<li><a class="black" href="/advsearch.htm"><i
 					class="fa fa-search fa-fw"></i>Advanced Search</a></li>
@@ -361,169 +359,170 @@
 							</thead>
 							<tbody>
 								<tr>
-									<td >33 (7 to 11 July)</td>
+									<td>33 (7 to 11 July)</td>
 									<td>1</td>
-									<td>Basic navigation completed, with page under construction</td>
-									<td style="color:green;">Completed</td>
+									<td>Basic navigation completed, with page under
+										construction</td>
+									<td style="color: green;">Completed</td>
 								</tr>
 								<tr>
-									<td >33 (7 to 11 July)</td>
+									<td>33 (7 to 11 July)</td>
 									<td>2</td>
-									<td>Part complete</td>
-									<td>In Progress</td>
+									<td>done</td>
+									<td style="color: green;">Complete</td>
 								</tr>
 								<tr>
-									<td >33 (7 to 11 July)</td>
+									<td>33 (7 to 11 July)</td>
 									<td>3</td>
 									<td>done</td>
-									<td style="color:green;">Complete</td>
+									<td style="color: green;">Complete</td>
 								</tr>
 								<tr>
-									<td >33 (7 to 11 July)</td>
+									<td>33 (7 to 11 July)</td>
 									<td>4</td>
 									<td>done</td>
-									<td style="color:green;">Complete</td>
+									<td style="color: green;">Complete</td>
 								</tr>
 								<tr>
-									<td >33 (7 to 11 July)</td>
+									<td>33 (7 to 11 July)</td>
 									<td>5</td>
-									<td>Learning</td>
-									<td>In progress</td>
+									<td>done</td>
+									<td style="color: green;">Complete</td>
 								</tr>
 								<tr>
-									<td >34 (14 to 18 July)</td>
+									<td>34 (14 to 18 July)</td>
 									<td>6</td>
-									<td>Developing</td>
-									<td>In progress</td>
+									<td>done</td>
+									<td style="color: green;">Complete</td>
 								</tr>
 								<tr>
-									<td >34 (14 to 18 July)</td>
+									<td>34 (14 to 18 July)</td>
 									<td>7</td>
+									<td>done</td>
+									<td style="color: green;">Complete</td>
+								</tr>
+								<tr>
+									<td>34 (14 to 18 July)</td>
+									<td>8</td>
+									<td>done</td>
+									<td style="color: green;">Complete</td>
+								</tr>
+								<tr>
+									<td>34 (14 to 18 July)</td>
+									<td>9</td>
+									<td>done</td>
+									<td style="color: green;">Complete</td>
+								</tr>
+								<tr>
+									<td>34 (14 to 18 July)</td>
+									<td>10</td>
+									<td>done</td>
+									<td style="color: green;">Complete</td>
+								</tr>
+								<tr>
+									<td>34 (14 to 18 July)</td>
+									<td>11</td>
+									<td>done</td>
+									<td style="color: green;">Complete</td>
+								</tr>
+								<tr>
+									<td>35 (21 to 25 July)</td>
+									<td>12</td>
+									<td>done</td>
+									<td style="color: green;">Complete</td>
+								</tr>
+								<tr>
+									<td>35 (21 to 25 July)</td>
+									<td>13</td>
+									<td>Learning</td>
+									<td>In progress</td>
+								</tr>
+								<tr>
+									<td>35 (21 to 25 July)</td>
+									<td>14</td>
 									<td>Developing</td>
 									<td>In progress</td>
 								</tr>
 								<tr>
-									<td >34 (14 to 18 July)</td>
-									<td>8</td>
-									<td>Developing</td>
-									<td>In Progress</td>
-								</tr>
-								<tr>
-									<td >34 (14 to 18 July)</td>
-									<td>9</td>
-									<td>Developing</td>
-									<td>In Progress</td>
-								</tr>
-								<tr>
-									<td >34 (14 to 18 July)</td>
-									<td>10</td>
-									<td>Developing</td>
-									<td>In Progress</td>
-								</tr>
-								<tr>
-									<td >34 (14 to 18 July)</td>
-									<td>11</td>
-									<td>Learning</td>
-									<td>In Progress</td>
-								</tr>
-								<tr>
-									<td >35 (21 to 25 July)</td>
-									<td>12</td>
-									<td></td>
-									<td></td>
-								</tr>
-								<tr>
-									<td >35 (21 to 25 July)</td>
-									<td>13</td>
-									<td></td>
-									<td></td>
-								</tr>
-								<tr>
-									<td >35 (21 to 25 July)</td>
-									<td>14</td>
-									<td></td>
-									<td></td>
-								</tr>
-								<tr>
-									<td >35 (21 to 25 July)</td>
+									<td>35 (21 to 25 July)</td>
 									<td>15</td>
-									<td></td>
-									<td></td>
+									<td>Developing</td>
+									<td>In progress</td>
 								</tr>
 								<tr>
-									<td >36 (28 July to 1 Aug)</td>
+									<td>36 (28 July to 1 Aug)</td>
 									<td>16</td>
-									<td></td>
-									<td></td>
+									<td>Developing</td>
+									<td>In progress</td>
 								</tr>
 								<tr>
-									<td >36 (28 July to 1 Aug)</td>
+									<td>36 (28 July to 1 Aug)</td>
 									<td>17</td>
-									<td></td>
-									<td></td>
+									<td>Developing</td>
+									<td>In progress</td>
 								</tr>
 								<tr>
-									<td >36 (28 July to 1 Aug)</td>
+									<td>36 (28 July to 1 Aug)</td>
 									<td>18</td>
-									<td></td>
-									<td></td>
+									<td>Developing</td>
+									<td>In progress</td>
 								</tr>
 								<tr>
-									<td >36 (28 July to 1 Aug)</td>
+									<td>36 (28 July to 1 Aug)</td>
 									<td>19</td>
-									<td></td>
-									<td></td>
+									<td>Developing</td>
+									<td>In progress</td>
 								</tr>
 								<tr>
-									<td >36 (28 July to 1 Aug)</td>
+									<td>36 (28 July to 1 Aug)</td>
 									<td>20</td>
-									<td></td>
-									<td></td>
+									<td>Developing</td>
+									<td>In progress</td>
 								</tr>
 								<tr>
-									<td >37 (4 Aug to 8 Aug)</td>
+									<td>37 (4 Aug to 8 Aug)</td>
 									<td>21</td>
 									<td></td>
 									<td></td>
 								</tr>
 								<tr>
-									<td >37 (4 Aug to 8 Aug)</td>
+									<td>37 (4 Aug to 8 Aug)</td>
 									<td>22</td>
 									<td></td>
 									<td></td>
 								</tr>
 								<tr>
-									<td >37 (4 Aug to 8 Aug)</td>
+									<td>37 (4 Aug to 8 Aug)</td>
 									<td>23</td>
 									<td></td>
 									<td></td>
 								</tr>
 								<tr>
-									<td >38 (11 Aug to 15 Aug)</td>
+									<td>38 (11 Aug to 15 Aug)</td>
 									<td>24, 25, 26, 27</td>
 									<td></td>
 									<td></td>
 								</tr>
 								<tr>
-									<td >39 (18 Aug to 22 Aug)</td>
+									<td>39 (18 Aug to 22 Aug)</td>
 									<td>28, 29, 30, 31</td>
 									<td></td>
 									<td></td>
 								</tr>
 								<tr>
-									<td >40 (25 Aug to 29 Aug)</td>
+									<td>40 (25 Aug to 29 Aug)</td>
 									<td>32, 33, 34</td>
 									<td></td>
 									<td></td>
 								</tr>
 								<tr>
-									<td >41 (1 Sep to 5 Sep)</td>
+									<td>41 (1 Sep to 5 Sep)</td>
 									<td>35, 36</td>
 									<td></td>
 									<td></td>
 								</tr>
 								<tr>
-									<td >42, 43, 44 (6 Sep to 17 Sep)</td>
+									<td>42, 43, 44 (6 Sep to 17 Sep)</td>
 									<td>36</td>
 									<td></td>
 									<td></td>

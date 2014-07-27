@@ -76,5 +76,13 @@ public class OpenMFConstants {
 	public static final String FIELD_NAME_FEES = "fees";
 	public static final String FIELD_NAME_DEFAULTED = "defaulted";
 	public static final String FIELD_NAME_NUMPAYMENTSMISSED = "numpaymentsmissed";
+	public static final String FIELD_NAME_PAIDAMOUNT = "paidamount";
+	public static final String FIELD_NAME_DUEAMOUNT = "dueamount";
+	public static final String FIELD_NAME_INTERESTAMOUNT = "interestamount";
+	public static final String FIELD_NAME_PAID = "paid";
+	public static final String FIELD_NAME_PAIDDATE = "paiddate";
+	public static final String FIELD_NAME_SCHEDULEDATE = "scheduledate";
+	public static final String FIELD_NAME_LOANACCOUNTID = "loanaccountid";
+	public static final String FIELD_NAME_SERIALNUMBER = "serialnumber";
 
 }

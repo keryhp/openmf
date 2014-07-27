@@ -1,6 +1,6 @@
 package uk.ac.openmf.web.controllers;
 
-import java.util.ArrayList;
+import java.text.ParseException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,15 +15,13 @@ import uk.ac.openmf.model.OpenMFClient;
 import uk.ac.openmf.model.OpenMFLoanAccount;
 import uk.ac.openmf.model.OpenMFLoanAccountManager;
 import uk.ac.openmf.model.OpenMFLoanProduct;
-import uk.ac.openmf.model.OpenMFUser;
-import uk.ac.openmf.model.OpenMFUserManager;
 import uk.ac.openmf.users.GaeUser;
 import uk.ac.openmf.utils.GenerateAccountNumber;
+import uk.ac.openmf.utils.RepaymentUtils;
 import uk.ac.openmf.utils.ServletUtils;
+import uk.ac.openmf.utils.OMFUtils;
 import uk.ac.openmf.web.AppContext;
 import uk.ac.openmf.web.forms.LoanAccountForm;
-
-import com.google.appengine.api.datastore.DatastoreNeedIndexException;
 
 /**
  * @author harish
@@ -33,6 +31,7 @@ public class LoanAccountController {
 
 	@RequestMapping(value = "/viewloanaccount.htm", method= RequestMethod.GET)
 	public String loanaccountdetails(HttpServletRequest req) {
+		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		String lnaccId = req.getParameter("lnaccId");
 		req.setAttribute("lnaccId", lnaccId);
 		OpenMFLoanAccount lnaccdetails = null;
@@ -46,48 +45,30 @@ public class LoanAccountController {
 		
 		OpenMFLoanProduct loanproduct = AppContext.getAppContext().getLoanProductManager().getLoanProductByLoanCode(lnaccdetails.getLoancode());
 		req.setAttribute("loanproduct", loanproduct);
-		
+		req.setAttribute("repaymentschedules", OMFUtils.getLoanRepaymentSchedulesForLoanAccountList(lnaccdetails.getId().toString()));
 		return "viewloanaccount";
 	}
 
 	@RequestMapping(value = "/loanaccounts.htm", method= RequestMethod.GET)
-	public String loanaccounts() {
+	public String loanaccounts(HttpServletRequest req) {
+		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		return "loanaccounts";
 	}
 
 	@RequestMapping(value="/createloanaccount.htm", method= RequestMethod.GET)
 	public LoanAccountForm loanAccountForm(HttpServletRequest req) {
+		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		String clientId = req.getParameter("clientId");
 		req.setAttribute("clientId", clientId);
-		Iterable<OpenMFLoanProduct> loanProductiter = AppContext.getAppContext().getLoanProductManager().getAllLoanProduct();
-		ArrayList<OpenMFLoanProduct> loanProducts = new ArrayList<OpenMFLoanProduct>();
-		try {
-			for (OpenMFLoanProduct loanProduct : loanProductiter) {
-				loanProducts.add(loanProduct);
-			}
-		} catch (DatastoreNeedIndexException e) {
-			//log the error
-		}
-		req.setAttribute("loanProducts", loanProducts);
-
-		OpenMFUserManager userManager = AppContext.getAppContext().getUserManager();
-		Iterable<OpenMFUser> useriter = userManager.getAllUsers();
-		ArrayList<OpenMFUser> omfusers= new ArrayList<OpenMFUser>();
-		try {
-			for (OpenMFUser user : useriter) {
-				omfusers.add(user);
-			}
-		} catch (DatastoreNeedIndexException e) {
-			//log error
-		}
-		req.setAttribute("omfusers", omfusers);
+		req.setAttribute("loanProducts", OMFUtils.getLoanProductsList());
+		req.setAttribute("omfusers", OMFUtils.getUsersList());
 		LoanAccountForm form  = new LoanAccountForm();
 		form.setClientId(clientId);
 		return form;
 	}
 
 	@RequestMapping(value="/createloanaccount.htm", method = RequestMethod.POST)
-	public String createloanaccount(LoanAccountForm form, BindingResult result) {
+	public String createloanaccount(LoanAccountForm form, BindingResult result) throws ParseException {
 		if (result.hasErrors()) {
 			return null;
 		}
@@ -131,17 +112,10 @@ public class LoanAccountController {
 			loanAccount.setDefaulted(form.isDefaulted());
 			loanAccountManager.upsertEntity(loanAccount);
 			lnaccId = loanAccount.getId();
-			succeeded = true;
-			if (succeeded) {
-				//redirect to new role created 
-			} else {
-				//redirect to error page
-			}
-			//return openMFRoles;
+			RepaymentUtils.generateRepaymentSchedule(loanAccount, AppContext.getAppContext().getLoanProductManager().getLoanProductByLoanCode(loanAccount.getLoancode()), AppContext.getAppContext().getCurrentUser().getUserId());
 		} else {
 			//return null;
 		}
-
 		return "redirect:/viewloanaccount.htm?lnaccId=" + lnaccId;
 	}
 }

@@ -13,6 +13,7 @@ import uk.ac.openmf.model.OpenMFLoanProduct;
 import uk.ac.openmf.model.OpenMFLoanProductManager;
 import uk.ac.openmf.users.GaeUser;
 import uk.ac.openmf.utils.ServletUtils;
+import uk.ac.openmf.utils.OMFUtils;
 import uk.ac.openmf.web.AppContext;
 import uk.ac.openmf.web.forms.LoanProductForm;
 
@@ -24,6 +25,7 @@ public class LoanProductController {
 
 	@RequestMapping(value = "/loanproductdetails.htm", method= RequestMethod.GET)
 	public String loanproductdetails(HttpServletRequest req) {
+		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		String lpId = req.getParameter("lpId");
 		req.setAttribute("lpId", lpId);
 		OpenMFLoanProduct lpdetails = null;
@@ -35,12 +37,15 @@ public class LoanProductController {
 	}
 
     @RequestMapping(value = "/loanproducts.htm", method= RequestMethod.GET)
-    public String loanproducts() {
+    public String loanproducts(HttpServletRequest req) {
+		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
+		req.setAttribute("loanProducts", OMFUtils.getLoanProductsList());
         return "loanproducts";
     }
     
 	@RequestMapping(value="/createloanproduct.htm", method= RequestMethod.GET)
-	public LoanProductForm loanProductForm() {
+	public LoanProductForm loanProductForm(HttpServletRequest req) {
+		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		return new LoanProductForm();
 	}
 

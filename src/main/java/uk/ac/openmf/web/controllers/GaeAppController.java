@@ -1,13 +1,17 @@
 package uk.ac.openmf.web.controllers;
 
 import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.appengine.api.users.UserServiceFactory;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import uk.ac.openmf.web.AppContext;
 
 /**
  *
@@ -18,7 +22,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class GaeAppController {
 
     @RequestMapping(value = "/", method= RequestMethod.GET)
-    public String landing() {
+    public String landing(HttpServletRequest req) {
+		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
         return "landing";
     }
     

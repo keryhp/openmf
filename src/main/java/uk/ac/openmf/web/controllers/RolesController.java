@@ -1,5 +1,7 @@
 package uk.ac.openmf.web.controllers;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import uk.ac.openmf.model.OpenMFRoles;
 import uk.ac.openmf.model.OpenMFRolesManager;
 import uk.ac.openmf.users.GaeUser;
+import uk.ac.openmf.utils.OMFUtils;
 import uk.ac.openmf.web.AppContext;
 import uk.ac.openmf.web.forms.RolesForm;
 
@@ -21,7 +24,9 @@ import uk.ac.openmf.web.forms.RolesForm;
 public class RolesController {
 	
 	@RequestMapping(method= RequestMethod.GET)
-    public RolesForm rolesForm() {
+    public RolesForm rolesForm(HttpServletRequest req) {
+		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
+		req.setAttribute("roles", OMFUtils.getAllRolesList());
         return new RolesForm();
     }
 

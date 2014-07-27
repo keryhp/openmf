@@ -13,10 +13,12 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%
-	UserService userService = UserServiceFactory.getUserService();
-	AppContext appContext = AppContext.getAppContext();
-	ConfigManager configManager = appContext.getConfigManager();
-	OpenMFUser currentUser = appContext.getCurrentUser();
+	OpenMFUser currentUser = (OpenMFUser) request
+			.getAttribute("currentUser");
+	pageContext.setAttribute("currentUser", currentUser);
+	ArrayList<OpenMFSavingsProduct> savingsProduct = (ArrayList<OpenMFSavingsProduct>) request
+			.getAttribute("savingsProduct");
+	pageContext.setAttribute("savingsProduct", savingsProduct);
 %>
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB" xml:lang="en-GB">
@@ -100,7 +102,7 @@
 						<ul class="dropdown-menu">
 							<li><a id="help" href="/help.htm"><i
 									class="fa fa-question-circle"></i> Help</a></li>
-							<li><a href="/profile.htm"><i class="fa fa-user"></i>
+							<li><a href="/viewuser.htm?omfuId=<%=currentUser.getId()%>"><i class="fa fa-user"></i>
 									Profile</a></li>
 							<li><a href="/usersetting.htm"><i class="fa fa-cog"></i>
 									Settings</a></li>
@@ -185,8 +187,8 @@
 												class="required">*</span>
 										</form:label>
 										<div class="col-sm-2">
-											<form:input type="text" path="savingscode" class="form-control"
-												maxlength="4" />
+											<form:input type="text" path="savingscode"
+												class="form-control" maxlength="4" />
 										</div>
 									</div>
 									<div class="form-group">
@@ -198,7 +200,8 @@
 										<form:label class="control-label col-sm-2" path="savingstype">Type</form:label>
 										<div class="col-sm-2">
 											<form:select data-placeholder="Choose a Type"
-												class="form-control chosen-select" path="savingstype" tabindex="2">
+												class="form-control chosen-select" path="savingstype"
+												tabindex="2">
 												<form:option value="VOLUNTARY" selected="selected">Voluntary</form:option>
 												<form:option value="COMPULSORY">Compulsory</form:option>
 											</form:select>
@@ -226,22 +229,11 @@
 									<h3>Settings</h3>
 									<hr></hr>
 									<div class="form-group">
-										<form:label class="control-label col-sm-2 col-sm-offset-1"
-											path="interestmethod">Interest
-											Method<span class="required">*</span>
-										</form:label>
-										<div class="col-sm-2">
-											<p>Flat</p>
-										</div>
-									</div>
-									<div class="form-group">
-										<form:label class="control-label col-sm-2"
-											path="tenure">Tenure in months for Maturity<span
+										<form:label class="control-label col-sm-2" path="tenure">Tenure in months for Maturity<span
 												class="required">*</span>
 										</form:label>
 										<div class="col-sm-2">
-											<form:input type="text" path="tenure"
-												class="form-control" />
+											<form:input type="number" path="tenure" class="form-control" />
 										</div>
 										<form:label class="control-label col-sm-2"
 											path="depositfrequency">Deposit Frequency<span
@@ -249,11 +241,12 @@
 										</form:label>
 										<div class="col-sm-2">
 											<form:select data-placeholder="Choose a frequency"
-												class="form-control chosen-select" path="depositfrequency" tabindex="2">
-												<form:option value="WEEKLY" selected="selected">Weekly</form:option>
-												<form:option value="FORTNIGHT">Fortnight</form:option>
-												<form:option value="MONTHLY">Monthly</form:option>
-												<form:option value="THREE_MONTH">Three Months</form:option>												
+												class="form-control chosen-select" path="depositfrequency"
+												tabindex="2">
+												<form:option value="7" selected="selected">Weekly</form:option>
+												<form:option value="15">Fortnight</form:option>
+												<form:option value="30">Monthly</form:option>
+												<form:option value="90">Three Months</form:option>
 											</form:select>
 										</div>
 									</div>
@@ -270,11 +263,18 @@
 												class="required">*</span>
 										</form:label>
 										<div class="col-sm-2">
-											<form:input type="text" path="rateofinterest"
+											<form:input type="number" path="rateofinterest"
 												class="form-control" />
 										</div>
 									</div>
 									<div class="form-group">
+										<form:label class="control-label col-sm-2 col-sm-offset-1"
+											path="interestmethod">Interest
+											Method<span class="required">*</span>
+										</form:label>
+										<div class="col-sm-2">
+											<p>Flat</p>
+										</div>
 										<form:label class="control-label col-sm-2" path="active">Active ?</form:label>
 										<div class="checkbox col-sm-2">
 											<label> <form:checkbox path="active" />

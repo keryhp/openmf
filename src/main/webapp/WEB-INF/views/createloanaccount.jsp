@@ -17,17 +17,15 @@
 	AppContext appContext = AppContext.getAppContext();
 	ConfigManager configManager = appContext.getConfigManager();
 	OpenMFUser currentUser = appContext.getCurrentUser();
-	String clientId = (String) request
-			.getAttribute("clientId");
+	String clientId = (String) request.getAttribute("clientId");
 	ArrayList<OpenMFLoanProduct> loanProducts = (ArrayList<OpenMFLoanProduct>) request
 			.getAttribute("loanProducts");
 	ArrayList<OpenMFUser> omfusers = (ArrayList<OpenMFUser>) request
 			.getAttribute("omfusers");
-	pageContext.setAttribute("clientId", clientId);
 	pageContext.setAttribute("omfusers", omfusers);
+	pageContext.setAttribute("clientId", clientId);
 	pageContext.setAttribute("loanProducts", loanProducts);
 	ArrayList<String> tmpLA = new ArrayList<String>();
-	
 %>
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB" xml:lang="en-GB">
@@ -111,7 +109,7 @@
 						<ul class="dropdown-menu">
 							<li><a id="help" href="/help.htm"><i
 									class="fa fa-question-circle"></i> Help</a></li>
-							<li><a href="/profile.htm"><i class="fa fa-user"></i>
+							<li><a href="/viewuser.htm?omfuId=<%=currentUser.getId()%>"><i class="fa fa-user"></i>
 									Profile</a></li>
 							<li><a href="/usersetting.htm"><i class="fa fa-cog"></i>
 									Settings</a></li>
@@ -188,7 +186,7 @@
 										<label class="control-label col-sm-2" id="clientId">Client
 											Id </label>
 										<div class="col-sm-2">
-											<p class="control-label col-sm-2"><%=clientId %></p>
+											<p class="control-label col-sm-2"><%=clientId%></p>
 										</div>
 										<form:label class="control-label col-sm-2" path="loanofficer">Loan Officer
 										</form:label>
@@ -217,7 +215,7 @@
 												tabindex="2" onchange="updateLoanAmount(this);">
 												<%
 													for (OpenMFLoanProduct loanprod : loanProducts) {
-														tmpLA.add(loanprod.getLoanamount());
+																tmpLA.add(loanprod.getLoanamount());
 												%>
 												<form:option value="<%=loanprod.getLoancode()%>">
 													<c:out value="<%=loanprod.getLoancode()%>" escapeXml="true" />
@@ -249,22 +247,15 @@
 										<label class="control-label col-sm-2">Sanctioned Loan
 											Amount </label>
 										<div class="col-sm-2">
-											<p id="availloanamount"><%=tmpLA.get(0) %></p>
+											<p id="availloanamount"><%=tmpLA.get(0)%></p>
 										</div>
 										<form:label class="control-label col-sm-2"
 											path="approvedamount">Approved amount<span
 												class="required">*</span>
 										</form:label>
 										<div class="col-sm-2">
-											<form:input type="text" path="approvedamount"
+											<form:input type="number" path="approvedamount" min="0"
 												class="form-control" />
-										</div>
-										<form:label class="control-label col-sm-2" path="approvedon">
-											<i class="fa fa-calendar fa-1x"></i>Approval Date
-										</form:label>
-										<div class="col-sm-2">
-											<form:input path="approvedon"
-												class="form-control date-picker" />
 										</div>
 									</div>
 									<div class="form-group">
@@ -315,6 +306,17 @@
 											<form:input path="loanstartdate"
 												class="form-control date-picker" />
 										</div>
+										<form:label class="control-label col-sm-2" path="approvedon">
+											<i class="fa fa-calendar fa-1x"></i>Approval Date
+										</form:label>
+										<div class="col-sm-2">
+											<form:input path="approvedon"
+												class="form-control date-picker" />
+										</div>
+									</div>
+
+
+									<div class="form-group">
 										<form:label class="control-label col-sm-2" path="submittedon">
 											<i class="fa fa-calendar fa-1x"></i>Submission Date<span
 												class="required">*</span>
@@ -322,18 +324,6 @@
 										<div class="col-sm-2">
 											<form:input path="submittedon"
 												class="form-control date-picker" />
-										</div>
-									</div>
-
-
-									<div class="form-group">
-										<form:label class="control-label col-sm-2"
-											path="disbursedamount">Disbursed amount (if any)<span
-												class="required">*</span>
-										</form:label>
-										<div class="col-sm-2">
-											<form:input type="text" path="disbursedamount"
-												class="form-control" />
 										</div>
 										<form:label class="control-label col-sm-2" path="disbursedon">
 											<i class="fa fa-calendar fa-1x"></i>Disbursement Date<span
@@ -346,17 +336,17 @@
 									</div>
 									<div class="form-group">
 										<form:label class="control-label col-sm-2"
-											path="interestcalcperiod">Interest Calc Period in months<span
+											path="disbursedamount">Disbursed amount (if any)<span
 												class="required">*</span>
 										</form:label>
 										<div class="col-sm-2">
-											<form:input type="text" path="interestcalcperiod"
+											<form:input type="number" path="disbursedamount"
 												class="form-control" />
 										</div>
 										<form:label class="control-label col-sm-2" path="fees">Initial Fees (if any)
 										</form:label>
 										<div class="col-sm-2">
-											<form:input type="text" path="fees" class="form-control" />
+											<form:input type="number" path="fees" class="form-control" />
 										</div>
 									</div>
 									<div class="form-group">
