@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import uk.ac.openmf.model.OpenMFUser;
 import uk.ac.openmf.model.OpenMFUserManager;
-import uk.ac.openmf.users.GaeUser;
+import uk.ac.openmf.model.nosql.OpenMFUserNoSql;
+import uk.ac.openmf.utils.OMFUtils;
 import uk.ac.openmf.utils.PasswordHash;
 import uk.ac.openmf.utils.ServletUtils;
-import uk.ac.openmf.utils.OMFUtils;
 import uk.ac.openmf.web.AppContext;
 import uk.ac.openmf.web.forms.UserForm;
 
@@ -28,7 +28,7 @@ import uk.ac.openmf.web.forms.UserForm;
 public class UserController {
 
 
-	@RequestMapping(value = "/users.htm", method= RequestMethod.GET)
+	@RequestMapping(value = "/admin/users.htm", method= RequestMethod.GET)
 	public String users(HttpServletRequest req) {
 		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		req.setAttribute("omfusers", OMFUtils.getUsersList());
@@ -48,7 +48,7 @@ public class UserController {
 		return "viewuser";
 	}
 
-	@RequestMapping(value="/createuser.htm", method= RequestMethod.GET)
+	@RequestMapping(value="/admin/createuser.htm", method= RequestMethod.GET)
 	public UserForm userForm(HttpServletRequest req) {
 		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		req.setAttribute("omfusers", OMFUtils.getUsersList());
@@ -60,13 +60,14 @@ public class UserController {
 	 * @throws InvalidKeySpecException 
 	 * @throws NoSuchAlgorithmException 
 	 */
-	@RequestMapping(value="/createuser.htm", method = RequestMethod.POST)
+	@RequestMapping(value="/admin/createuser.htm", method = RequestMethod.POST)
 	public String createuser(UserForm form, BindingResult result) throws NoSuchAlgorithmException, InvalidKeySpecException {
 		if (result.hasErrors()) {
 			return null;
 		}
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		GaeUser currentUser = (GaeUser)authentication.getPrincipal();
+		//GaeUser currentUser = (GaeUser)authentication.getPrincipal();
+		OpenMFUserNoSql currentUser = (OpenMFUserNoSql)authentication.getPrincipal();
 		boolean succeeded = false;
 		if (currentUser != null) {
 			AppContext appContext = AppContext.getAppContext();
@@ -96,6 +97,6 @@ public class UserController {
 		} else {
 			//return null;
 		}
-		return "redirect:/users.htm";
+		return "redirect:/admin/users.htm";
 	}
 }

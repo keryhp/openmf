@@ -67,7 +67,7 @@
 							<li><a href="/groups.htm">Groups</a></li>
 							<li><a href="/centers.htm">Centers</a></li>
 						</ul></li>
-					<li><a href="/accounting.htm"><i class="fa fa-money"></i>
+					<li><a href="/finance/accounting.htm"><i class="fa fa-money"></i>
 							Accounting</a></li>
 					<li class="dropdown" id="reports-menu"><a
 						class="dropdown-toggle" data-toggle="dropdown" href="#"><i
@@ -84,16 +84,16 @@
 						class="dropdown-toggle" data-toggle="dropdown" href="#"><i
 							class="fa fa-wrench"></i> Admin<b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a href="/users.htm">Users</a></li>
-							<li><a href="/organization.htm">Organization</a></li>
-							<li><a href="/system.htm">System</a></li>
-							<li><a href="/products.htm">Products</a></li>
+							<li><a href="/admin/users.htm">Users</a></li>
+							<li><a href="/admin/organization.htm">Organization</a></li>
+							<li><a href="/admin/system.htm">System</a></li>
+							<li><a href="/admin/products.htm">Products</a></li>
 						</ul></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right" id="main-menu-right">
 					<li class="dropdown" id="user-menu"><a id="user-dropdown"
 						class="dropdown-toggle" data-toggle="dropdown" href="#"><c:out
-								value="<%=currentUser.getUsername()%>" /><b class="caret"></b></a>
+								value="<%=currentUser.getUsername()%>"></c:out><b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<li><a id="help" href="/help.htm"><i
 									class="fa fa-question-circle"></i> Help</a></li>
@@ -128,16 +128,16 @@
 			<li><a class="black" href="/entercollectionsheet.htm"><i
 					class="fa fa-tasks fa-fw"></i>Collections</a></li>
 			<li class="divider"></li>
-			<li><a class="black" href="/freqposting.htm"><i
+			<li><a class="black" href="/finance/freqposting.htm"><i
 					class="fa fa-repeat fa-fw"></i>Frequent Postings</a></li>
 			<li class="divider"></li>
-			<li><a class="black" href="/journalentry.htm"><i
+			<li><a class="black" href="/finance/journalentry.htm"><i
 					class="fa fa-plus fa-fw"></i>+ Journal Entry</a></li>
 			<li class="divider"></li>
-			<li><a class="black" href="/accountsclosure.htm"><i
+			<li><a class="black" href="/finance/accountsclosure.htm"><i
 					class="fa fa-bell-o fa-fw"></i>Closing Entries</a></li>
 			<li class="divider"></li>
-			<li><a class="black" href="/accountingcoa.htm"><i
+			<li><a class="black" href="/finance/accountingcoa.htm"><i
 					class="fa fa-sitemap fa-fw"></i>Chart of Accounts</a></li>
 			<li class="divider"></li>
 			<li><a class="black" href="/createclient.htm"><i
@@ -153,7 +153,6 @@
 					class="fa fa-question-circle fa-fw"></i>Help</a></li>
 		</ul>
 	</div>
-
 	<div class="container whitebg fullscreen">
 		<div>
 			<div class="row whitebg">
@@ -166,7 +165,7 @@
 						</div>
 						<div class="col-md-12">
 							<div class="pull-right">
-								<a href="/createuser.htm" class="btn btn-primary"><i
+								<a href="/admin/createuser.htm" class="btn btn-primary"><i
 									class="fa fa-plus fa fa-white"></i>Create User</a>
 							</div>
 							<input type="search"

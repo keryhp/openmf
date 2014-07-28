@@ -1,5 +1,7 @@
 package uk.ac.openmf.model.nosql;
 
+import java.io.Serializable;
+
 import uk.ac.openmf.model.OpenMFUser;
 import uk.ac.openmf.utils.OpenMFConstants;
 
@@ -10,8 +12,8 @@ import com.google.appengine.api.datastore.Key;
  * User entity class for NoSQL.
  *
  */
-public class OpenMFUserNoSql extends OpenMFEntityNoSql  implements OpenMFUser {
-
+public class OpenMFUserNoSql extends OpenMFEntityNoSql  implements OpenMFUser, Serializable {
+	private static final long serialVersionUID = 1L;
 	public OpenMFUserNoSql(Entity entity) {
 		super(entity);
 	}
@@ -51,7 +53,10 @@ public class OpenMFUserNoSql extends OpenMFEntityNoSql  implements OpenMFUser {
 
 	@Override
 	public boolean isEnabled() {
-		return (boolean) entity.getProperty(OpenMFConstants.FIELD_NAME_ENABLED);
+		if(entity.getProperty(OpenMFConstants.FIELD_NAME_ENABLED) == null)
+			return true;
+		else
+			return (boolean) entity.getProperty(OpenMFConstants.FIELD_NAME_ENABLED);
 	}
 
 	@Override

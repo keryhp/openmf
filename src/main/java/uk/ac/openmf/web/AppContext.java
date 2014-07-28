@@ -11,6 +11,7 @@ import uk.ac.openmf.model.OpenMFRolesManager;
 import uk.ac.openmf.model.OpenMFSavingsProductManager;
 import uk.ac.openmf.model.OpenMFUser;
 import uk.ac.openmf.model.OpenMFUserManager;
+import uk.ac.openmf.security.AppRole;
 
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserServiceFactory;
@@ -102,8 +103,8 @@ public class AppContext {
 			openMFUser = openMFUserManager.newUser(user.getUserId());
 			openMFUser.setEmail(user.getEmail());
 			openMFUser.setUsername(user.getNickname());
-			//openMFUser.setRole(ServletUtils.REQUEST_PARAM_NAME_USER_NORMAL);
-			openMFUserManager.upsertEntity(openMFUser);
+			openMFUser.setRole(AppRole.USER.toString());
+			//openMFUserManager.upsertEntity(openMFUser);
 		}
 		return openMFUser;
 	}

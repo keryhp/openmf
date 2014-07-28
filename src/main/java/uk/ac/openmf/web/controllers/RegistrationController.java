@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import uk.ac.openmf.model.OpenMFUser;
 import uk.ac.openmf.security.AppRole;
-import uk.ac.openmf.security.GaeUserAuthentication;
+import uk.ac.openmf.security.OpenMFUserAuthentication;
 import uk.ac.openmf.users.GaeUser;
 import uk.ac.openmf.users.UserRegistry;
 import uk.ac.openmf.utils.PasswordHash;
@@ -48,14 +48,15 @@ public class RegistrationController {
 		}
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		GaeUser currentUser = (GaeUser)authentication.getPrincipal();
+		//GaeUser currentUser = (GaeUser)authentication.getPrincipal();
+		OpenMFUser currentUser = (OpenMFUser)authentication.getPrincipal();
 		Set<AppRole> roles = EnumSet.of(AppRole.USER);
 
 		if (UserServiceFactory.getUserService().isUserAdmin()) {
 			roles.add(AppRole.ADMIN);
 		}
 
-		GaeUser user = new GaeUser(currentUser.getUserId(), currentUser.getNickname(), currentUser.getEmail(),
+		GaeUser user = new GaeUser(currentUser.getUserId(), currentUser.getUsername(), currentUser.getEmail(),
 				form.getUsername(), form.getPassword(), roles, true);
 
 		OpenMFUser openMFUser = AppContext.getAppContext().getUserManager().getUserByUsername(form.getUsername());
@@ -65,7 +66,7 @@ public class RegistrationController {
 			return "redirect:/register.htm";
 		}else{
 			// Update the context with the full authentication
-			SecurityContextHolder.getContext().setAuthentication(new GaeUserAuthentication(user, authentication.getDetails()));
+			SecurityContextHolder.getContext().setAuthentication(new OpenMFUserAuthentication(openMFUser, authentication.getDetails()));
 			return "redirect:/";
 		}
 	}

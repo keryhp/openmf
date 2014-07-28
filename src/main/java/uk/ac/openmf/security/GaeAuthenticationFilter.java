@@ -27,6 +27,7 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 import org.springframework.util.Assert;
 import org.springframework.web.filter.GenericFilterBean;
 
+import uk.ac.openmf.model.OpenMFUser;
 import uk.ac.openmf.users.GaeUser;
 
 /**
@@ -89,9 +90,10 @@ public class GaeAuthenticationFilter extends GenericFilterBean {
             return false;
         }
 
-        GaeUser gaeUser = (GaeUser)authentication.getPrincipal();
+        //GaeUser gaeUser = (GaeUser)authentication.getPrincipal();
+        OpenMFUser openmfUser = (OpenMFUser)authentication.getPrincipal();
 
-        if (!gaeUser.getEmail().equals(googleUser.getEmail())) {
+        if (openmfUser == null || (openmfUser != null && openmfUser.getUsername() != "test") && !openmfUser.getEmail().equals(googleUser.getEmail())) {
             return false;
         }
 

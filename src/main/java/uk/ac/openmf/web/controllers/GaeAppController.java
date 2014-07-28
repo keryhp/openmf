@@ -147,17 +147,17 @@ public class GaeAppController {
     }
     
     
-    @RequestMapping(value = "/organization.htm", method= RequestMethod.GET)
+    @RequestMapping(value = "/admin/organization.htm", method= RequestMethod.GET)
     public String organization() {
         return "organization";
     }
     
-    @RequestMapping(value = "/system.htm", method= RequestMethod.GET)
+    @RequestMapping(value = "/admin/system.htm", method= RequestMethod.GET)
     public String system() {
         return "system";
     }
     
-    @RequestMapping(value = "/products.htm", method= RequestMethod.GET)
+    @RequestMapping(value = "/admin/products.htm", method= RequestMethod.GET)
     public String products() {
         return "products";
     }
