@@ -114,6 +114,10 @@ public class OpenMFUserManagerNoSql extends OpenMFEntityManagerNoSql<OpenMFUser>
 	public OpenMFUser newUser(String userId) {
 		return new OpenMFUserNoSql(null, getKind());
 	}
+	
+	public OpenMFUser newUser() {
+		return new OpenMFUserNoSql(null, getKind());
+	}
 
 	@Override
 	public Iterable<OpenMFUser> getAllUsers() {

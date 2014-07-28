@@ -3,6 +3,7 @@ package uk.ac.openmf.model.nosql;
 import java.io.Serializable;
 
 import uk.ac.openmf.model.OpenMFUser;
+import uk.ac.openmf.security.AppRole;
 import uk.ac.openmf.utils.OpenMFConstants;
 
 import com.google.appengine.api.datastore.Entity;
@@ -33,12 +34,18 @@ public class OpenMFUserNoSql extends OpenMFEntityNoSql  implements OpenMFUser, S
 
 	@Override
 	public String getEmail() {
+		if(entity == null || entity.getProperty(OpenMFConstants.FIELD_NAME_EMAIL) == null)
+			return null;
 		return (String) entity.getProperty(OpenMFConstants.FIELD_NAME_EMAIL);
 	}
 
 	@Override
 	public String getUsername() {
-		return (String) entity.getProperty(OpenMFConstants.FIELD_NAME_USERNAME);
+		if(entity.getProperty(OpenMFConstants.FIELD_NAME_USERNAME) == null){
+			return "test";
+		}else{
+			return (String) entity.getProperty(OpenMFConstants.FIELD_NAME_USERNAME);
+		}
 	}
 
 	@Override
@@ -135,7 +142,10 @@ public class OpenMFUserNoSql extends OpenMFEntityNoSql  implements OpenMFUser, S
 
 	@Override
 	public String getRole() {
-		return (String) entity.getProperty(OpenMFConstants.FIELD_NAME_ROLE);
+		if(entity.getProperty(OpenMFConstants.FIELD_NAME_ROLE) == null){
+			return AppRole.NEW_USER.toString();
+		}else
+			return (String) entity.getProperty(OpenMFConstants.FIELD_NAME_ROLE);
 	}
 
 	@Override

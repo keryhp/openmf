@@ -106,6 +106,8 @@ public class PasswordHash
     public static boolean validatePassword(char[] password, String correctHash)
         throws NoSuchAlgorithmException, InvalidKeySpecException
     {
+    	if(correctHash == null)
+    		return false;
         // Decode the hash into its parameters
         String[] params = correctHash.split(":");
         int iterations = Integer.parseInt(params[ITERATION_INDEX]);

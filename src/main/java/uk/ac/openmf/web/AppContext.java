@@ -103,7 +103,7 @@ public class AppContext {
 			openMFUser = openMFUserManager.newUser(user.getUserId());
 			openMFUser.setEmail(user.getEmail());
 			openMFUser.setUsername(user.getNickname());
-			openMFUser.setRole(AppRole.USER.toString());
+			openMFUser.setRole(AppRole.NEW_USER.toString());
 			//openMFUserManager.upsertEntity(openMFUser);
 		}
 		return openMFUser;

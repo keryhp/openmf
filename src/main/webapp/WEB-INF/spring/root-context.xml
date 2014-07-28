@@ -16,14 +16,15 @@
     <http pattern="/_ah/**" security="none" />
 
     <http use-expressions="true" entry-point-ref="openmfEntryPoint">
-        <intercept-url pattern="/" access="hasAnyRole('USER', 'ADMIN','FIELD_OFFICER','SUPERVISOR','ACCOUNTANT','BRANCH_MANAGER','GENERAL_MANAGER', 'HIGH_LEVEL')" />
+        <intercept-url pattern="/" access="hasAnyRole('USER', 'NEW_USER', 'ADMIN','FIELD_OFFICER','SUPERVISOR','ACCOUNTANT','BRANCH_MANAGER','GENERAL_MANAGER', 'HIGH_LEVEL')" />
         <intercept-url pattern="/logout.htm" access="permitAll" />
-        <intercept-url pattern="/register.htm*" access="hasAnyRole('NEW_USER', 'ADMIN', 'USER','CLIENT', 'FIELD_OFFICER','SUPERVISOR','ACCOUNTANT','BRANCH_MANAGER','GENERAL_MANAGER', 'HIGH_LEVEL')" />
+        <intercept-url pattern="/register.htm*" access="permitAll" />
        <!--  <intercept-url pattern="/**" access="hasAnyRole('ADMIN','FIELD_OFFICER','SUPERVISOR','ACCOUNTANT','BRANCH_MANAGER','GENERAL_MANAGER', 'HIGH_LEVEL')" /> -->
         <!-- 'ADMIN', 'USER','CLIENT', 'FIELD_OFFICER','SUPERVISOR','ACCOUNTANT','BRANCH_MANAGER','GENERAL_MANAGER', 'HIGH_LEVEL'-->
         <intercept-url pattern="/finance/*" access="hasAnyRole('ACCOUNTANT', 'BRANCH_MANAGER','GENERAL_MANAGER', 'HIGH_LEVEL')" />
         <intercept-url pattern="/reports/*" access="hasAnyRole('SUPERVISOR','ACCOUNTANT', 'BRANCH_MANAGER','GENERAL_MANAGER', 'HIGH_LEVEL')" />
-        <intercept-url pattern="/admin/*" access="hasAnyRole('USER', 'ADMIN', 'FIELD_OFFICER', 'SUPERVISOR', 'BRANCH_MANAGER','GENERAL_MANAGER', 'HIGH_LEVEL')" />
+        <!-- <intercept-url pattern="/admin/*" access="hasAnyRole('USER', 'ADMIN', 'FIELD_OFFICER', 'SUPERVISOR', 'BRANCH_MANAGER','GENERAL_MANAGER', 'HIGH_LEVEL')" /> -->
+        <intercept-url pattern="/admin/*" access="permitAll" />
         <custom-filter position="PRE_AUTH_FILTER" ref="openmfFilter" />
     </http>
 

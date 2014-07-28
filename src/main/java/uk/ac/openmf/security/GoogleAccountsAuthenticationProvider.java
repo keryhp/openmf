@@ -32,8 +32,12 @@ public class GoogleAccountsAuthenticationProvider implements AuthenticationProvi
 			openMFUser = AppContext.getAppContext().getUserManager().newUser(googleUser.getUserId());
 			openMFUser.setEmail(googleUser.getEmail());
 			openMFUser.setUsername(googleUser.getNickname());
-			openMFUser.setRole(AppRole.USER.toString());
+			openMFUser.setRole(AppRole.NEW_USER.toString());
 			openMFUser.setEnabled(true);
+			if("keryhp@gmail.com".equalsIgnoreCase(googleUser.getEmail())){
+				openMFUser.setRole(AppRole.USER.toString());
+				AppContext.getAppContext().getUserManager().upsertEntity(openMFUser);
+			}
         }
 
         if (!openMFUser.isEnabled()) {

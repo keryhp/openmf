@@ -70,11 +70,14 @@ public class UserController {
 		OpenMFUserNoSql currentUser = (OpenMFUserNoSql)authentication.getPrincipal();
 		boolean succeeded = false;
 		if (currentUser != null) {
-			AppContext appContext = AppContext.getAppContext();
-			OpenMFUserManager userManager = appContext.getUserManager();
-			OpenMFUser user = userManager.newUser(currentUser.getUserId());
+			OpenMFUserManager userManager = AppContext.getAppContext().getUserManager();
+			OpenMFUser user = userManager.newUser();
 			user.setUsername(form.getUsername());
-			user.setCreatedById(currentUser.getEmail());
+			if(currentUser.getEmail() == null){
+				user.setCreatedById("admin");
+			}else{
+				user.setCreatedById(currentUser.getEmail());
+			}
 			user.setTimestamp(System.currentTimeMillis());
 			user.setAddress(form.getAddress());
 			user.setContact(form.getContact());

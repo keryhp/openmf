@@ -159,7 +159,7 @@
 
 					<div class="paddedbottom10">
 						<ul class="breadcrumb">
-							<li><a href="/users.htm">Users</a></li>
+							<li><a href="/admin/users.htm">Users</a></li>
 							<li class="active">User Details</li>
 						</ul>
 					</div>

@@ -37,9 +37,9 @@
 	<div id="content" class="container">
 
 		<h2>
-			Welcome
-			<sec:authentication property="principal.username" />
-			. You need to be a registered and approved user to access this application.
+			<%-- Welcome <sec:authentication property="principal.username" />. --%>
+			You need to be a registered and approved user to access this
+			application.
 		</h2>
 		<h2 class="form-signin-heading">Please Signin.</h2>
 

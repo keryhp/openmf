@@ -28,6 +28,7 @@ public interface OpenMFUserManager extends OpenMFEntityManager<OpenMFUser> {
    * @return the user object.
    */
   OpenMFUser newUser(String userId);
+  OpenMFUser newUser();
 
 OpenMFUser getUserByEmail(String email);
 OpenMFUser getUserByUsername(String username);

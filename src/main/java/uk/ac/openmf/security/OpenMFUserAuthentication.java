@@ -3,6 +3,8 @@ package uk.ac.openmf.security;
 import java.util.Collection;
 import java.util.HashSet;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -16,6 +18,7 @@ import uk.ac.openmf.model.OpenMFUser;
 public class OpenMFUserAuthentication implements Authentication {
 	
 	private static final long serialVersionUID = 1L;
+	private final Logger logger = LoggerFactory.getLogger(getClass());
 	private final OpenMFUser principal;
     private final Object details;
     private boolean authenticated;
@@ -28,9 +31,13 @@ public class OpenMFUserAuthentication implements Authentication {
 
     public Collection<GrantedAuthority> getAuthorities() {
     	Collection<AppRole> role = new HashSet<AppRole>();
-    	if(principal.getRole() == null)
-    		principal.setRole(AppRole.NEW_USER.toString());
-    	role.add(AppRole.valueOf(principal.getRole()));
+    	try{
+        	if(principal.getRole() == null)
+        		principal.setRole(AppRole.NEW_USER.toString());
+        	role.add(AppRole.valueOf(principal.getRole()));
+		}catch(NullPointerException e){
+			//logger.error("Not a registered user" + e.getMessage());
+		}
         return new HashSet<GrantedAuthority>(role);
     }
 
@@ -55,7 +62,13 @@ public class OpenMFUserAuthentication implements Authentication {
     }
 
     public String getName() {
-        return principal.getUserId();
+    	String name = null;
+    	try{
+    		name = principal.getUserId();
+		}catch(NullPointerException e){
+			//logger.error("Not a registered user" + e.getMessage());
+		}
+        return name;
     }
 
 	@Override
