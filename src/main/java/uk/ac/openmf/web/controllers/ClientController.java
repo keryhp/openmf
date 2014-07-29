@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import uk.ac.openmf.model.OpenMFClient;
 import uk.ac.openmf.model.OpenMFClientManager;
 import uk.ac.openmf.model.OpenMFLoanAccount;
+import uk.ac.openmf.model.nosql.OpenMFUserNoSql;
 import uk.ac.openmf.users.GaeUser;
 import uk.ac.openmf.utils.GenerateAccountNumber;
 import uk.ac.openmf.utils.OpenMFConstants;
@@ -41,7 +42,7 @@ public class ClientController {
 	public String viewClient(HttpServletRequest req) {
 		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		String clientId = req.getParameter("clientId");
-		req.setAttribute("eventId", clientId);
+		req.setAttribute("clientId", clientId);
 		OpenMFClient client = null;
 		if (clientId != null) {
 			client = AppContext.getAppContext().getClientManager().getClient(ServletUtils.validateEventId(clientId));
@@ -65,13 +66,13 @@ public class ClientController {
 			return null;
 		}
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		GaeUser currentUser = (GaeUser)authentication.getPrincipal();
+		OpenMFUserNoSql currentUser = (OpenMFUserNoSql)authentication.getPrincipal();
 		boolean succeeded = false;
 		if (currentUser != null) {
 			AppContext appContext = AppContext.getAppContext();
 			OpenMFClientManager clientManager = appContext.getClientManager();
 			OpenMFClient client = clientManager.newClient(currentUser.getUserId());
-			client.setCreatedById(currentUser.getNickname());
+			client.setCreatedById(currentUser.getUsername());
 			client.setTimestamp(System.currentTimeMillis());
 			client.setActive(form.isActive());		
 			client.setEligible(form.isEligible());		

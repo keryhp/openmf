@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import uk.ac.openmf.model.OpenMFLoanProduct;
 import uk.ac.openmf.model.OpenMFLoanProductManager;
+import uk.ac.openmf.model.nosql.OpenMFUserNoSql;
 import uk.ac.openmf.users.GaeUser;
 import uk.ac.openmf.utils.ServletUtils;
 import uk.ac.openmf.utils.OMFUtils;
@@ -55,14 +56,14 @@ public class LoanProductController {
 			return null;
 		}
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		GaeUser currentUser = (GaeUser)authentication.getPrincipal();
+		OpenMFUserNoSql currentUser = (OpenMFUserNoSql)authentication.getPrincipal();
 		boolean succeeded = false;
 		if (currentUser != null) {
 			AppContext appContext = AppContext.getAppContext();
 			OpenMFLoanProductManager loanProductManager = appContext.getLoanProductManager();
 			OpenMFLoanProduct loanProduct = loanProductManager.newLoanProduct(currentUser.getUserId());
 			loanProduct.setClosedate(form.getClosedate());
-			loanProduct.setCreatedById(currentUser.getNickname());
+			loanProduct.setCreatedById(currentUser.getUsername());
 			loanProduct.setDescription(form.getDescription());
 			loanProduct.setLoancode(form.getLoancode());
 			loanProduct.setProductname(form.getProductname());

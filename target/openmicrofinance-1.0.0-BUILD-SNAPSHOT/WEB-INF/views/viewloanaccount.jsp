@@ -305,6 +305,12 @@
 														</thead>
 														<tbody>
 															<tr>
+																<td>Loan Type</td>
+																<td><span class="padded-td"><c:out
+																			value="${loanproduct.loantype}"
+																			escapeXml="true"></c:out></span></td>
+															</tr>
+															<tr>
 																<td>Repayment Strategy</td>
 																<td><span class="padded-td">Manual
 																		collection and submission by field officer</span></td>

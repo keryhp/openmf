@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import uk.ac.openmf.model.OpenMFRoles;
 import uk.ac.openmf.model.OpenMFRolesManager;
+import uk.ac.openmf.model.nosql.OpenMFUserNoSql;
 import uk.ac.openmf.users.GaeUser;
 import uk.ac.openmf.utils.OMFUtils;
 import uk.ac.openmf.web.AppContext;
@@ -39,7 +40,7 @@ public class RolesController {
             return null;
         }
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        GaeUser currentUser = (GaeUser)authentication.getPrincipal();
+        OpenMFUserNoSql currentUser = (OpenMFUserNoSql)authentication.getPrincipal();
 		boolean succeeded = false;
 		if (currentUser != null) {
 			AppContext appContext = AppContext.getAppContext();

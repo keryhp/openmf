@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import uk.ac.openmf.model.OpenMFSavingsProduct;
 import uk.ac.openmf.model.OpenMFSavingsProductManager;
+import uk.ac.openmf.model.nosql.OpenMFUserNoSql;
 import uk.ac.openmf.users.GaeUser;
 import uk.ac.openmf.utils.ServletUtils;
 import uk.ac.openmf.utils.OMFUtils;
@@ -55,14 +56,14 @@ public class SavingsProductController {
 			return null;
 		}
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		GaeUser currentUser = (GaeUser)authentication.getPrincipal();
+		OpenMFUserNoSql currentUser = (OpenMFUserNoSql)authentication.getPrincipal();
 		boolean succeeded = false;
 		if (currentUser != null) {
 			AppContext appContext = AppContext.getAppContext();
 			OpenMFSavingsProductManager savingsProductManager = appContext.getSavingsProductManager();
 			OpenMFSavingsProduct savingsProduct = savingsProductManager.newSavingsProduct(currentUser.getUserId());
 			savingsProduct.setClosedate(form.getClosedate());
-			savingsProduct.setCreatedById(currentUser.getNickname());
+			savingsProduct.setCreatedById(currentUser.getUsername());
 			savingsProduct.setDescription(form.getDescription());
 			savingsProduct.setSavingscode(form.getSavingscode());
 			savingsProduct.setProductname(form.getProductname());

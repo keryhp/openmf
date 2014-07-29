@@ -18,7 +18,7 @@
     <http use-expressions="true" entry-point-ref="openmfEntryPoint">
         <intercept-url pattern="/" access="hasAnyRole('USER', 'NEW_USER', 'ADMIN','FIELD_OFFICER','SUPERVISOR','ACCOUNTANT','BRANCH_MANAGER','GENERAL_MANAGER', 'HIGH_LEVEL')" />
         <intercept-url pattern="/logout.htm" access="permitAll" />
-        <intercept-url pattern="/register.htm*" access="permitAll" />
+        <intercept-url pattern="/register.htm*" access="isAuthenticated()" />
        <!--  <intercept-url pattern="/**" access="hasAnyRole('ADMIN','FIELD_OFFICER','SUPERVISOR','ACCOUNTANT','BRANCH_MANAGER','GENERAL_MANAGER', 'HIGH_LEVEL')" /> -->
         <!-- 'ADMIN', 'USER','CLIENT', 'FIELD_OFFICER','SUPERVISOR','ACCOUNTANT','BRANCH_MANAGER','GENERAL_MANAGER', 'HIGH_LEVEL'-->
         <intercept-url pattern="/finance/*" access="hasAnyRole('ACCOUNTANT', 'BRANCH_MANAGER','GENERAL_MANAGER', 'HIGH_LEVEL')" />

@@ -15,11 +15,11 @@ import uk.ac.openmf.model.OpenMFClient;
 import uk.ac.openmf.model.OpenMFLoanAccount;
 import uk.ac.openmf.model.OpenMFLoanAccountManager;
 import uk.ac.openmf.model.OpenMFLoanProduct;
-import uk.ac.openmf.users.GaeUser;
+import uk.ac.openmf.model.nosql.OpenMFUserNoSql;
+import uk.ac.openmf.services.RepaymentService;
 import uk.ac.openmf.utils.GenerateAccountNumber;
-import uk.ac.openmf.utils.RepaymentUtils;
-import uk.ac.openmf.utils.ServletUtils;
 import uk.ac.openmf.utils.OMFUtils;
+import uk.ac.openmf.utils.ServletUtils;
 import uk.ac.openmf.web.AppContext;
 import uk.ac.openmf.web.forms.LoanAccountForm;
 
@@ -73,14 +73,13 @@ public class LoanAccountController {
 			return null;
 		}
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		GaeUser currentUser = (GaeUser)authentication.getPrincipal();
-		boolean succeeded = false;
+		OpenMFUserNoSql currentUser = (OpenMFUserNoSql)authentication.getPrincipal();
 		long lnaccId = 0;
 		if (currentUser != null) {
 			AppContext appContext = AppContext.getAppContext();
 			OpenMFLoanAccountManager loanAccountManager = appContext.getLoanAccountManager();
 			OpenMFLoanAccount loanAccount = loanAccountManager.newLoanAccount(currentUser.getUserId());
-			loanAccount.setCreatedById(currentUser.getNickname());
+			loanAccount.setCreatedById(currentUser.getUsername());
 			loanAccount.setTimestamp(System.currentTimeMillis());
 			loanAccount.setActive(form.isActive());
 			loanAccount.setApprovedamount(form.getApprovedamount());
@@ -112,7 +111,7 @@ public class LoanAccountController {
 			loanAccount.setDefaulted(form.isDefaulted());
 			loanAccountManager.upsertEntity(loanAccount);
 			lnaccId = loanAccount.getId();
-			RepaymentUtils.generateRepaymentSchedule(loanAccount, AppContext.getAppContext().getLoanProductManager().getLoanProductByLoanCode(loanAccount.getLoancode()), AppContext.getAppContext().getCurrentUser().getUserId());
+			RepaymentService.generateRepaymentSchedule(loanAccount, AppContext.getAppContext().getLoanProductManager().getLoanProductByLoanCode(loanAccount.getLoancode()), AppContext.getAppContext().getCurrentUser().getUserId());
 		} else {
 			//return null;
 		}

@@ -249,8 +249,9 @@
 																						long laId = loanAccount.getId();
 																						if (loanAccount.isActive()) {
 																		%>
-																		<tr class="pointer-main"
-																			onclick="viewLoanAccountFn(<%=laId%>);">
+																		<%-- <tr class="pointer-main"
+																			onclick="viewLoanAccountFn(<%=laId%>);"> --%>
+																			<tr>
 																			<%
 																				if (loanAccount.isDefaulted()) {
 																			%>
@@ -286,16 +287,15 @@
 																				onclick="viewLoanAccountFn(<%=laId%>);"><c:out
 																					value="<%=loanAccount.getLoanstartdate()%>"
 																					escapeXml="true" /></td>
-																			<td class="pointer center"
-																				onclick="viewLoanAccountFn(<%=laId%>);"><a
+																			<td class="pointer center"><a
 																				onclick="loanRepayment(<%=laId%>);"
-																				class="btn btn-xs btn-primary "> <i
+																				class="btn btn-xs btn-primary " tooltip="Repayment"> <i
 																					class="fa fa-dollar fa-white"></i>
 																			</a> <a onclick="loanDisburse(<%=laId%>);"
-																				class="btn btn-xs btn-primary "> <i
+																				class="btn btn-xs btn-primary " tooltip="Disburse"> <i
 																					class="fa fa-check fa-white"></i>
 																			</a> <a onclick="loanPenalty(<%=laId%>);"
-																				class="btn btn-xs btn-primary "> <i
+																				class="btn btn-xs btn-primary " tooltip="Add Penalty"> <i
 																					class="fa fa-flag fa-red"></i>
 																			</a></td>
 																		</tr>

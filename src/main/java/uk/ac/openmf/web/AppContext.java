@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 import uk.ac.openmf.model.OpenMFClientManager;
 import uk.ac.openmf.model.OpenMFEntityManagerFactory;
 import uk.ac.openmf.model.OpenMFLoanAccountManager;
+import uk.ac.openmf.model.OpenMFLoanActualPaymentManager;
 import uk.ac.openmf.model.OpenMFLoanProductManager;
 import uk.ac.openmf.model.OpenMFLoanRepaymentManager;
 import uk.ac.openmf.model.OpenMFRolesManager;
@@ -89,6 +90,10 @@ public class AppContext {
 	
 	public OpenMFLoanRepaymentManager getLoanRepaymentManager() {
 		return entityManagerFactory.getLoanRepaymentManager();
+	}
+	
+	public OpenMFLoanActualPaymentManager getLoanActualPaymentManager() {
+		return entityManagerFactory.getLoanActualPaymentManager();
 	}
 
 

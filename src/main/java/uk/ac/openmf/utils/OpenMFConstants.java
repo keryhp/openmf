@@ -84,5 +84,9 @@ public class OpenMFConstants {
 	public static final String FIELD_NAME_SCHEDULEDATE = "scheduledate";
 	public static final String FIELD_NAME_LOANACCOUNTID = "loanaccountid";
 	public static final String FIELD_NAME_SERIALNUMBER = "serialnumber";
+	public static final String FIELD_NAME_STATUS = "status";
+	public static final String FIELD_NAME_POSTEDBY = "postedby";
+	public static final String FIELD_NAME_TRANSACTIONNOTE = "transactionnote";
+	public static final String FIELD_NAME_TRANSACTIONREFERENCE = "transactionreference";
 
 }

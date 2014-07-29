@@ -85,9 +85,24 @@ function updateLoanAmount(sel){
 	var value = document.getElementById("lavalues").options[sel.selectedIndex].value;
 	document.getElementById("availloanamount").textContent = value;
 	return false;
-}
+};
 
 function showClosedLoans(){
 	"use strict";
 	document.getElementById("closedLoans").className = "table table-condensed show";
-}
+};
+
+function loanRepayment(lnaccId){
+	"use strict";
+	window.location.href = "/loanactualpayment.htm?lnaccId=" + lnaccId;
+};
+
+function loanDisburse(val){
+	"use strict";
+	window.location.href = "/loandisburse.htm?lnaccId=" + lnaccId;
+};
+
+function loanPenalty(val){
+	"use strict";
+	window.location.href = "/loanpenalty.htm?lnaccId=" + lnaccId;
+};
