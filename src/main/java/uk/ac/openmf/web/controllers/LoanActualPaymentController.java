@@ -71,7 +71,7 @@ public class LoanActualPaymentController {
 
 			loanActualPayment.setLoanaccountid(lnaccId);
 			loanActualPayment.setAmountpaid(form.getAmountpaid());
-			loanActualPayment.setDateofpayment(form.getPostedby());
+			loanActualPayment.setDateofpayment(form.getDateofpayment());
 			loanActualPayment.setPostedby(form.getPostedby());
 			loanActualPayment.setTransactionnote(form.getTransactionnote());
 			loanActualPayment.setTransactionreference(form.getTransactionreference());

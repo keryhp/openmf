@@ -15,4 +15,5 @@ public interface OpenMFSavingsProductManager extends OpenMFEntityManager<OpenMFS
 	   * @return a SavingsProduct entity.
 	   */
 	  OpenMFSavingsProduct newSavingsProduct(String userId);
+	  OpenMFSavingsProduct getSavingsProductBySavingsCode(String savingscode);
 }

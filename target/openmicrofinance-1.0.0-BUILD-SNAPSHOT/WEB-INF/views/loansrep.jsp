@@ -27,18 +27,25 @@
 <meta name="keywords" content="Open Microfinance" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Welcome!</title>
+<title>Loan Reports</title>
 <link href="/favicon.ico" rel="shortcut icon" type="image/ico" />
 <!-- Bootstrap core CSS -->
 <link type="text/css" href="/static/css/bootstrap.min.css"
 	rel="stylesheet" />
 <link type="text/css" href="/static/css/bootstrap-ext.css"
 	rel="stylesheet" />
+<link type="text/css" href="/static/css/chosen.min.css" rel="stylesheet" />
 <!-- Custom dashboard styles -->
 <link type="text/css" href="/static/css/dashboard.css" rel="stylesheet" />
 <link type="text/css" rel="stylesheet"
 	href="/static/css/font-awesome.min.css" />
 <link type="text/css" rel="stylesheet" href="/static/css/generic.css" />
+<link type="text/css" rel="stylesheet" href="/static/css/openmf.app.css" />
+<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/chosen.jquery.min.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<script src="/static/js/tablefilter.js"></script>
+<script src="/static/js/openmf.basic.js"></script>
 <!--[if lt IE 9]>
 <script src="/static/js/html5shiv.js"></script>
 <script src="/static/js/respond.min.js"></script>
@@ -58,7 +65,7 @@
 						<ul class="dropdown-menu" id="swatch-menu">
 							<li><a href="/clients.htm">Clients</a></li>
 							<li><a href="/groups.htm">Groups</a></li>
-							<li><a href="/centers.htm">Centers</a></li>
+							
 						</ul></li>
 					<li><a href="/finance/accounting.htm"><i class="fa fa-money"></i>
 							Accounting</a></li>
@@ -158,9 +165,5 @@
 			</div>
 		</div>
 	</div>
-
-	<!-- Placed at the end of the document so the pages load faster -->
-	<script src="/static/js/jquery.min.js"></script>
-	<script src="/static/js/bootstrap.min.js"></script>
 </body>
 </html>

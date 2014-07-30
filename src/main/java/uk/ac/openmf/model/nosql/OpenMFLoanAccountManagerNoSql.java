@@ -86,4 +86,13 @@ public class OpenMFLoanAccountManagerNoSql extends OpenMFEntityManagerNoSql<Open
 		FetchOptions options = FetchOptions.Builder.withLimit(100);
 		return queryEntities(qry, options);
 	}
+	
+	@Override
+	public Iterable<OpenMFLoanAccount> getAllLoanAccountsByGroup(String groupid) {
+		Query qry = new Query(getKind());
+		qry.setFilter(FilterOperator.EQUAL.of(OpenMFConstants.FIELD_NAME_GROUPID, groupid));
+		qry.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
+		FetchOptions options = FetchOptions.Builder.withLimit(100);
+		return queryEntities(qry, options);
+	}
 }

@@ -13,9 +13,9 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%
-								OpenMFUser currentUser = (OpenMFUser) request
-								.getAttribute("currentUser");
-						pageContext.setAttribute("currentUser", currentUser);
+	OpenMFUser currentUser = (OpenMFUser) request
+			.getAttribute("currentUser");
+	pageContext.setAttribute("currentUser", currentUser);
 %>
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB" xml:lang="en-GB">
@@ -25,7 +25,7 @@
 <meta name="keywords" content="Open Microfinance" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Clients Info</title>
+<title>Roles Info</title>
 <link href="/favicon.ico" rel="shortcut icon" type="image/ico" />
 <!-- Bootstrap core CSS -->
 <link type="text/css" href="/static/css/bootstrap.min.css"
@@ -63,10 +63,10 @@
 						<ul class="dropdown-menu" id="swatch-menu">
 							<li><a href="/clients.htm">Clients</a></li>
 							<li><a href="/groups.htm">Groups</a></li>
-							<li><a href="/centers.htm">Centers</a></li>
+
 						</ul></li>
-					<li><a href="/finance/accounting.htm"><i class="fa fa-money"></i>
-							Accounting</a></li>
+					<li><a href="/finance/accounting.htm"><i
+							class="fa fa-money"></i> Accounting</a></li>
 					<li class="dropdown" id="reports-menu"><a
 						class="dropdown-toggle" data-toggle="dropdown" href="#"><i
 							class="fa fa-bar-chart-o"></i> Reports<b class="caret"></b></a>
@@ -95,8 +95,8 @@
 						<ul class="dropdown-menu">
 							<li><a id="help" href="/help.htm"><i
 									class="fa fa-question-circle"></i> Help</a></li>
-							<li><a href="/viewuser.htm?omfuId=<%=currentUser.getId()%>"><i class="fa fa-user"></i>
-									Profile</a></li>
+							<li><a href="/viewuser.htm?omfuId=<%=currentUser.getId()%>"><i
+									class="fa fa-user"></i> Profile</a></li>
 							<li><a href="/usersetting.htm"><i class="fa fa-cog"></i>
 									Settings</a></li>
 							<li><a href="/logout.htm"><i class="fa fa-off"></i>Logout</a></li>

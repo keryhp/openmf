@@ -71,7 +71,7 @@
 						<ul class="dropdown-menu" id="swatch-menu">
 							<li><a href="/clients.htm">Clients</a></li>
 							<li><a href="/groups.htm">Groups</a></li>
-							<li><a href="/centers.htm">Centers</a></li>
+							
 						</ul></li>
 					<li><a href="/finance/accounting.htm"><i class="fa fa-money"></i>
 							Accounting</a></li>
@@ -175,13 +175,26 @@
 							<div>
 
 								<div class="span gray-head" style="margin-left: 0%;">
-									<span style="margin-left: 10px; font-size: 20px"> <strong>
-											<i class="fa fa-stop cstatuscode"></i>Loan Acc# <c:out
+									<span style="margin-left: 10px; font-size: 20px">
+									<%
+																				if (lnaccdetails.isDefaulted()) {
+																			%>
+									 <strong>
+											<i class="fa fa-stop cstatusprogress"></i>Loan Acc# <c:out
 												value="${lnaccdetails.loanaccountnumber}" escapeXml="true"></c:out>
 											| <c:out value="${lnaccdetails.loancode}" escapeXml="true"></c:out>
 											| Client Acc# <c:out value="${client.accountNumber}"
 												escapeXml="true"></c:out>
 									</strong>
+									<%}else{ %>
+									<strong>
+											<i class="fa fa-stop cstatusactive"></i>Loan Acc# <c:out
+												value="${lnaccdetails.loanaccountnumber}" escapeXml="true"></c:out>
+											| <c:out value="${lnaccdetails.loancode}" escapeXml="true"></c:out>
+											| Client Acc# <c:out value="${client.accountNumber}"
+												escapeXml="true"></c:out>
+									</strong>
+									<%} %>
 									</span>
 								</div>
 
@@ -193,11 +206,11 @@
 												Field Officer</a>
 										</span> <span> <a
 											onclick="loanDisburse(<%=lnaccdetails.getId()%>);"
-											class="btn btn-primary"> <i class="fa fa-check fa-white"></i>Disburse
+											class="btn btn-primary"> <i class="fa fa-plus-square fa-white"></i>Disburse
 										</a>
 										</span> <span><a
 											onclick="loanRepayment(<%=lnaccdetails.getId()%>);"
-											class="btn btn-primary"><i class="fa fa-times fa-white"></i>Repayment</a>
+											class="btn btn-primary"><i class="fa fa-minus-circle fa-white"></i>Repayment</a>
 										</span>
 									</div>
 								</div>
@@ -286,7 +299,6 @@
 													data-toggle="tab">Account Details</a></li>
 												<li class=""><a href="#repmntschedule"
 													data-toggle="tab">Repayment Schedule</a></li>
-												<li class=""><a href="#transactions" data-toggle="tab">Transactions</a></li>
 												<li class=""><a href="#loandocs" data-toggle="tab">Loan
 														Documents</a></li>
 												<li class=""><a href="#guarantor" data-toggle="tab">Guarantor
@@ -471,93 +483,6 @@
 																<th>1000.00</th>
 															</tr>
 														</tfoot>
-													</table>
-												</div>
-
-												<div class="tab-pane" id="transactions">
-													<button class="btn btn-primary pull-right"
-														onclick="export()">Export</button>
-													<div class="pull-right">
-														<input type="checkbox" /> <label class="control-label">Hide
-															Accrual Transactions</label>
-													</div>
-													<br />
-													<table class="table table-striped">
-														<colgroup span="4"></colgroup>
-														<thead>
-															<tr class="graybg">
-																<th class="pointer"
-																	onclick="changeTransactionSort('id')">Id</th>
-																<th class="pointer"
-																	onclick="changeTransactionSort('officeName')">Office
-																	Name</th>
-																<th class="pointer"
-																	onclick="changeTransactionSort('date')">Transaction
-																	Date</th>
-																<th class="pointer"
-																	onclick="changeTransactionSort('type.value')">Type</th>
-																<th class="pointer"
-																	onclick="changeTransactionSort('amount')">Amount</th>
-																<th class="pointer" colspan="5" scope="colgroup">Breakdown</th>
-															</tr>
-															<tr>
-																<th scope="col"></th>
-																<th scope="col"></th>
-																<th scope="col"></th>
-																<th scope="col"></th>
-																<th scope="col"></th>
-																<th class="pointer" scope="col"
-																	onclick="changeTransactionSort('principalPortion')">Principal</th>
-																<th class="pointer" scope="col"
-																	onclick="changeTransactionSort('interestPortion')">Interest</th>
-																<th class="pointer" scope="col"
-																	onclick="changeTransactionSort('feeChargesPortion')">Fees</th>
-																<th class="pointer" scope="col"
-																	onclick="changeTransactionSort('penaltyChargesPortion')">Penalties</th>
-															</tr>
-														</thead>
-														<tbody>
-															<tr class="pointer-main">
-																<td class="pointer" onclick="viewTransactionFn(id);">
-																	12334</td>
-																<td class="pointer" onclick="viewTransactionFn(id);">
-																	Office Name</td>
-																<td class="pointer" onclick="viewTransactionFn(id);">
-																	dd/mm/yyyy</td>
-																<td class="pointer" onclick="viewTransactionFn(id);">
-																	withdrawal</td>
-																<td class="pointer" onclick="viewTransactionFn(id);">
-																	100.00</td>
-																<td class="pointer" onclick="viewTransactionFn(id);">
-																	105.00</td>
-																<td class="pointer" onclick="viewTransactionFn(id);">
-																	5.00</td>
-																<td class="pointer" onclick="viewTransactionFn(id);">
-																	0.00</td>
-																<td class="pointer" onclick="viewTransactionFn(id);">
-																	0.00</td>
-															</tr>
-															<tr class="pointer-main">
-																<td class="pointer" onclick="viewTransactionFn(id);">
-																	12335</td>
-																<td class="pointer" onclick="viewTransactionFn(id);">
-																	Office Name</td>
-																<td class="pointer" onclick="viewTransactionFn(id);">
-																	dd/mm/yyyy</td>
-																<td class="pointer" onclick="viewTransactionFn(id);">
-																	withdrawal</td>
-																<td class="pointer" onclick="viewTransactionFn(id);">
-																	100.00</td>
-																<td class="pointer" onclick="viewTransactionFn(id);">
-																	105.00</td>
-																<td class="pointer" onclick="viewTransactionFn(id);">
-																	5.00</td>
-																<td class="pointer" onclick="viewTransactionFn(id);">
-																	0.00</td>
-																<td class="pointer" onclick="viewTransactionFn(id);">
-																	0.00</td>
-															</tr>
-														</tbody>
 													</table>
 												</div>
 												<div class="tab-pane" id="loandocs">

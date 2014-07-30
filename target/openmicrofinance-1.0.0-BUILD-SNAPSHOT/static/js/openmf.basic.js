@@ -8,6 +8,11 @@ function viewClientFn(clientId){
 	window.location.href = "/viewclient.htm?clientId=" + clientId;
 };
 
+function viewGroupFn(groupId){
+	"use strict";
+	window.location.href = "/viewgroup.htm?groupId=" + groupId;
+};
+
 function viewUserDetailsFn(omfuId){
 	"use strict";
 	window.location.href = "/viewuser.htm?omfuId=" + omfuId;
@@ -28,9 +33,19 @@ function viewLoanAccountFn(lnaccId){
 	window.location.href = "/viewloanaccount.htm?lnaccId=" + lnaccId;
 };
 
+function viewSavingsAccountFn(sgaccId){
+	"use strict";
+	window.location.href = "/viewsavingsaccount.htm?sgaccId=" + sgaccId;
+};
+
 function createLoanAccountFn(clientaccountid){
 	"use strict";
 	window.location.href = "/createloanaccount.htm?clientId=" + clientaccountid;
+};
+
+function createGroupLoanAccountsFn(groupId){
+	"use strict";
+	window.location.href = "/createloanaccount.htm?groupId=" + groupId;
 };
 
 function createSavingsAccountFn(clientaccountid){
@@ -87,9 +102,9 @@ function updateLoanAmount(sel){
 	return false;
 };
 
-function showClosedLoans(){
+function showClosedTable(idVal){
 	"use strict";
-	document.getElementById("closedLoans").className = "table table-condensed show";
+	document.getElementById(idVal).className = "table table-condensed";
 };
 
 function loanRepayment(lnaccId){
@@ -97,12 +112,36 @@ function loanRepayment(lnaccId){
 	window.location.href = "/loanactualpayment.htm?lnaccId=" + lnaccId;
 };
 
-function loanDisburse(val){
+function loanDisburse(lnaccId){
 	"use strict";
 	window.location.href = "/loandisburse.htm?lnaccId=" + lnaccId;
 };
 
-function loanPenalty(val){
+/*function loanPenalty(val){
 	"use strict";
 	window.location.href = "/loanpenalty.htm?lnaccId=" + lnaccId;
+};*/
+
+function savingsDeposit(sgaccId){
+	"use strict";
+	window.location.href = "/savingsdeposit.htm?sgaccId=" + sgaccId;
+};
+
+function savingsWithdrawal(sgaccId){
+	"use strict";
+	window.location.href = "/savingswithdrawal.htm?sgaccId=" + sgaccId;
+};
+
+function showOrHideGroup(sel){
+	"use strict";
+	var value = document.getElementById("clienttype").options[sel.selectedIndex].value;
+	if(value == "individual")
+		document.getElementById("groupSelect").className = "col-sm-3 hide";
+	else if(value == "group")
+		document.getElementById("groupSelect").className = "col-sm-3 show";
+};
+
+function assignGroupFn(clientId){
+	"use strict";
+	window.location.href = "/assigngroup.htm?clientId=" + clientId;
 };

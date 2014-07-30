@@ -1,6 +1,7 @@
 package uk.ac.openmf.web.controllers;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -59,11 +60,15 @@ public class LoanAccountController {
 	public LoanAccountForm loanAccountForm(HttpServletRequest req) {
 		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		String clientId = req.getParameter("clientId");
-		req.setAttribute("clientId", clientId);
+		String groupId = req.getParameter("groupId");	
+		LoanAccountForm form  = new LoanAccountForm();
+		if(clientId != null){
+			req.setAttribute("clientId", clientId);
+		}else if(groupId != null){
+			req.setAttribute("groupId", groupId);
+		}
 		req.setAttribute("loanProducts", OMFUtils.getLoanProductsList());
 		req.setAttribute("omfusers", OMFUtils.getUsersList());
-		LoanAccountForm form  = new LoanAccountForm();
-		form.setClientId(clientId);
 		return form;
 	}
 
@@ -78,43 +83,88 @@ public class LoanAccountController {
 		if (currentUser != null) {
 			AppContext appContext = AppContext.getAppContext();
 			OpenMFLoanAccountManager loanAccountManager = appContext.getLoanAccountManager();
-			OpenMFLoanAccount loanAccount = loanAccountManager.newLoanAccount(currentUser.getUserId());
-			loanAccount.setCreatedById(currentUser.getUsername());
-			loanAccount.setTimestamp(System.currentTimeMillis());
-			loanAccount.setActive(form.isActive());
-			loanAccount.setApprovedamount(form.getApprovedamount());
-			loanAccount.setApprovedby(form.getApprovedby());
-			loanAccount.setApprovedon(form.getApprovedon());
-			loanAccount.setArrearsby(form.getArrearsby());
-			loanAccount.setBalanceoutstandingamount(form.getBalanceoutstandingamount());
-			loanAccount.setClientId(form.getClientId());
-			loanAccount.setDisbursedamount(form.getDisbursedamount());
-			loanAccount.setDisbursedon(form.getDisbursedon());
-			loanAccount.setFees(form.getFees());
-			loanAccount.setFieldofficer(form.getFieldofficer());
-			loanAccount.setInterestcalcperiod(form.getInterestcalcperiod());
-			loanAccount.setInterestrepaymentamount(form.getInterestrepaymentamount());
-			loanAccount.setLoanaccountnumber(GenerateAccountNumber.getAccNumberService().generateLoanAccNumber(loanAccountManager.entityCount() + 1));
-			loanAccount.setLoanclosedate(form.getLoanclosedate());
-			loanAccount.setLoancode(form.getLoancode());
-			loanAccount.setLoanofficer(form.getLoanofficer());
-			loanAccount.setLoanpurpose(form.getLoanpurpose());
-			loanAccount.setLoanstartdate(form.getLoanstartdate());
-			loanAccount.setMatureson(form.getMatureson());
-			loanAccount.setNumrepaymentsmade(form.getNumrepaymentsmade());
-			loanAccount.setPenalties(form.getPenalties());
-			loanAccount.setPrincipaldueamount(form.getPrincipaldueamount());
-			loanAccount.setSubmittedon(form.getSubmittedon());
-			loanAccount.setTotalnumrepayments(form.getTotalnumrepayments());
-			loanAccount.setTotalrepaymentamount(form.getTotalrepaymentamount());
-			loanAccount.setNumpaymentsmissed(form.getNumpaymentsmissed());
-			loanAccount.setDefaulted(form.isDefaulted());
-			loanAccountManager.upsertEntity(loanAccount);
-			lnaccId = loanAccount.getId();
-			RepaymentService.generateRepaymentSchedule(loanAccount, AppContext.getAppContext().getLoanProductManager().getLoanProductByLoanCode(loanAccount.getLoancode()), AppContext.getAppContext().getCurrentUser().getUserId());
-		} else {
-			//return null;
+
+			if(form.getGroupId() != null){
+				ArrayList<OpenMFClient> clients = OMFUtils.getClientsByGroupId(form.getGroupId());
+				for (OpenMFClient openMFClient : clients) {
+					OpenMFLoanAccount loanAccount = loanAccountManager.newLoanAccount(currentUser.getUserId());
+					loanAccount.setClientId(openMFClient.getId().toString());
+					loanAccount.setGroupId(form.getGroupId());
+					loanAccount.setGrouploan(true);				
+					loanAccount.setCreatedById(currentUser.getUsername());
+					loanAccount.setTimestamp(System.currentTimeMillis());
+					loanAccount.setActive(form.isActive());
+					loanAccount.setApprovedamount(form.getApprovedamount());
+					loanAccount.setApprovedby(form.getApprovedby());
+					loanAccount.setApprovedon(form.getApprovedon());
+					loanAccount.setArrearsby(form.getArrearsby());
+					loanAccount.setBalanceoutstandingamount(form.getBalanceoutstandingamount());
+					loanAccount.setDisbursedamount(form.getDisbursedamount());
+					loanAccount.setDisbursedon(form.getDisbursedon());
+					loanAccount.setFees(form.getFees());
+					loanAccount.setFieldofficer(form.getFieldofficer());
+					loanAccount.setInterestcalcperiod(form.getInterestcalcperiod());
+					loanAccount.setInterestrepaymentamount(form.getInterestrepaymentamount());
+					loanAccount.setLoanaccountnumber(GenerateAccountNumber.getAccNumberService().generateLoanAccNumber(loanAccountManager.entityCount() + 1));
+					loanAccount.setLoanclosedate(form.getLoanclosedate());
+					loanAccount.setLoancode(form.getLoancode());
+					loanAccount.setLoanofficer(form.getLoanofficer());
+					loanAccount.setLoanpurpose(form.getLoanpurpose());
+					loanAccount.setLoanstartdate(form.getLoanstartdate());
+					loanAccount.setMatureson(form.getMatureson());
+					loanAccount.setNumrepaymentsmade(form.getNumrepaymentsmade());
+					loanAccount.setPenalties(form.getPenalties());
+					loanAccount.setPrincipaldueamount(form.getPrincipaldueamount());
+					loanAccount.setSubmittedon(form.getSubmittedon());
+					loanAccount.setTotalnumrepayments(form.getTotalnumrepayments());
+					loanAccount.setTotalrepaymentamount(form.getTotalrepaymentamount());
+					loanAccount.setNumpaymentsmissed(form.getNumpaymentsmissed());
+					loanAccount.setDefaulted(form.isDefaulted());
+					loanAccountManager.upsertEntity(loanAccount);
+					lnaccId = loanAccount.getId();
+					RepaymentService.generateRepaymentSchedule(loanAccount, AppContext.getAppContext().getLoanProductManager().getLoanProductByLoanCode(loanAccount.getLoancode()), AppContext.getAppContext().getCurrentUser().getUserId());					
+				}
+				return "redirect:/groups.htm";
+			}else{
+				OpenMFLoanAccount loanAccount = loanAccountManager.newLoanAccount(currentUser.getUserId());
+				loanAccount.setGroupId(form.getGroupId());
+				loanAccount.setGrouploan(true);				
+				loanAccount.setCreatedById(currentUser.getUsername());
+				loanAccount.setTimestamp(System.currentTimeMillis());
+				loanAccount.setClientId(form.getClientId());				
+				loanAccount.setActive(form.isActive());
+				loanAccount.setApprovedamount(form.getApprovedamount());
+				loanAccount.setApprovedby(form.getApprovedby());
+				loanAccount.setApprovedon(form.getApprovedon());
+				loanAccount.setArrearsby(form.getArrearsby());
+				loanAccount.setBalanceoutstandingamount(form.getBalanceoutstandingamount());
+				loanAccount.setDisbursedamount(form.getDisbursedamount());
+				loanAccount.setDisbursedon(form.getDisbursedon());
+				loanAccount.setFees(form.getFees());
+				loanAccount.setFieldofficer(form.getFieldofficer());
+				loanAccount.setInterestcalcperiod(form.getInterestcalcperiod());
+				loanAccount.setInterestrepaymentamount(form.getInterestrepaymentamount());
+				loanAccount.setLoanaccountnumber(GenerateAccountNumber.getAccNumberService().generateLoanAccNumber(loanAccountManager.entityCount() + 1));
+				loanAccount.setLoanclosedate(form.getLoanclosedate());
+				loanAccount.setLoancode(form.getLoancode());
+				loanAccount.setLoanofficer(form.getLoanofficer());
+				loanAccount.setLoanpurpose(form.getLoanpurpose());
+				loanAccount.setLoanstartdate(form.getLoanstartdate());
+				loanAccount.setMatureson(form.getMatureson());
+				loanAccount.setNumrepaymentsmade(form.getNumrepaymentsmade());
+				loanAccount.setPenalties(form.getPenalties());
+				loanAccount.setPrincipaldueamount(form.getPrincipaldueamount());
+				loanAccount.setSubmittedon(form.getSubmittedon());
+				loanAccount.setTotalnumrepayments(form.getTotalnumrepayments());
+				loanAccount.setTotalrepaymentamount(form.getTotalrepaymentamount());
+				loanAccount.setNumpaymentsmissed(form.getNumpaymentsmissed());
+				loanAccount.setDefaulted(form.isDefaulted());
+				loanAccountManager.upsertEntity(loanAccount);
+				lnaccId = loanAccount.getId();
+				RepaymentService.generateRepaymentSchedule(loanAccount, AppContext.getAppContext().getLoanProductManager().getLoanProductByLoanCode(loanAccount.getLoancode()), AppContext.getAppContext().getCurrentUser().getUserId());
+				return "redirect:/viewloanaccount.htm?lnaccId=" + lnaccId;
+			}
 		}
-		return "redirect:/viewloanaccount.htm?lnaccId=" + lnaccId;
+		return "redirect:/groups.htm";
 	}
 }

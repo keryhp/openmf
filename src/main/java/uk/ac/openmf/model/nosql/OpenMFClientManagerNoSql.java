@@ -10,6 +10,7 @@ import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.SortDirection;
 
 /**
@@ -68,4 +69,13 @@ public class OpenMFClientManagerNoSql extends OpenMFEntityManagerNoSql<OpenMFCli
 	  protected OpenMFClientNoSql fromEntity(Entity entity) {
 	    return new OpenMFClientNoSql(entity);
 	  }
+
+	@Override
+	public Iterable<OpenMFClient> getClientsByGroupId(String groupid) {
+		Query qry = new Query(getKind());
+		qry.setFilter(FilterOperator.EQUAL.of(OpenMFConstants.FIELD_NAME_GROUPID, groupid));
+		qry.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
+		FetchOptions options = FetchOptions.Builder.withLimit(100);
+		return queryEntities(qry, options);
+	}
 }

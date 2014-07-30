@@ -18,4 +18,6 @@ public interface OpenMFLoanAccountManager extends OpenMFEntityManager<OpenMFLoan
 	   * @return a LoanAccount entity.
 	   */
 	  OpenMFLoanAccount newLoanAccount(String userId);
+
+	Iterable<OpenMFLoanAccount> getAllLoanAccountsByGroup(String groupid);
 }

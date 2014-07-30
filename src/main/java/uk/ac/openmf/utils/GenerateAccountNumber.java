@@ -27,4 +27,8 @@ public class GenerateAccountNumber {
   public String generateSavingsAccNumber(int nextAvail){
 	  return "OMF-HO-SVG-00" + nextAvail;
   }
+  
+  public String generateGroupAccNumber(int nextAvail){
+	  return "OMF-HO-GRP-00" + nextAvail;
+  }
 }

@@ -68,4 +68,8 @@ public interface OpenMFLoanAccount extends OpenMFEntity {
 	void setNumpaymentsmissed(String numpaymentsmissed);
 	boolean isDefaulted();
 	void setDefaulted(boolean defaulted);
+	String getGroupId();
+	void setGroupId(String groupId);
+	boolean isGrouploan();
+	void setGrouploan(boolean grouploan);
 }

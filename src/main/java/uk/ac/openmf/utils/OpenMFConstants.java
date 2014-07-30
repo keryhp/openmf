@@ -88,5 +88,22 @@ public class OpenMFConstants {
 	public static final String FIELD_NAME_POSTEDBY = "postedby";
 	public static final String FIELD_NAME_TRANSACTIONNOTE = "transactionnote";
 	public static final String FIELD_NAME_TRANSACTIONREFERENCE = "transactionreference";
+	public static final String FIELD_NAME_SAVINGSACCOUNTNUMBER = "savingsaccountnumber";
+	public static final String FIELD_NAME_SAVINGSPURPOSE = "savingspurpose";
+	public static final String FIELD_NAME_SAVINGSSTARTDATE = "savingsstartdate";
+	public static final String FIELD_NAME_SAVINGSCLOSEDATE = "savingsclosedate";
+	public static final String FIELD_NAME_TOTALNUMDEPOSITS = "totalnumdeposits";
+	public static final String FIELD_NAME_SAVINGSOFFICER = "savingsofficer";
+	public static final String FIELD_NAME_TOTALPRINCIPALDEPOSIT = "totalprincipaldeposit";
+	public static final String FIELD_NAME_TOTALINTERESTGAIN = "totalinterestgain";
+	public static final String FIELD_NAME_AVAILABLEBALANCE = "availablebalance";
+	public static final String FIELD_NAME_SCHEDULEDEPOSITMISSED = "scheduledepositmissed";
+	public static final String FIELD_NAME_SAVINGSACCOUNTID = "savingsaccountid";
+	public static final String FIELD_NAME_GROUPNAME = "groupname";
+	public static final String FIELD_NAME_LEADCLIENTNAME = "leadclientname";
+	public static final String FIELD_NAME_GROUPID = "groupid";
+	public static final String FIELD_NAME_GROUPLOAN = "grouploan";
+	public static final String FIELD_NAME_WITHDRAWALAMOUNT = "withdrawalamount";
+	public static final String FIELD_NAME_DATEOFWITHDRAWAL = "dateofwithdrawal";
 
 }

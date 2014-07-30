@@ -21,20 +21,26 @@ import uk.ac.openmf.web.forms.RolesForm;
  * Handles requests for the application home page.
  */
 @Controller
-@RequestMapping(value="/createrole.htm")
 public class RolesController {
 	
-	@RequestMapping(method= RequestMethod.GET)
+	@RequestMapping(value = "/assignroles.htm", method= RequestMethod.GET)
+    public String assignroles(HttpServletRequest req) {
+		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
+		req.setAttribute("roles", OMFUtils.getAllRolesList());
+        return "assignroles";
+    }
+	
+	@RequestMapping(value="/createrole.htm", method= RequestMethod.GET)
     public RolesForm rolesForm(HttpServletRequest req) {
 		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		req.setAttribute("roles", OMFUtils.getAllRolesList());
         return new RolesForm();
     }
-
+	
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(value="/createrole.htm", method = RequestMethod.POST)
 	public String createrole(RolesForm form, BindingResult result) {
 		if (result.hasErrors()) {
             return null;

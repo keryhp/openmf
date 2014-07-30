@@ -1,7 +1,5 @@
 package uk.ac.openmf.web.controllers;
 
-import java.util.ArrayList;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.security.core.Authentication;
@@ -13,17 +11,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import uk.ac.openmf.model.OpenMFClient;
 import uk.ac.openmf.model.OpenMFClientManager;
-import uk.ac.openmf.model.OpenMFLoanAccount;
+import uk.ac.openmf.model.OpenMFGroup;
 import uk.ac.openmf.model.nosql.OpenMFUserNoSql;
-import uk.ac.openmf.users.GaeUser;
 import uk.ac.openmf.utils.GenerateAccountNumber;
+import uk.ac.openmf.utils.OMFUtils;
 import uk.ac.openmf.utils.OpenMFConstants;
 import uk.ac.openmf.utils.ServletUtils;
-import uk.ac.openmf.utils.OMFUtils;
 import uk.ac.openmf.web.AppContext;
 import uk.ac.openmf.web.forms.ClientForm;
-
-import com.google.appengine.api.datastore.DatastoreNeedIndexException;
 
 /**
  * @author harish
@@ -47,9 +42,14 @@ public class ClientController {
 		if (clientId != null) {
 			client = AppContext.getAppContext().getClientManager().getClient(ServletUtils.validateEventId(clientId));
 		}
-		req.setAttribute("client", client);    
+		req.setAttribute("client", client);
+		OpenMFGroup group = null;
+		if (client.getGroupid() != null) {
+			group = AppContext.getAppContext().getGroupManager().getGroup(ServletUtils.validateEventId(client.getGroupid()));
+			req.setAttribute("group", group);
+		}
 		req.setAttribute("loanAccounts", OMFUtils.getLoanAccountsByClientList(clientId));
-		
+		req.setAttribute("savingsAccounts", OMFUtils.getSavingsAccountsByClientList(clientId));
 		return "viewclient";
 	}
 
@@ -57,6 +57,7 @@ public class ClientController {
 	public ClientForm clientForm(HttpServletRequest req) {
 		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		req.setAttribute("omfusers", OMFUtils.getUsersList());
+		req.setAttribute("groups", OMFUtils.getAllGroupsList());
 		return new ClientForm();
 	}
 
@@ -67,7 +68,6 @@ public class ClientController {
 		}
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		OpenMFUserNoSql currentUser = (OpenMFUserNoSql)authentication.getPrincipal();
-		boolean succeeded = false;
 		if (currentUser != null) {
 			AppContext appContext = AppContext.getAppContext();
 			OpenMFClientManager clientManager = appContext.getClientManager();
@@ -92,19 +92,11 @@ public class ClientController {
 			client.setSurname(form.getSurname());
 			client.setAccountNumber(GenerateAccountNumber.getAccNumberService().generateClientAccNumber(clientManager.entityCount() + 1));
 			client.setAddress(form.getAddress());
-			client.setBalance(OpenMFConstants.FIELD_VALUE_ZERO);			
+			client.setBalance(OpenMFConstants.FIELD_VALUE_ZERO);
+			if("group".equalsIgnoreCase(form.getClienttype()))
+				client.setGroupid(form.getGroupid());
 			clientManager.upsertEntity(client);
-			succeeded = true;
-			if (succeeded) {
-				//redirect to new role created 
-			} else {
-				//redirect to error page
-			}
-			//return openMFRoles;
-		} else {
-			//return null;
 		}
-
 		return "redirect:/clients.htm";
 	}
 }

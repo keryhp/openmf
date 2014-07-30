@@ -32,9 +32,21 @@ public interface OpenMFEntityManagerFactory {
 	
 	OpenMFClientManager getClientManager();
 	
+	OpenMFGroupManager getGroupManager();
+	
 	OpenMFLoanAccountManager getLoanAccountManager();
+	
+	OpenMFSavingsAccountManager getSavingsAccountManager();
 	
 	OpenMFLoanRepaymentManager getLoanRepaymentManager();
 	
 	OpenMFLoanActualPaymentManager getLoanActualPaymentManager();
+	
+	OpenMFLoanDisburseManager getLoanDisburseManager();
+	
+	OpenMFSavingsDepositManager getSavingsDepositManager();
+	
+	OpenMFSavingsWithdrawalManager getSavingsWithdrawalManager();
+	
+	OpenMFSavingsScheduledDepositManager getSavingsScheduledDepositManager();
 }

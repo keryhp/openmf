@@ -101,11 +101,6 @@ public class GaeAppController {
         return "accountingcoa";
     }
     
-    @RequestMapping(value = "/creategroup.htm", method= RequestMethod.GET)
-    public String creategroup() {
-        return "creategroup";
-    }
-    
     @RequestMapping(value = "/createcenter.htm", method= RequestMethod.GET)
     public String createcenter() {
         return "createcenter";
@@ -175,11 +170,6 @@ public class GaeAppController {
     @RequestMapping(value = "/roi.htm", method= RequestMethod.GET)
     public String roi() {
         return "roi";
-    }
-    
-    @RequestMapping(value = "/assignroles.htm", method= RequestMethod.GET)
-    public String assignroles() {
-        return "assignroles";
     }
     
     @RequestMapping(value = "/policyprocedure.htm", method= RequestMethod.GET)

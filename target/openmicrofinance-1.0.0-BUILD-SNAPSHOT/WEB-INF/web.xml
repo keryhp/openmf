@@ -4,6 +4,10 @@
     <param-name>contextConfigLocation</param-name>
     <param-value>/WEB-INF/spring/root-context.xml</param-value>
   </context-param>
+  <!-- We require this to avoid session being alive on server for a long time even after user was diconnected-->
+	<session-config>
+		<session-timeout>2</session-timeout>
+	</session-config>
     <filter>
         <filter-name>springSecurityFilterChain</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>

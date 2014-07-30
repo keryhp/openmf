@@ -236,4 +236,14 @@ public class OpenMFClientNoSql extends OpenMFEntityNoSql  implements OpenMFClien
 		entity.setProperty(OpenMFConstants.FIELD_NAME_BALANCE, balance);
 	}
 
+	@Override
+	public String getGroupid() {
+		return (String) entity.getProperty(OpenMFConstants.FIELD_NAME_GROUPID);
+	}
+
+	@Override
+	public void setGroupid(String groupid) {
+		entity.setProperty(OpenMFConstants.FIELD_NAME_GROUPID, groupid);
+	}
+
 }

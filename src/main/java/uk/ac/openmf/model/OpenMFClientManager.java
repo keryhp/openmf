@@ -10,6 +10,8 @@ public interface OpenMFClientManager extends OpenMFEntityManager<OpenMFClient> {
 	  
 	  Iterable<OpenMFClient> getAllClients();
 
+	  Iterable<OpenMFClient> getClientsByGroupId(String groupid);
+
 	  /**
 	   * Creates a new Client object.
 	   *

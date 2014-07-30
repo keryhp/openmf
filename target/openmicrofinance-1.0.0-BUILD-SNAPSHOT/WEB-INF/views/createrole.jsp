@@ -26,7 +26,7 @@
 <meta name="keywords" content="Open Microfinance" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Clients Info</title>
+<title>Create Role</title>
 <link href="/favicon.ico" rel="shortcut icon" type="image/ico" />
 <!-- Bootstrap core CSS -->
 <link type="text/css" href="/static/css/bootstrap.min.css"
@@ -64,7 +64,7 @@
 						<ul class="dropdown-menu" id="swatch-menu">
 							<li><a href="/clients.htm">Clients</a></li>
 							<li><a href="/groups.htm">Groups</a></li>
-							<li><a href="/centers.htm">Centers</a></li>
+							
 						</ul></li>
 					<li><a href="/finance/accounting.htm"><i class="fa fa-money"></i>
 							Accounting</a></li>

@@ -38,7 +38,7 @@
 <meta name="keywords" content="Open Microfinance" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Clients Info</title>
+<title>Loan Payment</title>
 <link href="/favicon.ico" rel="shortcut icon" type="image/ico" />
 <!-- Bootstrap core CSS -->
 <link type="text/css" href="/static/css/bootstrap.min.css"
@@ -57,6 +57,15 @@
 <script src="/static/js/bootstrap.min.js"></script>
 <script src="/static/js/tablefilter.js"></script>
 <script src="/static/js/openmf.basic.js"></script>
+<script src="/static/js/jquery-ui.js"></script>
+<script src="/static/js/jquery-ui-timepicker-addon.js"></script>
+<script type="text/javascript">
+$(document).ready(function (){
+	var dateToday = new Date();
+	$(".date-picker").datepicker({format: "dd/mm/yyyy", minDate: dateToday});
+});
+</script>
+<link type="text/css" rel="stylesheet" href="/static/css/jquery-ui.css" />
 <!--[if lt IE 9]>
 <script src="/static/js/html5shiv.js"></script>
 <script src="/static/js/respond.min.js"></script>
@@ -76,7 +85,7 @@
 						<ul class="dropdown-menu" id="swatch-menu">
 							<li><a href="/clients.htm">Clients</a></li>
 							<li><a href="/groups.htm">Groups</a></li>
-							<li><a href="/centers.htm">Centers</a></li>
+							
 						</ul></li>
 					<li><a href="/finance/accounting.htm"><i
 							class="fa fa-money"></i> Accounting</a></li>

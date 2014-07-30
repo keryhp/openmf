@@ -52,7 +52,6 @@
 <script src="/static/js/respond.min.js"></script>
 <![endif]-->
 </head>
-
 <body>
 	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 		<div class="container-fluid container">
@@ -66,7 +65,7 @@
 						<ul class="dropdown-menu" id="swatch-menu">
 							<li><a href="/clients.htm">Clients</a></li>
 							<li><a href="/groups.htm">Groups</a></li>
-							<li><a href="/centers.htm">Centers</a></li>
+							
 						</ul></li>
 					<li><a href="/finance/accounting.htm"><i class="fa fa-money"></i>
 							Accounting</a></li>

@@ -17,8 +17,15 @@
 			.getAttribute("currentUser");
 	pageContext.setAttribute("currentUser", currentUser);
 	OpenMFClient client = (OpenMFClient) request.getAttribute("client");
+	OpenMFGroup group = (OpenMFGroup) request.getAttribute("group");
 	ArrayList<OpenMFLoanAccount> loanAccounts = (ArrayList<OpenMFLoanAccount>) request
 			.getAttribute("loanAccounts");
+	ArrayList<OpenMFSavingsAccount> savingsAccounts = (ArrayList<OpenMFSavingsAccount>) request
+			.getAttribute("savingsAccounts");
+	int numofActiveLoans = 0;
+	int numofActiveSavings = 0;
+	double balLoan = 0.0;
+	double totSavings = 0.0;
 %>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB" xml:lang="en-GB">
 <head>
@@ -65,10 +72,10 @@
 						<ul class="dropdown-menu" id="swatch-menu">
 							<li><a href="/clients.htm">Clients</a></li>
 							<li><a href="/groups.htm">Groups</a></li>
-							<li><a href="/centers.htm">Centers</a></li>
+
 						</ul></li>
-					<li><a href="/finance/accounting.htm"><i class="fa fa-money"></i>
-							Accounting</a></li>
+					<li><a href="/finance/accounting.htm"><i
+							class="fa fa-money"></i> Accounting</a></li>
 					<li class="dropdown" id="reports-menu"><a
 						class="dropdown-toggle" data-toggle="dropdown" href="#"><i
 							class="fa fa-bar-chart-o"></i> Reports<b class="caret"></b></a>
@@ -97,8 +104,8 @@
 						<ul class="dropdown-menu">
 							<li><a id="help" href="/help.htm"><i
 									class="fa fa-question-circle"></i> Help</a></li>
-							<li><a href="/viewuser.htm?omfuId=<%=currentUser.getId()%>"><i class="fa fa-user"></i>
-									Profile</a></li>
+							<li><a href="/viewuser.htm?omfuId=<%=currentUser.getId()%>"><i
+									class="fa fa-user"></i> Profile</a></li>
 							<li><a href="/usersetting.htm"><i class="fa fa-cog"></i>
 									Settings</a></li>
 							<li><a href="/logout.htm"><i class="fa fa-off"></i>Logout</a></li>
@@ -185,7 +192,7 @@
 										<ul id="myTab" class="nav nav-tabs">
 											<li class="active"><a href="#general" data-toggle="tab">General</a></li>
 											<li class=""><a href="#address" data-toggle="tab">Address</a></li>
-											<li class=""><a href="#history" data-toggle="tab">History</a></li>
+											<li class=""><a href="#transactions" data-toggle="tab">Transactions</a></li>
 											<!-- <li class=""><a href="#statistics" data-toggle="tab">Statistics</a></li>
 									<li class=""><a href="#tab" data-toggle="tab">Tab
 											5</a></li> -->
@@ -203,12 +210,15 @@
 															</span> <span><a
 																onclick="createSavingsAccountFn(<%=client.getId()%>)"
 																class="btn btn-primary"><i
-																	class="fa fa-arrow-right fa-white"></i>Add New Savings</a>
+																	class="fa fa-dollar fa-white"></i>Add New Savings</a>
 															</span>
-															<!-- <span>
-														<a href="#/client/7/undotransfer" class="btn btn-primary"><i
-															class="fa fa-undo fa-white"></i>Undo Transfer</a>
-													</span> -->
+															<% if(group == null) {%>
+															 <span> <a
+																onclick="assignGroupFn(<%=client.getId()%>)"
+																class="btn btn-primary"><i
+																	class="fa fa-group fa-white"></i>Assign Group</a>
+															</span>
+															<%} %>
 															<!-- <button type="button" class="btn btn-primary ">
 																<i class="fa fa-user fa-white"></i>Unassign Staff
 															</button> -->
@@ -224,8 +234,8 @@
 																<div class="pull-right">
 																	<span class="">
 																		<button type="button" class="btn-primary btn btn-sm"
-																			onclick="showClosedLoans();">View Closed
-																			Loans</button> <!-- <button type="button" class="btn-primary btn btn-sm">View
+																			onclick="showClosedTable('closedLoans');">View
+																			Closed Loans</button> <!-- <button type="button" class="btn-primary btn btn-sm">View
 																	Active Loans</button> -->
 																	</span>
 																</div>
@@ -248,10 +258,14 @@
 																			for (OpenMFLoanAccount loanAccount : loanAccounts) {
 																						long laId = loanAccount.getId();
 																						if (loanAccount.isActive()) {
+																							numofActiveLoans++;
+																							if(loanAccount.getBalanceoutstandingamount() != null){
+																								balLoan += new Double(loanAccount.getBalanceoutstandingamount()).doubleValue();
+																							}
 																		%>
 																		<%-- <tr class="pointer-main"
 																			onclick="viewLoanAccountFn(<%=laId%>);"> --%>
-																			<tr>
+																		<tr>
 																			<%
 																				if (loanAccount.isDefaulted()) {
 																			%>
@@ -289,15 +303,16 @@
 																					escapeXml="true" /></td>
 																			<td class="pointer center"><a
 																				onclick="loanRepayment(<%=laId%>);"
-																				class="btn btn-xs btn-primary " tooltip="Repayment"> <i
-																					class="fa fa-dollar fa-white"></i>
+																				class="btn btn-xs btn-primary " tooltip="Repayment">
+																					<i class="fa fa-plus-square fa-white"></i>
 																			</a> <a onclick="loanDisburse(<%=laId%>);"
-																				class="btn btn-xs btn-primary " tooltip="Disburse"> <i
-																					class="fa fa-check fa-white"></i>
-																			</a> <a onclick="loanPenalty(<%=laId%>);"
-																				class="btn btn-xs btn-primary " tooltip="Add Penalty"> <i
+																				class="btn btn-xs btn-primary " tooltip="Disburse">
+																					<i class="fa fa-minus-circle fa-white"></i>
+																			</a> <%-- <a onclick="loanPenalty(<%=laId%>);"
+																				class="btn btn-xs btn-primary "
+																				tooltip="Add Penalty"> <i
 																					class="fa fa-flag fa-red"></i>
-																			</a></td>
+																			</a> --%></td>
 																		</tr>
 																		<%
 																			}
@@ -321,7 +336,7 @@
 																		<tr class="pointer-main">
 																			<td class="pointer"
 																				onclick="viewLoanAccountFn(<%=laId%>);"><i
-																				class="fa fa-stop cstatuscode"></i> <c:out
+																				class="fa fa-stop cstatusprogress"></i> <c:out
 																					value="<%=loanAccount.getLoanaccountnumber()%>"
 																					escapeXml="true" /></td>
 																			<td class="pointer"
@@ -338,17 +353,18 @@
 																						escapeXml="true" /></span></td>
 																		</tr>
 
-
 																		<%
 																			}
 																					}
 																		%>
+
 																	</table>
 																</div>
 																<div>
 																	<div class="pull-right">
 																		<span>
-																			<button type="button" class="btn-primary btn btn-sm">
+																			<button type="button" class="btn-primary btn btn-sm"
+																				onclick="showClosedTable('closedSavings');">
 																				View Closed Savings</button> <!-- <button type="button" class="btn-primary btn btn-sm">
 																		View Active Savings</button> -->
 																		</span>
@@ -361,43 +377,93 @@
 																	<table class="table table-condensed">
 																		<tr class="graybg">
 																			<th>Account#</th>
-																			<th>Savings Account</th>
+																			<th>Savings Code</th>
 																			<th class="center">Balance</th>
 																			<th>Actions</th>
 																		</tr>
-																		<tr class="pointer-main">
-																			<td class="pointer"><i
-																				class="fa fa-stop savingstatuscode"></i>
-																				7777777777777</td>
-																			<td class="pointer">Savings Prod</td>
-																			<td class="pointer center">8888</td>
+																		<%
+																			for (OpenMFSavingsAccount savingsAccount : savingsAccounts) {
+																						long saId = savingsAccount.getId();
+																						if (savingsAccount.isActive()) {
+																							numofActiveSavings++;
+																							if(savingsAccount.getAvailablebalance() != null){
+																								totSavings += new Double(savingsAccount.getAvailablebalance()).doubleValue();
+																							}
+																		%>
+																		<tr>
+																			<%
+																				if (savingsAccount.isScheduledepositmissed()) {
+																			%>
+																			<td class="pointer"
+																				onclick="viewSavingsAccountFn(<%=saId%>);"><i
+																				class="fa fa-circle cstatusprogress"></i> <c:out
+																					value="<%=savingsAccount
+										.getSavingsaccountnumber()%>"
+																					escapeXml="true" /></td>
+																			<%
+																				} else {
+																			%>
+																			<td class="pointer"
+																				onclick="viewSavingsAccountFn(<%=saId%>);"><i
+																				class="fa fa-circle cstatusactive"></i> <c:out
+																					value="<%=savingsAccount
+										.getSavingsaccountnumber()%>"
+																					escapeXml="true" /></td>
+																			<%
+																				}
+																			%>
+																			<td class="pointer"
+																				onclick="viewSavingsAccountFn(<%=saId%>);"><c:out
+																					value="<%=savingsAccount.getSavingscode()%>"
+																					escapeXml="true" /></td>
+																			<td class="pointer center"><c:out
+																					value="<%=savingsAccount.getAvailablebalance()%>"
+																					escapeXml="true" /></td>
 																			<td class="pointer"><a
-																				href="#/savingaccount/savingaccountid/deposit"
+																				onclick="savingsDeposit(<%=saId%>);"
 																				class="btn btn-xs btn-primary "> <i
-																					class="fa fa-arrow-right fa-white"></i>
-																			</a> <a
-																				href="#/recurringdepositaccount/savingaccountid/deposit"
+																					class="fa fa-plus-square fa-white"></i>
+																			</a> <a onclick="savingsWithdrawal(<%=saId%>);"
 																				class="btn btn-xs btn-primary "> <i
-																					class="fa fa-check fa-white"></i>
-																			</a> <a
-																				href="#/savingaccount/savingaccountid/undoapproval"
-																				class="btn btn-xs btn-primary "> <i
-																					class="fa fa-undo fa-white"></i>
+																					class="fa fa-minus-circle fa-white"></i>
 																			</a></td>
 																		</tr>
+																		<%
+																			}
+																					}
+																		%>
 																	</table>
-																	<table class="table table-condensed">
+																	<table id="closedSavings"
+																		class="table table-condensed hide">
 																		<tr class="graybg">
 																			<th>Account#</th>
-																			<th>Savings Account</th>
+																			<th>Savings Code</th>
 																			<th>Closed Date</th>
 																		</tr>
+																		<%
+																			for (OpenMFSavingsAccount savingsAccount : savingsAccounts) {
+																						long saId = savingsAccount.getId();
+																						if (!savingsAccount.isActive()) {
+																		%>
 																		<tr class="pointer-main">
-																			<td class="pointer"><i
-																				class="fa fa-stop savingstatuscode"></i> 6666666666</td>
-																			<td class="pointer">Savings Prod2</td>
-																			<td class="pointer"><span>dd/mm/yyyy</span></td>
+																			<td class="pointer"
+																				onclick="viewSavingsAccountFn(<%=saId%>);"><i
+																				class="fa fa-stop cstatusprogress"></i> <c:out
+																					value="<%=savingsAccount.getSavingsaccountnumber()%>"
+																					escapeXml="true" /></td>
+																			<td class="pointer"
+																				onclick="viewSavingsAccountFn(<%=saId%>);"><c:out
+																					value="<%=savingsAccount.getSavingscode()%>"
+																					escapeXml="true" /></td>
+																			<td class="pointer"
+																				onclick="viewSavingsAccountFn(<%=saId%>);"><span><c:out
+																						value="<%=savingsAccount.getSavingsclosedate()%>"
+																						escapeXml="true" /></span></td>
 																		</tr>
+																		<%
+																			}
+																					}
+																		%>
 																	</table>
 																</div>
 															</div>
@@ -419,11 +485,13 @@
 																					value="<%=client.getActivationdate()%>"></c:out><span
 																				style="display: none">not activated</span></span></td>
 																	</tr>
+																	<% if(group != null) {%>
 																	<tr>
 																		<th class="table-bold">Member of</th>
 																		<td><span class="padded-td"><c:out
-																					value="NA"></c:out></span></td>
+																					value="<%=group.getGroupname()%>"></c:out></span></td>
 																	</tr>
+																	<%} %>
 																	<tr>
 																		<th class="table-bold">Mobile number</th>
 																		<td><span class="padded-td"><c:out
@@ -468,7 +536,7 @@
 																		<th class="whitebg" colspan="2">Performance
 																			History</th>
 																	</tr>
-																	<tr>
+																	<!-- <tr>
 																		<th># of Loan Cycle</th>
 																		<td><span class="padded-td">0</span></td>
 																	</tr>
@@ -476,18 +544,25 @@
 																		<th>Last Loan Amount</th>
 																		<td><span class="padded-td">0</span></td>
 																	</tr>
+																	 -->
 																	<tr>
 																		<th>Num of Active loans</th>
-																		<td><span class="padded-td">1</span></td>
+																		<td><span class="padded-td"><%=numofActiveLoans %></span></td>
+																	</tr>
+																	<tr>
+																		<th>Loan Balance</th>
+																		<td><span class="padded-td"><%=balLoan %></span></td>
+																	</tr>
+
+																	<tr>
+																		<th># of Active Savings</th>
+																		<td><span class="padded-td"><%=numofActiveSavings%></span></td>
 																	</tr>
 																	<tr>
 																		<th>Total Savings</th>
-																		<td><span class="padded-td">0</span></td>
+																		<td><span class="padded-td"><%=totSavings %></span></td>
 																	</tr>
-																	<tr>
-																		<th># of Active Savings</th>
-																		<td><span class="padded-td">0</span></td>
-																	</tr>
+
 																</table>
 															</div>
 														</div>
@@ -502,9 +577,86 @@
 													<c:out value="<%=client.getAddress()%>"></c:out>
 												</p>
 											</div>
-											<div class="tab-pane" id="history">
-												<br></br>
-												<p>Sample tab data.</p>
+											<div class="tab-pane" id="transactions">
+												<!-- <button class="btn btn-primary pull-right"
+														onclick="export()">Export</button> -->
+												<br />
+												<table class="table table-striped">
+													<colgroup span="4"></colgroup>
+													<thead>
+														<tr class="graybg">
+															<th class="pointer" onclick="changeTransactionSort('id')">Id</th>
+															<th class="pointer"
+																onclick="changeTransactionSort('officeName')">Office
+																Name</th>
+															<th class="pointer"
+																onclick="changeTransactionSort('date')">Transaction
+																Date</th>
+															<th class="pointer"
+																onclick="changeTransactionSort('type.value')">Type</th>
+															<th class="pointer"
+																onclick="changeTransactionSort('amount')">Amount</th>
+															<th class="pointer" colspan="5" scope="colgroup">Breakdown</th>
+														</tr>
+														<tr>
+															<th scope="col"></th>
+															<th scope="col"></th>
+															<th scope="col"></th>
+															<th scope="col"></th>
+															<th scope="col"></th>
+															<th class="pointer" scope="col"
+																onclick="changeTransactionSort('principalPortion')">Principal</th>
+															<th class="pointer" scope="col"
+																onclick="changeTransactionSort('interestPortion')">Interest</th>
+															<th class="pointer" scope="col"
+																onclick="changeTransactionSort('feeChargesPortion')">Fees</th>
+															<th class="pointer" scope="col"
+																onclick="changeTransactionSort('penaltyChargesPortion')">Penalties</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr class="pointer-main">
+															<td class="pointer" onclick="viewTransactionFn(id);">
+																12334</td>
+															<td class="pointer" onclick="viewTransactionFn(id);">
+																Office Name</td>
+															<td class="pointer" onclick="viewTransactionFn(id);">
+																dd/mm/yyyy</td>
+															<td class="pointer" onclick="viewTransactionFn(id);">
+																withdrawal</td>
+															<td class="pointer" onclick="viewTransactionFn(id);">
+																100.00</td>
+															<td class="pointer" onclick="viewTransactionFn(id);">
+																105.00</td>
+															<td class="pointer" onclick="viewTransactionFn(id);">
+																5.00</td>
+															<td class="pointer" onclick="viewTransactionFn(id);">
+																0.00</td>
+															<td class="pointer" onclick="viewTransactionFn(id);">
+																0.00</td>
+														</tr>
+														<tr class="pointer-main">
+															<td class="pointer" onclick="viewTransactionFn(id);">
+																12335</td>
+															<td class="pointer" onclick="viewTransactionFn(id);">
+																Office Name</td>
+															<td class="pointer" onclick="viewTransactionFn(id);">
+																dd/mm/yyyy</td>
+															<td class="pointer" onclick="viewTransactionFn(id);">
+																withdrawal</td>
+															<td class="pointer" onclick="viewTransactionFn(id);">
+																100.00</td>
+															<td class="pointer" onclick="viewTransactionFn(id);">
+																105.00</td>
+															<td class="pointer" onclick="viewTransactionFn(id);">
+																5.00</td>
+															<td class="pointer" onclick="viewTransactionFn(id);">
+																0.00</td>
+															<td class="pointer" onclick="viewTransactionFn(id);">
+																0.00</td>
+														</tr>
+													</tbody>
+												</table>
 											</div>
 											<!-- <div class="tab-pane" id="statistics">
 											<p>Sample tab data.</p>

@@ -351,4 +351,24 @@ public class OpenMFLoanAccountNoSql extends OpenMFEntityNoSql  implements OpenMF
 		entity.setProperty(OpenMFConstants.FIELD_NAME_DEFAULTED, defaulted);
 	}
 
+	@Override
+	public String getGroupId() {
+		return (String) entity.getProperty(OpenMFConstants.FIELD_NAME_GROUPID);
+	}
+
+	@Override
+	public void setGroupId(String groupId) {
+		entity.setProperty(OpenMFConstants.FIELD_NAME_GROUPID, groupId);
+	}
+
+	@Override
+	public boolean isGrouploan() {
+		return (boolean) entity.getProperty(OpenMFConstants.FIELD_NAME_GROUPLOAN);
+	}
+
+	@Override
+	public void setGrouploan(boolean grouploan) {
+		entity.setProperty(OpenMFConstants.FIELD_NAME_GROUPLOAN, grouploan);
+	}
+
 }

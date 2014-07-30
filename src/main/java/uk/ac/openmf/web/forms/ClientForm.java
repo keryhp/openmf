@@ -25,6 +25,7 @@ public class ClientForm {
     private boolean eligible;
     private boolean blacklisted;
     private String balance;
+    private String groupid;
     
 	public String getOffice() {
 		return office;
@@ -139,5 +140,11 @@ public class ClientForm {
 	}
 	public void setBalance(String balance) {
 		this.balance = balance;
+	}
+	public String getGroupid() {
+		return groupid;
+	}
+	public void setGroupid(String groupid) {
+		this.groupid = groupid;
 	}
 }

@@ -13,11 +13,15 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%
-	OpenMFUser currentUser = (OpenMFUser) request.getAttribute("currentUser");
+	OpenMFUser currentUser = (OpenMFUser) request
+			.getAttribute("currentUser");
 	pageContext.setAttribute("currentUser", currentUser);
 	ArrayList<OpenMFUser> omfusers = (ArrayList<OpenMFUser>) request
 			.getAttribute("omfusers");
-	pageContext.setAttribute("omfusers", omfusers);	
+	pageContext.setAttribute("omfusers", omfusers);
+	ArrayList<OpenMFGroup> groups = (ArrayList<OpenMFGroup>) request
+			.getAttribute("groups");
+	pageContext.setAttribute("groups", groups);
 %>
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB" xml:lang="en-GB">
@@ -48,7 +52,13 @@
 <script src="/static/js/openmf.basic.js"></script>
 <script src="/static/js/jquery-ui.js"></script>
 <script src="/static/js/jquery-ui-timepicker-addon.js"></script>
-<script src="/static/js/openmf.datepicker.js"></script>
+<script type="text/javascript">
+$(document).ready(function (){
+	var dateToday = new Date();
+	$(".date-picker").datepicker({format: "dd/mm/yyyy", minDate: dateToday});
+	$("#dateofbirth").datepicker({format: "dd/mm/yyyy"}); //TODO do not allow future date for dob
+});
+</script>
 <link type="text/css" rel="stylesheet" href="/static/css/jquery-ui.css" />
 <!--[if lt IE 9]>
 <script src="/static/js/html5shiv.js"></script>
@@ -69,10 +79,10 @@
 						<ul class="dropdown-menu" id="swatch-menu">
 							<li><a href="/clients.htm">Clients</a></li>
 							<li><a href="/groups.htm">Groups</a></li>
-							<li><a href="/centers.htm">Centers</a></li>
+
 						</ul></li>
-					<li><a href="/finance/accounting.htm"><i class="fa fa-money"></i>
-							Accounting</a></li>
+					<li><a href="/finance/accounting.htm"><i
+							class="fa fa-money"></i> Accounting</a></li>
 					<li class="dropdown" id="reports-menu"><a
 						class="dropdown-toggle" data-toggle="dropdown" href="#"><i
 							class="fa fa-bar-chart-o"></i> Reports<b class="caret"></b></a>
@@ -101,8 +111,8 @@
 						<ul class="dropdown-menu">
 							<li><a id="help" href="/help.htm"><i
 									class="fa fa-question-circle"></i> Help</a></li>
-							<li><a href="/viewuser.htm?omfuId=<%=currentUser.getId()%>"><i class="fa fa-user"></i>
-									Profile</a></li>
+							<li><a href="/viewuser.htm?omfuId=<%=currentUser.getId()%>"><i
+									class="fa fa-user"></i> Profile</a></li>
 							<li><a href="/usersetting.htm"><i class="fa fa-cog"></i>
 									Settings</a></li>
 							<li><a href="/logout.htm"><i class="fa fa-off"></i>Logout</a></li>
@@ -183,9 +193,6 @@
 												tabindex="2">
 												<form:option value="headoffice" selected="selected">Head
 													Office</form:option>
-												<%-- <form:option value="branch1">Branch one</form:option>
-												<form:option value="branch2">Branch two</form:option>
-												<form:option value="branch3">Branch three</form:option> --%>
 											</form:select>
 										</div>
 										<form:label class="control-label col-sm-2" path="supervisor">Supervisor</form:label>
@@ -275,14 +282,40 @@
 
 										<div class="col-sm-3">
 											<form:select class="form-control chosen-select"
-												path="clienttype" tabindex="2">
+												path="clienttype" tabindex="2"
+												onchange="showOrHideGroup(this);">
 												<form:option value="individual" selected="selected">Individual
 													Person</form:option>
-												<form:option value="verysmall">Very Small Enterprise</form:option>
-												<form:option value="smallmedium">Small/Medium Enterprise</form:option>
+												<form:option value="group">Member of a Group</form:option>
 											</form:select>
 										</div>
+									</div>
+									<div class="form-group">
+										<div class="col-sm-3 hide" id="groupSelect">
+											<form:label class="control-label col-sm-2" path="groupid">Group</form:label>
+											<form:select data-placeholder="Choose a Group"
+												class="form-control chosen-select" path="groupid"
+												tabindex="2">
+												<%
+													for (OpenMFGroup group : groups) {
+												%>
+												<form:option value="<%=group.getId()%>">
+													<c:out value="<%=group.getGroupname()%>" escapeXml="true" />
+												</form:option>
+												<%
+													}
+												%>
+											</form:select>
+										</div>
+									</div>
+									<div class="form-group">
+										<form:label class="control-label col-sm-2" path="externalId">External
+											Id</form:label>
 
+										<div class="col-sm-3">
+											<form:input type="text" path="externalId"
+												class="form-control" />
+										</div>
 										<form:label class="control-label col-sm-2"
 											path="clientclassification">Client
 											Classification</form:label>
@@ -294,15 +327,6 @@
 												<form:option value="clientclass2">Literate, Business</form:option>
 												<form:option value="clientclass3">Others</form:option>
 											</form:select>
-										</div>
-									</div>
-									<div class="form-group">
-										<form:label class="control-label col-sm-2" path="externalId">External
-											Id</form:label>
-
-										<div class="col-sm-3">
-											<form:input type="text" path="externalId"
-												class="form-control" />
 										</div>
 									</div>
 									<div class="form-group">
@@ -339,30 +363,6 @@
 												class="form-control date-picker" />
 										</div>
 									</div>
-									<!-- <div class="form-group">
-										<label class="control-label col-sm-2">Open Savings
-											Account</label>
-
-										<div class="col-sm-3">
-											<input id="opensavingsproduct" type="checkbox" />
-										</div>
-										<div>
-											<label class="control-label col-sm-2">Select Savings
-												Account</label>
-
-											<div class="col-sm-3">
-												<select class="form-control chosen-select"
-													id="savingsproductId" tabindex="2">
-													<option value="savingsproduct1" selected="selected">Savings
-														Produce one</option>
-													<option value="savingsproduct2">Savings Produce
-														two</option>
-													<option value="savingsproduct3">Savings Produce
-														three</option>
-												</select>
-											</div>
-										</div>
-									</div> -->
 									<div class="col-md-offset-5">
 										<a id="cancel" href="/clients.htm">
 											<button type="button" class="btn btn-default"

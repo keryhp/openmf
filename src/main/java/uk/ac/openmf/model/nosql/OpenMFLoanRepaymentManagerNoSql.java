@@ -2,7 +2,6 @@ package uk.ac.openmf.model.nosql;
 
 import java.util.ArrayList;
 
-import uk.ac.openmf.model.OpenMFLoanProduct;
 import uk.ac.openmf.model.OpenMFLoanRepayment;
 import uk.ac.openmf.model.OpenMFLoanRepaymentManager;
 import uk.ac.openmf.utils.OpenMFConstants;

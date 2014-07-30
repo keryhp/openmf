@@ -7,6 +7,8 @@ package uk.ac.openmf.web.forms;
 public class LoanAccountForm {
 	
 	private String clientId;
+	private String groupId;
+	private boolean grouploan;
 	private String loancode;
 	private String loanaccountnumber;
 	private String disbursedon;
@@ -202,5 +204,17 @@ public class LoanAccountForm {
 	}
 	public void setDefaulted(boolean defaulted) {
 		this.defaulted = defaulted;
+	}
+	public String getGroupId() {
+		return groupId;
+	}
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
+	}
+	public boolean isGrouploan() {
+		return grouploan;
+	}
+	public void setGrouploan(boolean grouploan) {
+		this.grouploan = grouploan;
 	}
 }

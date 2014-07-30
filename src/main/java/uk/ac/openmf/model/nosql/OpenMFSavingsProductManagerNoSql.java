@@ -4,11 +4,14 @@ import uk.ac.openmf.model.OpenMFSavingsProduct;
 import uk.ac.openmf.model.OpenMFSavingsProductManager;
 import uk.ac.openmf.utils.OpenMFConstants;
 
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.SortDirection;
 
 /**
@@ -67,4 +70,32 @@ public class OpenMFSavingsProductManagerNoSql extends OpenMFEntityManagerNoSql<O
 	  protected OpenMFSavingsProductNoSql fromEntity(Entity entity) {
 	    return new OpenMFSavingsProductNoSql(entity);
 	  }
+
+	@Override
+	public OpenMFSavingsProduct getSavingsProductBySavingsCode(String savingscode) {
+		Query qry = new Query(getKind());
+		qry.setFilter(FilterOperator.EQUAL.of(OpenMFConstants.FIELD_NAME_SAVINGSCODE, savingscode));
+		PreparedQuery pq = DatastoreServiceFactory.getDatastoreService().prepare(qry);
+		OpenMFSavingsProduct savingsproduct = null; 
+		for (Entity result : pq.asIterable()) {
+			if(savingsproduct == null){
+				savingsproduct = new OpenMFSavingsProductNoSql(result);
+				savingsproduct.setClosedate((String)result.getProperty(OpenMFConstants.FIELD_NAME_CLOSEDATE));
+				savingsproduct.setCreatedById((String)result.getProperty(OpenMFConstants.FIELD_NAME_CREATEDBY));
+				savingsproduct.setDescription((String)result.getProperty(OpenMFConstants.FIELD_NAME_DESCRIPTION));
+				savingsproduct.setSavingscode((String)result.getProperty(OpenMFConstants.FIELD_NAME_SAVINGSCODE));
+				savingsproduct.setProductname((String)result.getProperty(OpenMFConstants.FIELD_NAME_PRODUCTNAME));
+				savingsproduct.setRateofinterest((String)result.getProperty(OpenMFConstants.FIELD_NAME_RATEOFINTEREST));
+				savingsproduct.setStartdate((String)result.getProperty(OpenMFConstants.FIELD_NAME_STARTDATE));
+				savingsproduct.setTimestamp(System.currentTimeMillis());
+				savingsproduct.setActive((boolean)result.getProperty(OpenMFConstants.FIELD_NAME_ACTIVE));			
+				savingsproduct.setDepositfrequency((String)result.getProperty(OpenMFConstants.FIELD_NAME_DEPOSITFREQUENCY));
+				savingsproduct.setSavingsamount((String)result.getProperty(OpenMFConstants.FIELD_NAME_SAVINGSAMOUNT));
+				savingsproduct.setSavingstype((String)result.getProperty(OpenMFConstants.FIELD_NAME_SAVINGSTYPE));
+				savingsproduct.setTenure((String)result.getProperty(OpenMFConstants.FIELD_NAME_TENURE));
+				break;
+			}
+		}
+		return savingsproduct;
+	}
 }

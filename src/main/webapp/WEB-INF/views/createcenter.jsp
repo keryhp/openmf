@@ -50,7 +50,6 @@
 <script src="/static/js/respond.min.js"></script>
 <![endif]-->
 </head>
-
 <body>
 	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 		<div class="container-fluid container">
@@ -64,7 +63,7 @@
 						<ul class="dropdown-menu" id="swatch-menu">
 							<li><a href="/clients.htm">Clients</a></li>
 							<li><a href="/groups.htm">Groups</a></li>
-							<li><a href="/centers.htm">Centers</a></li>
+							
 						</ul></li>
 					<li><a href="/finance/accounting.htm"><i class="fa fa-money"></i>
 							Accounting</a></li>
@@ -160,7 +159,7 @@
 					<div class="whitebg">
 						<div class="col-md-12">
 							<ul class="breadcrumb">
-								<li><a href="/centers.htm">Centers</a></li>
+								
 								<li class="active">Create Center</li>
 							</ul>
 							<form name="createcenterform" novalidate="novalidate"

@@ -50,4 +50,6 @@ public interface OpenMFClient extends OpenMFEntity {
 	void setBlacklisted(boolean blacklisted);
 	String getBalance();
 	void setBalance(String balance);
+	public String getGroupid();
+	public void setGroupid(String groupid);
 }

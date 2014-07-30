@@ -19,6 +19,7 @@ public class SavingsProductForm {
 	private String depositfrequency;
 	private String savingsamount;	
 	private boolean active;
+	
 	public String getProductname() {
 		return productname;
 	}

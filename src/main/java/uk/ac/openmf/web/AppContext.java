@@ -4,12 +4,18 @@ import java.util.logging.Logger;
 
 import uk.ac.openmf.model.OpenMFClientManager;
 import uk.ac.openmf.model.OpenMFEntityManagerFactory;
+import uk.ac.openmf.model.OpenMFGroupManager;
 import uk.ac.openmf.model.OpenMFLoanAccountManager;
 import uk.ac.openmf.model.OpenMFLoanActualPaymentManager;
+import uk.ac.openmf.model.OpenMFLoanDisburseManager;
 import uk.ac.openmf.model.OpenMFLoanProductManager;
 import uk.ac.openmf.model.OpenMFLoanRepaymentManager;
 import uk.ac.openmf.model.OpenMFRolesManager;
+import uk.ac.openmf.model.OpenMFSavingsAccountManager;
+import uk.ac.openmf.model.OpenMFSavingsDepositManager;
 import uk.ac.openmf.model.OpenMFSavingsProductManager;
+import uk.ac.openmf.model.OpenMFSavingsScheduledDepositManager;
+import uk.ac.openmf.model.OpenMFSavingsWithdrawalManager;
 import uk.ac.openmf.model.OpenMFUser;
 import uk.ac.openmf.model.OpenMFUserManager;
 import uk.ac.openmf.security.AppRole;
@@ -76,6 +82,10 @@ public class AppContext {
 		return entityManagerFactory.getClientManager();
 	}
 
+	public OpenMFGroupManager getGroupManager() {
+		return entityManagerFactory.getGroupManager();
+	}
+
 	public ConfigManager getConfigManager() {
 		return configManager;
 	}
@@ -88,6 +98,10 @@ public class AppContext {
 		return entityManagerFactory.getLoanAccountManager();
 	}
 	
+	public OpenMFSavingsAccountManager getSavingsAccountManager() {
+		return entityManagerFactory.getSavingsAccountManager();
+	}
+	
 	public OpenMFLoanRepaymentManager getLoanRepaymentManager() {
 		return entityManagerFactory.getLoanRepaymentManager();
 	}
@@ -96,6 +110,21 @@ public class AppContext {
 		return entityManagerFactory.getLoanActualPaymentManager();
 	}
 
+	public OpenMFLoanDisburseManager getLoanDisburseManager() {
+		return entityManagerFactory.getLoanDisburseManager();
+	}
+
+	public OpenMFSavingsDepositManager getSavingsDepositManager() {
+		return entityManagerFactory.getSavingsDepositManager();
+	}
+
+	public OpenMFSavingsWithdrawalManager getSavingsWithdrawalManager() {
+		return entityManagerFactory.getSavingsWithdrawalManager();
+	}
+
+	public OpenMFSavingsScheduledDepositManager getSavingsScheduledDepositManager() {
+		return entityManagerFactory.getSavingsScheduledDepositManager();
+	}
 
 	public OpenMFUser getCurrentUser() {
 		OpenMFUserManager openMFUserManager = entityManagerFactory.getUserManager();
