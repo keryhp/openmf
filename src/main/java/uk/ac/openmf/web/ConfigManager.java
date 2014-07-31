@@ -34,6 +34,17 @@ public class ConfigManager {
   public String getErrorPageUrl(int code) {
     return "/error.jsp?" + ServletUtils.REQUEST_PARAM_NAME_CODE + "=" + code;
   }
+  
+  /**
+   * The upload servlet URL.
+   */
+  public String getUploadHandlerUrl() {
+    return "/upload";
+  }
+  
+  public String getDownloadHandlerUrl() {
+	    return "/download.htm";
+	  }
 
   public String getErrorMessage(int code) {
     if (code == ERROR_CODE_DATASTORE_INDEX_NOT_READY) {
@@ -61,5 +72,23 @@ public class ConfigManager {
    */
   public String getDatabaseUrl() {
     return System.getProperty(PROP_NAME_CLOUD_SQL_CONNECTION_URL);
+  }
+  
+  /**
+   * The photo thumbnail size in number of pixels.
+   */
+  public int getPhotoThumbnailSizeInPixels() {
+    return 30 * 30;
+  }
+
+  public int getPhotoDisplaySizeInPixels() {
+    return 600 * 600;
+  }
+
+  /**
+   * If the thumbnail is generated using cropping.
+   */
+  public boolean isPhotoThumbnailCrop() {
+    return true;
   }
 }

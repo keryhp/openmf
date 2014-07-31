@@ -11,6 +11,8 @@ import uk.ac.openmf.model.OpenMFLoanProduct;
 import uk.ac.openmf.model.OpenMFLoanRepayment;
 import uk.ac.openmf.model.OpenMFLoanRepaymentManager;
 import uk.ac.openmf.model.OpenMFModelException;
+import uk.ac.openmf.model.OpenMFPhoto;
+import uk.ac.openmf.model.OpenMFPhotoManager;
 import uk.ac.openmf.model.OpenMFRoles;
 import uk.ac.openmf.model.OpenMFRolesManager;
 import uk.ac.openmf.model.OpenMFSavingsAccount;
@@ -20,9 +22,17 @@ import uk.ac.openmf.model.OpenMFSavingsScheduledDeposit;
 import uk.ac.openmf.model.OpenMFSavingsScheduledDepositManager;
 import uk.ac.openmf.model.OpenMFUser;
 import uk.ac.openmf.model.OpenMFUserManager;
+import uk.ac.openmf.model.nosql.OpenMFPhotoNoSql;
+import uk.ac.openmf.model.nosql.OpenMFUserNoSql;
 import uk.ac.openmf.web.AppContext;
 
+import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.datastore.DatastoreNeedIndexException;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.FilterOperator;
 
 /**
  * A utility class.
@@ -117,7 +127,7 @@ public final class OMFUtils {
 		}
 		return savingsAccounts;
 	}				
-	
+
 	public static ArrayList<OpenMFLoanAccount> getLoanAccountsByClientList(String clientId){
 		Iterable<OpenMFLoanAccount> loanAccountiter = AppContext.getAppContext().getLoanAccountManager().getAllLoanAccountsByClient(clientId);
 		ArrayList<OpenMFLoanAccount> loanAccounts = new ArrayList<OpenMFLoanAccount>();
@@ -130,7 +140,7 @@ public final class OMFUtils {
 		}
 		return loanAccounts;
 	}
-	
+
 	public static ArrayList<OpenMFLoanAccount> getLoanAccountsByGroupList(String groupId){
 		Iterable<OpenMFLoanAccount> loanAccountiter = AppContext.getAppContext().getLoanAccountManager().getAllLoanAccountsByGroup(groupId);
 		ArrayList<OpenMFLoanAccount> loanAccounts = new ArrayList<OpenMFLoanAccount>();
@@ -156,7 +166,7 @@ public final class OMFUtils {
 		}
 		return savingsAccounts;
 	}
-	
+
 	public static ArrayList<OpenMFClient> getClientsByGroupId(String groupid){
 		Iterable<OpenMFClient> clientsiter = AppContext.getAppContext().getClientManager().getClientsByGroupId(groupid);
 		ArrayList<OpenMFClient> clients = new ArrayList<OpenMFClient>();
@@ -169,7 +179,7 @@ public final class OMFUtils {
 		}
 		return clients;
 	}
-	
+
 	public static ArrayList<OpenMFClient> getAllClientsList(){
 		OpenMFClientManager clientManager = AppContext.getAppContext().getClientManager();
 		Iterable<OpenMFClient> clientsiter = clientManager.getAllClients();
@@ -183,7 +193,7 @@ public final class OMFUtils {
 		}
 		return clients;
 	}
-	
+
 	public static ArrayList<OpenMFGroup> getAllGroupsList(){
 		OpenMFGroupManager groupManager = AppContext.getAppContext().getGroupManager();
 		Iterable<OpenMFGroup> groupsiter = groupManager.getAllGroups();
@@ -196,6 +206,41 @@ public final class OMFUtils {
 			//log error
 		}
 		return groups;
+	}
+
+	public static ArrayList<OpenMFPhoto> getAllPhotoListByTypeId(Long typeId){
+		OpenMFPhotoManager photoManager = AppContext.getAppContext().getPhotoManager();
+		Iterable<OpenMFPhoto> photositer = photoManager.getPhoto(typeId);
+		ArrayList<OpenMFPhoto> photos = new ArrayList<OpenMFPhoto>();
+		try {
+			for (OpenMFPhoto photo : photositer) {
+				photos.add(photo);
+			}
+		} catch (DatastoreNeedIndexException e) {
+			//log error
+		}
+		return photos;
+	}
+
+	public static OpenMFPhoto getPhotoByTypeId(Long typeId){
+		Query qry = new Query(OpenMFPhoto.class.getSimpleName());
+		qry.setFilter(FilterOperator.EQUAL.of(OpenMFConstants.FIELD_NAME_TYPEID, typeId));
+		PreparedQuery pq = DatastoreServiceFactory.getDatastoreService().prepare(qry);
+		OpenMFPhoto photo = null; 
+		//TODO add proper query
+		for (Entity result : pq.asIterable()) {
+			if(photo == null){
+				photo = new OpenMFPhotoNoSql(result);
+				photo.setCreatedById((String)result.getProperty(OpenMFConstants.FIELD_NAME_CREATEDBY));
+				photo.setActive((boolean)result.getProperty(OpenMFConstants.FIELD_NAME_ACTIVE));
+				photo.setBlobKey((BlobKey)result.getProperty(OpenMFConstants.FIELD_NAME_BLOB_KEY));
+				photo.setTimestamp((long)result.getProperty(OpenMFConstants.FIELD_NAME_TIMESTAMP));
+				photo.setType((String)result.getProperty(OpenMFConstants.FIELD_NAME_TYPE));
+				photo.setTypeId((long)result.getProperty(OpenMFConstants.FIELD_NAME_TYPEID));
+				break;
+			}
+		}
+		return photo;
 	}
 
 	public static ArrayList<OpenMFRoles> getAllRolesList(){
@@ -239,7 +284,7 @@ public final class OMFUtils {
 		}
 		return schedules;
 	}
-	
+
 	public static ArrayList<OpenMFSavingsScheduledDeposit> getSavingsScheduledDepositList(){
 		OpenMFSavingsScheduledDepositManager savingsScheduledDepositManager = AppContext.getAppContext().getSavingsScheduledDepositManager();
 		Iterable<OpenMFSavingsScheduledDeposit> schedulesiter = savingsScheduledDepositManager.getAllSavingsScheduledDeposits();

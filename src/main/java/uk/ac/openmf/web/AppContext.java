@@ -10,6 +10,7 @@ import uk.ac.openmf.model.OpenMFLoanActualPaymentManager;
 import uk.ac.openmf.model.OpenMFLoanDisburseManager;
 import uk.ac.openmf.model.OpenMFLoanProductManager;
 import uk.ac.openmf.model.OpenMFLoanRepaymentManager;
+import uk.ac.openmf.model.OpenMFPhotoManager;
 import uk.ac.openmf.model.OpenMFRolesManager;
 import uk.ac.openmf.model.OpenMFSavingsAccountManager;
 import uk.ac.openmf.model.OpenMFSavingsDepositManager;
@@ -19,6 +20,8 @@ import uk.ac.openmf.model.OpenMFSavingsWithdrawalManager;
 import uk.ac.openmf.model.OpenMFUser;
 import uk.ac.openmf.model.OpenMFUserManager;
 import uk.ac.openmf.security.AppRole;
+import uk.ac.openmf.services.EmailServiceManager;
+import uk.ac.openmf.services.PhotoServiceManager;
 
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserServiceFactory;
@@ -36,6 +39,8 @@ public class AppContext {
 
 	private OpenMFEntityManagerFactory entityManagerFactory;
 
+	private PhotoServiceManager photoServiceManager;
+	private EmailServiceManager emailServiceManager;
 	// Prevent the class being instantiated externally.
 	private AppContext() {
 		configManager = new ConfigManager();
@@ -55,8 +60,8 @@ public class AppContext {
 			logger.severe("cannot create instance of entity manager factory");
 			throw new RuntimeException("cannot create instance of entity manager factory", e);
 		}
-//		photoServiceManager = new PhotoServiceManager(configManager, getPhotoManager());
-//		emailServiceManager = new EmailServiceManager(configManager, getEventManager(), getBookingManager());
+		photoServiceManager = new PhotoServiceManager(configManager, getPhotoManager());
+		emailServiceManager = new EmailServiceManager(configManager);
 	}
 
 	public static AppContext getAppContext() {
@@ -124,6 +129,18 @@ public class AppContext {
 
 	public OpenMFSavingsScheduledDepositManager getSavingsScheduledDepositManager() {
 		return entityManagerFactory.getSavingsScheduledDepositManager();
+	}
+	
+	public OpenMFPhotoManager getPhotoManager(){
+		return entityManagerFactory.getPhotoManager();
+	}
+	
+	public PhotoServiceManager getPhotoServiceManager(){
+		return this.photoServiceManager;
+	}
+	
+	public EmailServiceManager getEmailServiceManager(){
+		return this.emailServiceManager;
 	}
 
 	public OpenMFUser getCurrentUser() {

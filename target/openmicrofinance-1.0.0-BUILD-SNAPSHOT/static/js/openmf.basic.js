@@ -60,7 +60,7 @@ function viewRolesFn(){
 
 function onFileSelected() {
 	"use strict";
-	filename = document.getElementById("input-file").value;
+	var filename = document.getElementById("input-file").value;
 	if (filename == null || filename == "") {
 		document.getElementById("btn-post").setAttribute("class",
 				"inactive btn");
@@ -84,14 +84,9 @@ function togglePhotoPost(expanded) {
 	}
 };
 
-function delUsr(){
-	//toggle show or hide
+function showRowSpan(idVal){
 	"use strict";
-};
-
-function changePwd(){
-	//toggle show or hide
-	"use strict";
+	document.getElementById(idVal).className = "row client show";
 };
 
 function updateLoanAmount(sel){

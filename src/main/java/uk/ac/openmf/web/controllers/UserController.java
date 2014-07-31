@@ -1,9 +1,11 @@
 package uk.ac.openmf.web.controllers;
 
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,6 +14,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.google.appengine.api.blobstore.BlobKey;
+import com.google.appengine.api.blobstore.BlobstoreService;
+import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
+
+import uk.ac.openmf.model.OpenMFPhoto;
 import uk.ac.openmf.model.OpenMFUser;
 import uk.ac.openmf.model.OpenMFUserManager;
 import uk.ac.openmf.model.nosql.OpenMFUserNoSql;
@@ -36,7 +43,7 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/viewuser.htm", method= RequestMethod.GET)
-	public String viewuser(HttpServletRequest req) {
+	public String viewuser(HttpServletRequest req){
 		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		String omfuId = req.getParameter("omfuId");
 		req.setAttribute("omfuId", omfuId);

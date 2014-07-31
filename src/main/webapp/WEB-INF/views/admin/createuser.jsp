@@ -172,7 +172,7 @@ $(document).ready(function (){
 
 					<div class="col-md-12">
 						<ul class="breadcrumb">
-							<li><a href="/users.htm">Users</a></li>
+							<li><a href="/admin/users.htm">Users</a></li>
 							<li class="active">Create User</li>
 						</ul>
 						<form:form id="createuser" class="form-horizontal" method="post"
@@ -328,7 +328,7 @@ $(document).ready(function (){
 									</div>
 								</div>
 								<div class="col-md-offset-3">
-									<a id="cancel" href="/users.htm" class="btn btn-default">Cancel</a>
+									<a id="cancel" href="/admin/users.htm" class="btn btn-default">Cancel</a>
 									<button id="save" type="submit" class="btn btn-primary">Save</button>
 								</div>
 							</fieldset>

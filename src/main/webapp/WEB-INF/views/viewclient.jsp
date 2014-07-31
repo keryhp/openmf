@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<%@page import="uk.ac.openmf.utils.OMFUtils"%>
+<%@page import="uk.ac.openmf.services.*"%>
 <%@page import="java.util.*"%>
 <%@page import="uk.ac.openmf.model.*"%>
 <%@page import="uk.ac.openmf.web.*"%>
@@ -26,6 +28,14 @@
 	int numofActiveSavings = 0;
 	double balLoan = 0.0;
 	double totSavings = 0.0;
+	PhotoServiceManager serviceManager = AppContext.getAppContext()
+			.getPhotoServiceManager();
+	OpenMFPhotoManager photoManager = AppContext.getAppContext()
+			.getPhotoManager();
+	OpenMFPhoto photo = (OpenMFPhoto) OMFUtils.getPhotoByTypeId(client
+			.getId());
+	ArrayList<OpenMFPhoto> photos = (ArrayList<OpenMFPhoto>) OMFUtils
+			.getAllPhotoListByTypeId(client.getId());
 %>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB" xml:lang="en-GB">
 <head>
@@ -193,8 +203,8 @@
 											<li class="active"><a href="#general" data-toggle="tab">General</a></li>
 											<li class=""><a href="#address" data-toggle="tab">Address</a></li>
 											<li class=""><a href="#transactions" data-toggle="tab">Transactions</a></li>
-											<!-- <li class=""><a href="#statistics" data-toggle="tab">Statistics</a></li>
-									<li class=""><a href="#tab" data-toggle="tab">Tab
+											<li class=""><a href="#addphoto" data-toggle="tab">Statistics</a></li>
+											<!-- <li class=""><a href="#tab" data-toggle="tab">Tab
 											5</a></li> -->
 										</ul>
 										<div class="tab-content">
@@ -210,15 +220,18 @@
 															</span> <span><a
 																onclick="createSavingsAccountFn(<%=client.getId()%>)"
 																class="btn btn-primary"><i
-																	class="fa fa-dollar fa-white"></i>Add New Savings</a>
-															</span>
-															<% if(group == null) {%>
-															 <span> <a
+																	class="fa fa-dollar fa-white"></i>Add New Savings</a> </span>
+															<%
+																if (group == null) {
+															%>
+															<span> <a
 																onclick="assignGroupFn(<%=client.getId()%>)"
 																class="btn btn-primary"><i
 																	class="fa fa-group fa-white"></i>Assign Group</a>
 															</span>
-															<%} %>
+															<%
+																}
+															%>
 															<!-- <button type="button" class="btn btn-primary ">
 																<i class="fa fa-user fa-white"></i>Unassign Staff
 															</button> -->
@@ -259,8 +272,11 @@
 																						long laId = loanAccount.getId();
 																						if (loanAccount.isActive()) {
 																							numofActiveLoans++;
-																							if(loanAccount.getBalanceoutstandingamount() != null){
-																								balLoan += new Double(loanAccount.getBalanceoutstandingamount()).doubleValue();
+																							if (loanAccount.getBalanceoutstandingamount() != null) {
+																								balLoan += new Double(
+																										loanAccount
+																												.getBalanceoutstandingamount())
+																										.doubleValue();
 																							}
 																		%>
 																		<%-- <tr class="pointer-main"
@@ -386,8 +402,10 @@
 																						long saId = savingsAccount.getId();
 																						if (savingsAccount.isActive()) {
 																							numofActiveSavings++;
-																							if(savingsAccount.getAvailablebalance() != null){
-																								totSavings += new Double(savingsAccount.getAvailablebalance()).doubleValue();
+																							if (savingsAccount.getAvailablebalance() != null) {
+																								totSavings += new Double(
+																										savingsAccount.getAvailablebalance())
+																										.doubleValue();
 																							}
 																		%>
 																		<tr>
@@ -477,7 +495,19 @@
 																			value="${client.midname }" escapeXml="true" /> <c:out
 																			value="${client.surname }" escapeXml="true" /> </strong>
 																</h4>
+																<%
+																	if (photo == null) {
+																%>
 																<img src="/static/images/demo_user.jpg" alt="Avatar" />
+																<%
+																	} else {
+																%>
+																<img
+																	src="<%=serviceManager.getImageDownloadUrl(photo)%>"
+																	alt="Photo Image" />
+																<%
+																	}
+																%>
 																<table class="table-minified">
 																	<tr>
 																		<th class="table-bold">Activation Date</th>
@@ -485,13 +515,17 @@
 																					value="<%=client.getActivationdate()%>"></c:out><span
 																				style="display: none">not activated</span></span></td>
 																	</tr>
-																	<% if(group != null) {%>
+																	<%
+																		if (group != null) {
+																	%>
 																	<tr>
 																		<th class="table-bold">Member of</th>
 																		<td><span class="padded-td"><c:out
 																					value="<%=group.getGroupname()%>"></c:out></span></td>
 																	</tr>
-																	<%} %>
+																	<%
+																		}
+																	%>
 																	<tr>
 																		<th class="table-bold">Mobile number</th>
 																		<td><span class="padded-td"><c:out
@@ -547,11 +581,11 @@
 																	 -->
 																	<tr>
 																		<th>Num of Active loans</th>
-																		<td><span class="padded-td"><%=numofActiveLoans %></span></td>
+																		<td><span class="padded-td"><%=numofActiveLoans%></span></td>
 																	</tr>
 																	<tr>
 																		<th>Loan Balance</th>
-																		<td><span class="padded-td"><%=balLoan %></span></td>
+																		<td><span class="padded-td"><%=balLoan%></span></td>
 																	</tr>
 
 																	<tr>
@@ -560,7 +594,7 @@
 																	</tr>
 																	<tr>
 																		<th>Total Savings</th>
-																		<td><span class="padded-td"><%=totSavings %></span></td>
+																		<td><span class="padded-td"><%=totSavings%></span></td>
 																	</tr>
 
 																</table>
@@ -658,10 +692,36 @@
 													</tbody>
 												</table>
 											</div>
-											<!-- <div class="tab-pane" id="statistics">
-											<p>Sample tab data.</p>
-										</div>
-										<div class="tab-pane" id="tab">
+											<div class="tab-pane" id="addphoto">
+												<div id="addclientphoto" class="row client">
+													<div class="col-sm-6 col-md-6">
+														<form action="<%=serviceManager.getUploadUrl()%>"
+															method="post" enctype="multipart/form-data">
+															<input id="input-file" class="inactive file btn"
+																type="file" name="photo" onchange="onFileSelected()" />
+															<input hidden="true" name="clientId"
+																value="<c:out value="${client.id}"/>" /> <input
+																hidden="true" name="type"
+																value="<c:out value="client"/>" /> <input id="btn-post"
+																class="active btn" type="submit" value="submit" />
+														</form>
+													</div>
+												</div>
+												<!-- view photos here -->
+												<%
+													for (OpenMFPhoto tmpPhoto : photos) {
+												%>
+												<div class="col-sm-3 col-md-3">
+													<div class="thumbnail row">
+														<img src="<%=serviceManager.getImageDownloadUrl(tmpPhoto)%>"
+															alt="Photo Image" />
+													</div>
+												</div>
+												<%
+													}
+												%>
+											</div>
+											<!-- <div class="tab-pane" id="tab">
 											<p>Sample tab data.</p>
 										</div> -->
 										</div>

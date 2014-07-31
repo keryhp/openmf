@@ -8,6 +8,7 @@ import uk.ac.openmf.model.OpenMFLoanActualPaymentManager;
 import uk.ac.openmf.model.OpenMFLoanDisburseManager;
 import uk.ac.openmf.model.OpenMFLoanProductManager;
 import uk.ac.openmf.model.OpenMFLoanRepaymentManager;
+import uk.ac.openmf.model.OpenMFPhotoManager;
 import uk.ac.openmf.model.OpenMFRolesManager;
 import uk.ac.openmf.model.OpenMFSavingsAccountManager;
 import uk.ac.openmf.model.OpenMFSavingsDepositManager;
@@ -38,7 +39,7 @@ public class OpenMFEntityManagerNoSqlFactory implements OpenMFEntityManagerFacto
 	private OpenMFSavingsDepositManagerNoSql openMFSavingsDepositManager;
 	private OpenMFSavingsWithdrawalManagerNoSql openMFSavingsWithdrawalManager;
 	private OpenMFSavingsScheduledDepositManagerNoSql openMFSavingsScheduledDepositManager;
-
+	private OpenMFPhotoManagerNoSql openMFPhotoManager;
 	private boolean initialized;
 
 
@@ -74,6 +75,7 @@ public class OpenMFEntityManagerNoSqlFactory implements OpenMFEntityManagerFacto
 			openMFSavingsDepositManager = new OpenMFSavingsDepositManagerNoSql(openMFUserManager);
 			openMFSavingsWithdrawalManager = new OpenMFSavingsWithdrawalManagerNoSql(openMFUserManager);
 			openMFSavingsScheduledDepositManager = new OpenMFSavingsScheduledDepositManagerNoSql(openMFUserManager);
+			openMFPhotoManager = new OpenMFPhotoManagerNoSql(openMFUserManager);
 			initialized = true;
 		} else {
 			throw new IllegalStateException("Should not initialize the factory more than once.");
@@ -133,5 +135,10 @@ public class OpenMFEntityManagerNoSqlFactory implements OpenMFEntityManagerFacto
 	@Override
 	public OpenMFSavingsScheduledDepositManager getSavingsScheduledDepositManager() {
 		return openMFSavingsScheduledDepositManager;
+	}
+
+	@Override
+	public OpenMFPhotoManager getPhotoManager() {
+		return openMFPhotoManager;
 	}
 }

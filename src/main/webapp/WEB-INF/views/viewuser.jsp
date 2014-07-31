@@ -1,7 +1,9 @@
 <!DOCTYPE html>
+<%@page import="uk.ac.openmf.utils.*"%>
 <%@page import="java.util.*"%>
 <%@page import="uk.ac.openmf.model.*"%>
 <%@page import="uk.ac.openmf.web.*"%>
+<%@page import="uk.ac.openmf.services.*"%>
 <%@ page language="java"
 	contentType="application/xhtml+xml; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@page session="false"%>
@@ -17,6 +19,10 @@
 			.getAttribute("currentUser");
 	pageContext.setAttribute("currentUser", currentUser);
 	OpenMFUser omfuser = (OpenMFUser) request.getAttribute("omfuser");
+	PhotoServiceManager serviceManager = AppContext.getAppContext()
+			.getPhotoServiceManager();
+	OpenMFPhoto photo = (OpenMFPhoto) OMFUtils.getPhotoByTypeId(omfuser.getId());
+	
 %>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB" xml:lang="en-GB">
 <head>
@@ -63,10 +69,10 @@
 						<ul class="dropdown-menu" id="swatch-menu">
 							<li><a href="/clients.htm">Clients</a></li>
 							<li><a href="/groups.htm">Groups</a></li>
-							
+
 						</ul></li>
-					<li><a href="/finance/accounting.htm"><i class="fa fa-money"></i>
-							Accounting</a></li>
+					<li><a href="/finance/accounting.htm"><i
+							class="fa fa-money"></i> Accounting</a></li>
 					<li class="dropdown" id="reports-menu"><a
 						class="dropdown-toggle" data-toggle="dropdown" href="#"><i
 							class="fa fa-bar-chart-o"></i> Reports<b class="caret"></b></a>
@@ -95,8 +101,8 @@
 						<ul class="dropdown-menu">
 							<li><a id="help" href="/help.htm"><i
 									class="fa fa-question-circle"></i> Help</a></li>
-							<li><a href="/viewuser.htm?omfuId=<%=currentUser.getId()%>"><i class="fa fa-user"></i>
-									Profile</a></li>
+							<li><a href="/viewuser.htm?omfuId=<%=currentUser.getId()%>"><i
+									class="fa fa-user"></i> Profile</a></li>
 							<li><a href="/usersetting.htm"><i class="fa fa-cog"></i>
 									Settings</a></li>
 							<li><a href="/logout.htm"><i class="fa fa-off"></i>Logout</a></li>
@@ -166,7 +172,7 @@
 
 					<c:choose>
 						<c:when test="${omfuser != null }">
-							<div id="changepassword" class="hide">
+							<div id="changepassword" class="row client hide">
 								<div class="modal-header silver">
 									<h3 class="bolder">Change Password</h3>
 								</div>
@@ -197,7 +203,7 @@
 									<button class="btn btn-primary">Save</button>
 								</div>
 							</div>
-							<div id="deleteuser" class="hide">
+							<div id="deleteuser" class="row client hide">
 								<div class="modal-header silver">
 									<h3 class="bolder">Delete</h3>
 								</div>
@@ -210,14 +216,15 @@
 							<div class="well">
 								<div class="pull-right">
 									<div class="btn-group">
-										<a href="#/edituser/{{user.id}}" class="btn btn-primary"><i
-											class="icon-edit icon-white"></i> Edit</a>
+										<a onclick="showRowSpan('adduserphoto');"
+											class="btn btn-primary"><i class="icon-edit icon-white"></i>
+											Add Photo</a>
 										<button type="button" class="btn btn-primary"
-											onclick="delUsr();">
+											onclick="showRowSpan('deleteuser');">
 											<i class="icon-trash icon-white"></i>Delete
 										</button>
 										<button type="button" class="btn btn-primary"
-											onclick="changePwd();">
+											onclick="showRowSpan('changepassword');">
 											<i class="icon-cog icon-white"></i> Change Password
 										</button>
 									</div>
@@ -227,16 +234,16 @@
 											escapeXml="true" /> <c:out value="${omfuser.surname }"
 											escapeXml="true" /></strong>
 								</h3>
-								<div class="row span">
+								<div class="row client">
 									<div class="col-sm-6 col-md-6">
 										<table class="table table-striped table-bordered">
 											<tr>
-												<td class="graybg" width="20%">userId</td>
-												<td width="80%"><c:out value="${omfuser.username }"
+												<td class="graybg">userId</td>
+												<td><c:out value="${omfuser.username }"
 														escapeXml="true" /></td>
 											</tr>
 											<tr>
-												<td class="graybg">Email</td>
+												<td>Email</td>
 												<td><c:out value="${omfuser.email }" escapeXml="true" /></td>
 											</tr>
 											<tr>
@@ -244,20 +251,51 @@
 												<td><c:out value="${omfuser.contact }" escapeXml="true" /></td>
 											</tr>
 											<tr>
-												<td class="graybg">Office</td>
+												<td>Office</td>
 												<td><c:out value="${omfuser.main_office }"
 														escapeXml="true" /></td>
 											</tr>
 											<tr>
-												<td class="graybg">Supervisor</td>
+												<td  class="graybg">Supervisor</td>
 												<td><c:out value="${omfuser.supervisor }"
 														escapeXml="true" /></td>
 											</tr>
 											<tr>
-												<td valign="top" class="graybg">Role:</td>
+												<td>Role:</td>
 												<td><c:out value="${omfuser.role }" escapeXml="true" /></td>
 											</tr>
+											<tr>
+												<td class="graybg">Address:</td>
+												<td><c:out value="${omfuser.address }" escapeXml="true" /></td>
+											</tr>
+											<tr>
+												<td valign="top" class="graybg">Creation Date :</td>
+												<td><c:out value="${omfuser.timestamp }" escapeXml="true" /></td>
+											</tr>
 										</table>
+									</div>
+								</div>
+								<div class="col-sm-3 col-md-3" style="margin:-20% 30% 10% 50%;">
+									<div class="thumbnail row">
+									<% if(photo == null) {%>
+																<img src="/static/images/demo_user.jpg" alt="Avatar" />
+																<%}else{ %>
+																<img src="<%=serviceManager.getImageDownloadUrl(photo)%>" alt="Photo Image"/>
+																<%} %>
+									</div>
+								</div>
+								<div id="adduserphoto" class="row client hide">
+									<div class="col-sm-6 col-md-6">
+										<form action="<%=serviceManager.getUploadUrl()%>"
+											method="post" enctype="multipart/form-data">
+											<input id="input-file" class="inactive file btn" type="file"
+												name="photo" onchange="onFileSelected()" /> <input
+												hidden="true" name="userId"
+												value="<c:out value="${omfuser.id}"/>" /> <input
+												hidden="true" name="type" value="<c:out value="user"/>" /> <input
+												id="btn-post" class="active btn" type="submit"
+												value="submit" />
+										</form>
 									</div>
 								</div>
 							</div>

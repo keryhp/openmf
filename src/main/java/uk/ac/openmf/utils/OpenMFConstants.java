@@ -105,5 +105,8 @@ public class OpenMFConstants {
 	public static final String FIELD_NAME_GROUPLOAN = "grouploan";
 	public static final String FIELD_NAME_WITHDRAWALAMOUNT = "withdrawalamount";
 	public static final String FIELD_NAME_DATEOFWITHDRAWAL = "dateofwithdrawal";
+	public static final String FIELD_NAME_TYPE = "type";
+	public static final String FIELD_NAME_TYPEID = "typeId";
+	public static final String FIELD_NAME_BLOB_KEY = "blobKey";
 
 }
