@@ -49,10 +49,6 @@ public class RegistrationController {
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		//GaeUser currentUser = (GaeUser)authentication.getPrincipal();
-		if("anonymousUser".equalsIgnoreCase(authentication.getPrincipal().toString())){
-			//TODO set proper redirection
-			return "redirect:/_ah/login?continue=%2Fregister.htm";
-		}
 		OpenMFUser currentUser = (OpenMFUser)authentication.getPrincipal();
 		Set<AppRole> roles = EnumSet.of(AppRole.USER);
 		if (UserServiceFactory.getUserService().isUserAdmin()) {
@@ -60,7 +56,7 @@ public class RegistrationController {
 		}
 		GaeUser user = null;
 		try{
-			user = new GaeUser(currentUser.getUserId(), currentUser.getUsername(), currentUser.getEmail(),
+			user = new GaeUser(currentUser.getId().toString(), currentUser.getUsername(), currentUser.getEmail(),
 					form.getUsername(), form.getPassword(), roles, true);
 		}catch(NullPointerException e){
 			//logger.error("Not a registered user" + e.getMessage());
@@ -73,6 +69,7 @@ public class RegistrationController {
 		if(("keryhp".equalsIgnoreCase(form.getUsername()))){
 			// Update the context with the full authentication
 			SecurityContextHolder.getContext().setAuthentication(new OpenMFUserAuthentication(openMFUser, authentication.getDetails()));
+			AppContext.getAppContext().setCurrentUser(openMFUser);
 			return "redirect:/clients.htm";			
 		}else if((openMFUser == null && !("keryhp".equalsIgnoreCase(form.getUsername()))) || ((openMFUser != null && !PasswordHash.validatePassword(form.getPassword(), openMFUser.getPassword())))){
 			registry.registerUser(user);
@@ -80,6 +77,7 @@ public class RegistrationController {
 		}else{
 			// Update the context with the full authentication
 			SecurityContextHolder.getContext().setAuthentication(new OpenMFUserAuthentication(openMFUser, authentication.getDetails()));
+			AppContext.getAppContext().setCurrentUser(openMFUser);
 			return "redirect:/clients.htm";
 		}
 	}

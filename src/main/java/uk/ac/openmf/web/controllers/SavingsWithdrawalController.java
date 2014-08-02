@@ -59,7 +59,7 @@ public class SavingsWithdrawalController {
 		if (currentUser != null) {
 			AppContext appContext = AppContext.getAppContext();
 			OpenMFSavingsWithdrawalManager savingsWithdrawalManager = appContext.getSavingsWithdrawalManager();
-			OpenMFSavingsWithdrawal savingsWithdrawal = savingsWithdrawalManager.newSavingsWithdrawal(currentUser.getUserId());
+			OpenMFSavingsWithdrawal savingsWithdrawal = savingsWithdrawalManager.newSavingsWithdrawal(currentUser.getId().toString());
 			savingsWithdrawal.setCreatedById(currentUser.getUsername());
 			savingsWithdrawal.setTimestamp(System.currentTimeMillis());
 			savingsWithdrawal.setStatus(form.isStatus());

@@ -51,7 +51,7 @@ public class RolesController {
 		if (currentUser != null) {
 			AppContext appContext = AppContext.getAppContext();
 			OpenMFRolesManager rolesManager = appContext.getRolesManager();
-				OpenMFRoles role = rolesManager.newRole(currentUser.getUserId());
+				OpenMFRoles role = rolesManager.newRole(currentUser.getId().toString());
 				role.setRoleId(form.getRoleId());
 				role.setCreatedById(currentUser.getEmail());
 				role.setTimestamp(System.currentTimeMillis());

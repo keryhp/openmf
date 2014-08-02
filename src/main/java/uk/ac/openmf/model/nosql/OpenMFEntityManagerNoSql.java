@@ -151,7 +151,7 @@ public abstract class OpenMFEntityManagerNoSql<T extends OpenMFEntity> implement
 	 */
 	protected Iterable<T> queryEntities(Query query, FetchOptions options) {
 		PreparedQuery preparedQuery = getDatastoreService().prepare(query);
-		final Iterable<Entity> iterable = preparedQuery.asIterable();
+		final Iterable<Entity> iterable = preparedQuery.asIterable(options);
 		Iterable<T> iterableWrapper = new Iterable<T>() {
 			@Override
 			public Iterator<T> iterator() {

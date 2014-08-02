@@ -1,5 +1,8 @@
 package uk.ac.openmf.web.controllers;
 
+import java.util.ArrayList;
+import java.util.logging.Logger;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.security.core.Authentication;
@@ -12,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import uk.ac.openmf.model.OpenMFClient;
 import uk.ac.openmf.model.OpenMFClientManager;
 import uk.ac.openmf.model.OpenMFGroup;
+import uk.ac.openmf.model.OpenMFLoanAccount;
+import uk.ac.openmf.model.OpenMFSavingsAccount;
 import uk.ac.openmf.model.nosql.OpenMFUserNoSql;
 import uk.ac.openmf.utils.GenerateAccountNumber;
 import uk.ac.openmf.utils.OMFUtils;
@@ -26,6 +31,8 @@ import uk.ac.openmf.web.forms.ClientForm;
 @Controller
 public class ClientController {
 
+	protected static final Logger logger =
+			Logger.getLogger(ClientController.class.getCanonicalName());	
 	@RequestMapping(value = "/clients.htm", method= RequestMethod.GET)
 	public String clients(HttpServletRequest req) {
 		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
@@ -48,8 +55,11 @@ public class ClientController {
 			group = AppContext.getAppContext().getGroupManager().getGroup(ServletUtils.validateEventId(client.getGroupid()));
 			req.setAttribute("group", group);
 		}
-		req.setAttribute("loanAccounts", OMFUtils.getLoanAccountsByClientList(clientId));
-		req.setAttribute("savingsAccounts", OMFUtils.getSavingsAccountsByClientList(clientId));
+		ArrayList<OpenMFLoanAccount> loanAccounts = OMFUtils.getLoanAccountsByClientList(clientId);
+		ArrayList<OpenMFSavingsAccount> savingsAccounts = OMFUtils.getSavingsAccountsByClientList(clientId);
+		req.setAttribute("loanAccounts", loanAccounts);
+		req.setAttribute("savingsAccounts", savingsAccounts);
+		logger.info("clientId" + clientId + " loanAccounts"  + loanAccounts + " savingsAccounts" + savingsAccounts);
 		return "viewclient";
 	}
 
@@ -69,9 +79,10 @@ public class ClientController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		OpenMFUserNoSql currentUser = (OpenMFUserNoSql)authentication.getPrincipal();
 		if (currentUser != null) {
+			logger.info("User details:" + currentUser.toString());
 			AppContext appContext = AppContext.getAppContext();
 			OpenMFClientManager clientManager = appContext.getClientManager();
-			OpenMFClient client = clientManager.newClient(currentUser.getUserId());
+			OpenMFClient client = clientManager.newClient(currentUser.getId().toString());
 			client.setCreatedById(currentUser.getUsername());
 			client.setTimestamp(System.currentTimeMillis());
 			client.setActive(form.isActive());		

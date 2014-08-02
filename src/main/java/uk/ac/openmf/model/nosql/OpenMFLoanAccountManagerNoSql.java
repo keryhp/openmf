@@ -1,13 +1,17 @@
 package uk.ac.openmf.model.nosql;
 
+import java.util.ArrayList;
+
 import uk.ac.openmf.model.OpenMFLoanAccount;
 import uk.ac.openmf.model.OpenMFLoanAccountManager;
 import uk.ac.openmf.utils.OpenMFConstants;
 
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.SortDirection;
@@ -70,29 +74,48 @@ public class OpenMFLoanAccountManagerNoSql extends OpenMFEntityManagerNoSql<Open
 	}
 
 	@Override
-	public Iterable<OpenMFLoanAccount> getAllLoanAccountsByClient(String clientId) {
+	public ArrayList<OpenMFLoanAccount> getAllLoanAccountsByClient(String clientId) {
 		Query qry = new Query(getKind());
 		qry.setFilter(FilterOperator.EQUAL.of(OpenMFConstants.FIELD_NAME_CLIENTID, clientId));
 		qry.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
 		FetchOptions options = FetchOptions.Builder.withLimit(100);
-		return queryEntities(qry, options);
+		logger.info("getAllLoanAccountsByClient clientId:" + clientId);
+		//return queryEntities(qry, options);
+		PreparedQuery pq = DatastoreServiceFactory.getDatastoreService().prepare(qry);
+		ArrayList<OpenMFLoanAccount> loanAccounts = new ArrayList<OpenMFLoanAccount>();
+		for (Entity result : pq.asList(options)) {
+			loanAccounts.add(new OpenMFLoanAccountNoSql(result));
+		}
+		return loanAccounts;
 	}
 
 	@Override
-	public Iterable<OpenMFLoanAccount> getAllLoanAccountByProduct(String loancode) {
+	public ArrayList<OpenMFLoanAccount> getAllLoanAccountByProduct(String loancode) {
 		Query qry = new Query(getKind());
 		qry.setFilter(FilterOperator.EQUAL.of(OpenMFConstants.FIELD_NAME_LOANCODE, loancode));
 		qry.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
 		FetchOptions options = FetchOptions.Builder.withLimit(100);
-		return queryEntities(qry, options);
+		//return queryEntities(qry, options);
+		PreparedQuery pq = DatastoreServiceFactory.getDatastoreService().prepare(qry);
+		ArrayList<OpenMFLoanAccount> loanAccounts = new ArrayList<OpenMFLoanAccount>();
+		for (Entity result : pq.asList(options)) {
+			loanAccounts.add(new OpenMFLoanAccountNoSql(result));
+		}
+		return loanAccounts;
 	}
 	
 	@Override
-	public Iterable<OpenMFLoanAccount> getAllLoanAccountsByGroup(String groupid) {
+	public ArrayList<OpenMFLoanAccount> getAllLoanAccountsByGroup(String groupid) {
 		Query qry = new Query(getKind());
 		qry.setFilter(FilterOperator.EQUAL.of(OpenMFConstants.FIELD_NAME_GROUPID, groupid));
 		qry.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
 		FetchOptions options = FetchOptions.Builder.withLimit(100);
-		return queryEntities(qry, options);
+		//return queryEntities(qry, options);
+		PreparedQuery pq = DatastoreServiceFactory.getDatastoreService().prepare(qry);
+		ArrayList<OpenMFLoanAccount> loanAccounts = new ArrayList<OpenMFLoanAccount>();
+		for (Entity result : pq.asList(options)) {
+			loanAccounts.add(new OpenMFLoanAccountNoSql(result));
+		}
+		return loanAccounts;
 	}
 }

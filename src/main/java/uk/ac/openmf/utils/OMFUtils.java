@@ -1,6 +1,7 @@
 package uk.ac.openmf.utils;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 import uk.ac.openmf.model.OpenMFClient;
 import uk.ac.openmf.model.OpenMFClientManager;
@@ -23,8 +24,8 @@ import uk.ac.openmf.model.OpenMFSavingsScheduledDepositManager;
 import uk.ac.openmf.model.OpenMFUser;
 import uk.ac.openmf.model.OpenMFUserManager;
 import uk.ac.openmf.model.nosql.OpenMFPhotoNoSql;
-import uk.ac.openmf.model.nosql.OpenMFUserNoSql;
 import uk.ac.openmf.web.AppContext;
+import uk.ac.openmf.web.controllers.ClientController;
 
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.datastore.DatastoreNeedIndexException;
@@ -39,6 +40,9 @@ import com.google.appengine.api.datastore.Query.FilterOperator;
  *
  */
 public final class OMFUtils {
+
+	protected static final Logger logger =
+			Logger.getLogger(ClientController.class.getCanonicalName());	
 
 	private OMFUtils() {
 
@@ -138,6 +142,7 @@ public final class OMFUtils {
 		} catch (DatastoreNeedIndexException e) {
 			//log the error
 		}
+		logger.info("clientId" + clientId + " loanAccounts"  + loanAccounts);
 		return loanAccounts;
 	}
 

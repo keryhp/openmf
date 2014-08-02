@@ -60,7 +60,7 @@ public class SavingsDepositController {
 		if (currentUser != null) {
 			AppContext appContext = AppContext.getAppContext();
 			OpenMFSavingsDepositManager savingsDepositManager = appContext.getSavingsDepositManager();
-			OpenMFSavingsDeposit savingsDeposit = savingsDepositManager.newSavingsDeposit(currentUser.getUserId());
+			OpenMFSavingsDeposit savingsDeposit = savingsDepositManager.newSavingsDeposit(currentUser.getId().toString());
 			savingsDeposit.setCreatedById(currentUser.getUsername());
 			savingsDeposit.setTimestamp(System.currentTimeMillis());
 			savingsDeposit.setStatus(form.isStatus());

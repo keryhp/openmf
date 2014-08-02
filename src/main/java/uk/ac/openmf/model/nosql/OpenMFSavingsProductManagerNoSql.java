@@ -20,79 +20,66 @@ import com.google.appengine.api.datastore.Query.SortDirection;
  */
 public class OpenMFSavingsProductManagerNoSql extends OpenMFEntityManagerNoSql<OpenMFSavingsProduct> implements OpenMFSavingsProductManager {
 
-	  private final OpenMFUserManagerNoSql userManager;
+	private final OpenMFUserManagerNoSql userManager;
 
-	  public OpenMFSavingsProductManagerNoSql(OpenMFUserManagerNoSql userManager) {
-	    super(OpenMFSavingsProduct.class);
-	    this.userManager = userManager;
-	  }
+	public OpenMFSavingsProductManagerNoSql(OpenMFUserManagerNoSql userManager) {
+		super(OpenMFSavingsProduct.class);
+		this.userManager = userManager;
+	}
 
-	  @Override
-	  public OpenMFSavingsProduct getSavingsProduct(Long savingsProductId) {
-	    return getEntity(createSavingsProductKey(null, savingsProductId));
-	  }
+	@Override
+	public OpenMFSavingsProduct getSavingsProduct(Long savingsProductId) {
+		return getEntity(createSavingsProductKey(null, savingsProductId));
+	}
 
-	  @Override
-	  public Iterable<OpenMFSavingsProduct> getAllSavingsProduct() {
-	    Query query = new Query(getKind());
-	    query.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
-	    FetchOptions options = FetchOptions.Builder.withLimit(100);
-	    return queryEntities(query, options);
-	  }
+	@Override
+	public Iterable<OpenMFSavingsProduct> getAllSavingsProduct() {
+		Query query = new Query(getKind());
+		query.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
+		FetchOptions options = FetchOptions.Builder.withLimit(100);
+		return queryEntities(query, options);
+	}
 
-	  /**
-	   * Creates a role entity key.
-	   *
-	   * @param userId the user id. If null, no parent key is set.
-	   * @param roleId
-	   * @return a datastore key object.
-	   */
-	  public Key createSavingsProductKey(String userId, Long savingsproductid) {
-		  if (userId != null) {
-		      Key parentKey = KeyFactory.createKey(OpenMFConstants.ENTITY_USER_TYPE_GAE, userId);
-		      return KeyFactory.createKey(parentKey, getKind(), savingsproductid);
-		    } else {
-		      return KeyFactory.createKey(getKind(), savingsproductid);
-		    }
-	  }
+	/**
+	 * Creates a role entity key.
+	 *
+	 * @param userId the user id. If null, no parent key is set.
+	 * @param roleId
+	 * @return a datastore key object.
+	 */
+	public Key createSavingsProductKey(String userId, Long savingsproductid) {
+		if (userId != null) {
+			Key parentKey = KeyFactory.createKey(OpenMFConstants.ENTITY_USER_TYPE_GAE, userId);
+			return KeyFactory.createKey(parentKey, getKind(), savingsproductid);
+		} else {
+			return KeyFactory.createKey(getKind(), savingsproductid);
+		}
+	}
 
-	  @Override
-	  public OpenMFSavingsProductNoSql fromParentKey(Key parentKey) {
-	    return new OpenMFSavingsProductNoSql(parentKey, getKind());
-	  }
+	@Override
+	public OpenMFSavingsProductNoSql fromParentKey(Key parentKey) {
+		return new OpenMFSavingsProductNoSql(parentKey, getKind());
+	}
 
-	  @Override
-	  public OpenMFSavingsProductNoSql newSavingsProduct(String userId) {
-	    return new OpenMFSavingsProductNoSql(null, getKind());
-	  }
+	@Override
+	public OpenMFSavingsProductNoSql newSavingsProduct(String userId) {
+		return new OpenMFSavingsProductNoSql(null, getKind());
+	}
 
-	  @Override
-	  protected OpenMFSavingsProductNoSql fromEntity(Entity entity) {
-	    return new OpenMFSavingsProductNoSql(entity);
-	  }
+	@Override
+	protected OpenMFSavingsProductNoSql fromEntity(Entity entity) {
+		return new OpenMFSavingsProductNoSql(entity);
+	}
 
 	@Override
 	public OpenMFSavingsProduct getSavingsProductBySavingsCode(String savingscode) {
 		Query qry = new Query(getKind());
 		qry.setFilter(FilterOperator.EQUAL.of(OpenMFConstants.FIELD_NAME_SAVINGSCODE, savingscode));
 		PreparedQuery pq = DatastoreServiceFactory.getDatastoreService().prepare(qry);
-		OpenMFSavingsProduct savingsproduct = null; 
+		OpenMFSavingsProduct savingsproduct = null;
 		for (Entity result : pq.asIterable()) {
 			if(savingsproduct == null){
 				savingsproduct = new OpenMFSavingsProductNoSql(result);
-				savingsproduct.setClosedate((String)result.getProperty(OpenMFConstants.FIELD_NAME_CLOSEDATE));
-				savingsproduct.setCreatedById((String)result.getProperty(OpenMFConstants.FIELD_NAME_CREATEDBY));
-				savingsproduct.setDescription((String)result.getProperty(OpenMFConstants.FIELD_NAME_DESCRIPTION));
-				savingsproduct.setSavingscode((String)result.getProperty(OpenMFConstants.FIELD_NAME_SAVINGSCODE));
-				savingsproduct.setProductname((String)result.getProperty(OpenMFConstants.FIELD_NAME_PRODUCTNAME));
-				savingsproduct.setRateofinterest((String)result.getProperty(OpenMFConstants.FIELD_NAME_RATEOFINTEREST));
-				savingsproduct.setStartdate((String)result.getProperty(OpenMFConstants.FIELD_NAME_STARTDATE));
-				savingsproduct.setTimestamp(System.currentTimeMillis());
-				savingsproduct.setActive((boolean)result.getProperty(OpenMFConstants.FIELD_NAME_ACTIVE));			
-				savingsproduct.setDepositfrequency((String)result.getProperty(OpenMFConstants.FIELD_NAME_DEPOSITFREQUENCY));
-				savingsproduct.setSavingsamount((String)result.getProperty(OpenMFConstants.FIELD_NAME_SAVINGSAMOUNT));
-				savingsproduct.setSavingstype((String)result.getProperty(OpenMFConstants.FIELD_NAME_SAVINGSTYPE));
-				savingsproduct.setTenure((String)result.getProperty(OpenMFConstants.FIELD_NAME_TENURE));
 				break;
 			}
 		}

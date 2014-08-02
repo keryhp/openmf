@@ -61,7 +61,7 @@ public class LoanDisburseController {
 		if (currentUser != null) {
 			AppContext appContext = AppContext.getAppContext();
 			OpenMFLoanDisburseManager loanDisburseManager = appContext.getLoanDisburseManager();
-			OpenMFLoanDisburse loanDisburse = loanDisburseManager.newLoanDisburse(currentUser.getUserId());
+			OpenMFLoanDisburse loanDisburse = loanDisburseManager.newLoanDisburse(currentUser.getId().toString());
 			loanDisburse.setCreatedById(currentUser.getUsername());
 			loanDisburse.setTimestamp(System.currentTimeMillis());
 			loanDisburse.setStatus(form.isStatus());

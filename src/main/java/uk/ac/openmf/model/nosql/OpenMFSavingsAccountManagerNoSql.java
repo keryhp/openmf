@@ -1,13 +1,18 @@
 package uk.ac.openmf.model.nosql;
 
+import java.util.ArrayList;
+
+import uk.ac.openmf.model.OpenMFLoanAccount;
 import uk.ac.openmf.model.OpenMFSavingsAccount;
 import uk.ac.openmf.model.OpenMFSavingsAccountManager;
 import uk.ac.openmf.utils.OpenMFConstants;
 
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.SortDirection;
@@ -84,6 +89,12 @@ public class OpenMFSavingsAccountManagerNoSql extends OpenMFEntityManagerNoSql<O
 		qry.setFilter(FilterOperator.EQUAL.of(OpenMFConstants.FIELD_NAME_SAVINGSCODE, savingscode));
 		qry.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
 		FetchOptions options = FetchOptions.Builder.withLimit(100);
-		return queryEntities(qry, options);
+		//return queryEntities(qry, options);
+		PreparedQuery pq = DatastoreServiceFactory.getDatastoreService().prepare(qry);
+		ArrayList<OpenMFSavingsAccount> savingsAccounts = new ArrayList<OpenMFSavingsAccount>();
+		for (Entity result : pq.asList(options)) {
+			savingsAccounts.add(new OpenMFSavingsAccountNoSql(result));
+		}
+		return savingsAccounts;
 	}
 }

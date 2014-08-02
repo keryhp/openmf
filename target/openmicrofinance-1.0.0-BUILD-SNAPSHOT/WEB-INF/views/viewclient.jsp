@@ -203,7 +203,7 @@
 											<li class="active"><a href="#general" data-toggle="tab">General</a></li>
 											<li class=""><a href="#address" data-toggle="tab">Address</a></li>
 											<li class=""><a href="#transactions" data-toggle="tab">Transactions</a></li>
-											<li class=""><a href="#addphoto" data-toggle="tab">Statistics</a></li>
+											<li class=""><a href="#addphoto" data-toggle="tab">Photos</a></li>
 											<!-- <li class=""><a href="#tab" data-toggle="tab">Tab
 											5</a></li> -->
 										</ul>

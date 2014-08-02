@@ -1,17 +1,20 @@
 package uk.ac.openmf.web.controllers;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.google.appengine.api.users.UserServiceFactory;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import uk.ac.openmf.model.OpenMFUser;
+import uk.ac.openmf.model.nosql.OpenMFEntityManagerNoSql;
 import uk.ac.openmf.web.AppContext;
+
+import com.google.appengine.api.users.UserServiceFactory;
 
 /**
  *
@@ -21,9 +24,17 @@ import uk.ac.openmf.web.AppContext;
 @Controller
 public class GaeAppController {
 
+	protected static final Logger logger =
+			Logger.getLogger(GaeAppController.class.getCanonicalName());
+	
     @RequestMapping(value = "/", method= RequestMethod.GET)
     public String landing(HttpServletRequest req) {
-		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
+    	OpenMFUser currentUser = (OpenMFUser)AppContext.getAppContext().getCurrentUser();
+    	if(currentUser == null){
+    		return "redirect: /register.htm";
+    	}
+		req.setAttribute("currentUser", currentUser);
+		logger.info("User details:" + currentUser.toString());
         return "landing";
     }
     

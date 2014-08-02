@@ -58,10 +58,10 @@ public class SavingsProductController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		OpenMFUserNoSql currentUser = (OpenMFUserNoSql)authentication.getPrincipal();
 		boolean succeeded = false;
-		if (currentUser != null) {
+		if (currentUser != null && currentUser.getId() != null) {
 			AppContext appContext = AppContext.getAppContext();
 			OpenMFSavingsProductManager savingsProductManager = appContext.getSavingsProductManager();
-			OpenMFSavingsProduct savingsProduct = savingsProductManager.newSavingsProduct(currentUser.getUserId());
+			OpenMFSavingsProduct savingsProduct = savingsProductManager.newSavingsProduct(currentUser.getId().toString());
 			savingsProduct.setClosedate(form.getClosedate());
 			savingsProduct.setCreatedById(currentUser.getUsername());
 			savingsProduct.setDescription(form.getDescription());

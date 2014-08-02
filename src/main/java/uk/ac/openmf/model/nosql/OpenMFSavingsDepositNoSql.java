@@ -125,7 +125,10 @@ public class OpenMFSavingsDepositNoSql extends OpenMFEntityNoSql  implements Ope
 
 	@Override
 	public boolean isStatus() {
-		return (boolean) entity.getProperty(OpenMFConstants.FIELD_NAME_STATUS);
+		if(entity.getProperty(OpenMFConstants.FIELD_NAME_STATUS) == null)
+			return false;
+		else 
+			return (boolean) entity.getProperty(OpenMFConstants.FIELD_NAME_STATUS);	
 	}
 
 	@Override

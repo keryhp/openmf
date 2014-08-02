@@ -64,7 +64,7 @@ public class OpenMFUserAuthentication implements Authentication {
     public String getName() {
     	String name = null;
     	try{
-    		name = principal.getUserId();
+    		name = principal.getUsername();
 		}catch(NullPointerException e){
 			//logger.error("Not a registered user" + e.getMessage());
 		}

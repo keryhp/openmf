@@ -1,5 +1,6 @@
 package uk.ac.openmf.model;
 
+
 /**
  * User manager interface.
  *

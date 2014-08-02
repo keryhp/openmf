@@ -1,5 +1,7 @@
 package uk.ac.openmf.model.nosql;
 
+import java.util.logging.Logger;
+
 import uk.ac.openmf.model.OpenMFLoanAccount;
 import uk.ac.openmf.utils.OpenMFConstants;
 
@@ -12,6 +14,9 @@ import com.google.appengine.api.datastore.Key;
  */
 public class OpenMFLoanAccountNoSql extends OpenMFEntityNoSql  implements OpenMFLoanAccount {
 
+
+	protected static final Logger logger =
+			Logger.getLogger(OpenMFLoanAccountNoSql.class.getCanonicalName());	
 	public OpenMFLoanAccountNoSql(Entity entity) {
 		super(entity);
 	}
@@ -190,9 +195,11 @@ public class OpenMFLoanAccountNoSql extends OpenMFEntityNoSql  implements OpenMF
 
 	@Override
 	public boolean isActive() {
-		return (boolean) entity.getProperty(OpenMFConstants.FIELD_NAME_ACTIVE);
+		if(entity.getProperty(OpenMFConstants.FIELD_NAME_ACTIVE) == null)
+			return false;
+		else 
+			return (boolean) entity.getProperty(OpenMFConstants.FIELD_NAME_ACTIVE);	
 	}
-
 	@Override
 	public void setActive(boolean active) {
 		entity.setProperty(OpenMFConstants.FIELD_NAME_ACTIVE, active);

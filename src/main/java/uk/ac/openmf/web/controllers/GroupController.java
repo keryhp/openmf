@@ -66,7 +66,7 @@ public class GroupController {
 		if (currentUser != null) {
 			AppContext appContext = AppContext.getAppContext();
 			OpenMFGroupManager groupManager = appContext.getGroupManager();
-			OpenMFGroup group = groupManager.newGroup(currentUser.getUserId());
+			OpenMFGroup group = groupManager.newGroup(currentUser.getId().toString());
 			group.setCreatedById(currentUser.getUsername());
 			group.setTimestamp(System.currentTimeMillis());
 			group.setActive(form.isActive());		

@@ -61,7 +61,7 @@ public class LoanProductController {
 		if (currentUser != null) {
 			AppContext appContext = AppContext.getAppContext();
 			OpenMFLoanProductManager loanProductManager = appContext.getLoanProductManager();
-			OpenMFLoanProduct loanProduct = loanProductManager.newLoanProduct(currentUser.getUserId());
+			OpenMFLoanProduct loanProduct = loanProductManager.newLoanProduct(currentUser.getId().toString());
 			loanProduct.setClosedate(form.getClosedate());
 			loanProduct.setCreatedById(currentUser.getUsername());
 			loanProduct.setDescription(form.getDescription());

@@ -78,7 +78,7 @@ public class SavingsAccountController {
 		if (currentUser != null) {
 			AppContext appContext = AppContext.getAppContext();
 			OpenMFSavingsAccountManager savingsAccountManager = appContext.getSavingsAccountManager();
-			OpenMFSavingsAccount savingsAccount = savingsAccountManager.newSavingsAccount(currentUser.getUserId());
+			OpenMFSavingsAccount savingsAccount = savingsAccountManager.newSavingsAccount(currentUser.getId().toString());
 			savingsAccount.setCreatedById(currentUser.getUsername());
 			savingsAccount.setTimestamp(System.currentTimeMillis());
 			savingsAccount.setActive(form.isActive());
@@ -105,7 +105,7 @@ public class SavingsAccountController {
 			sgaccId = savingsAccount.getId();
 			OpenMFSavingsProduct savingsProduct = AppContext.getAppContext().getSavingsProductManager().getSavingsProductBySavingsCode(savingsAccount.getSavingscode());
 			if(savingsProduct.getSavingstype().equalsIgnoreCase("COMPULSORY")){
-				DepositService.generateSavingsScheduledDeposits(savingsAccount, savingsProduct, AppContext.getAppContext().getCurrentUser().getUserId(), form.getTotalprincipaldeposit());
+				DepositService.generateSavingsScheduledDeposits(savingsAccount, savingsProduct, AppContext.getAppContext().getCurrentUser().getId().toString(), form.getTotalprincipaldeposit());
 			}
 		} else {
 			//return null;

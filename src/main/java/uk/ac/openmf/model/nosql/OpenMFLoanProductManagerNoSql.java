@@ -81,19 +81,6 @@ public class OpenMFLoanProductManagerNoSql extends OpenMFEntityManagerNoSql<Open
 		for (Entity result : pq.asIterable()) {
 			if(loanproduct == null){
 				loanproduct = new OpenMFLoanProductNoSql(result);
-				loanproduct.setClosedate((String)result.getProperty(OpenMFConstants.FIELD_NAME_CLOSEDATE));
-				loanproduct.setCreatedById((String)result.getProperty(OpenMFConstants.FIELD_NAME_CREATEDBY));
-				loanproduct.setDescription((String)result.getProperty(OpenMFConstants.FIELD_NAME_DESCRIPTION));
-				loanproduct.setLoancode((String)result.getProperty(OpenMFConstants.FIELD_NAME_LOANCODE));
-				loanproduct.setProductname((String)result.getProperty(OpenMFConstants.FIELD_NAME_PRODUCTNAME));
-				loanproduct.setRateofinterest((String)result.getProperty(OpenMFConstants.FIELD_NAME_RATEOFINTEREST));
-				loanproduct.setStartdate((String)result.getProperty(OpenMFConstants.FIELD_NAME_STARTDATE));
-				loanproduct.setRepaymentfrequency((String)result.getProperty(OpenMFConstants.FIELD_NAME_REPAYMENTFREQUENCY));
-				loanproduct.setRepaymentperiod((String)result.getProperty(OpenMFConstants.FIELD_NAME_REPAYMENTPERIOD));
-				loanproduct.setLoanamount((String)result.getProperty(OpenMFConstants.FIELD_NAME_LOANAMOUNT));
-				loanproduct.setLoantype((String)result.getProperty(OpenMFConstants.FIELD_NAME_LOANTYPE));			
-				loanproduct.setTimestamp(System.currentTimeMillis());
-				loanproduct.setActive((boolean)result.getProperty(OpenMFConstants.FIELD_NAME_ACTIVE));			
 				break;
 			}
 		}

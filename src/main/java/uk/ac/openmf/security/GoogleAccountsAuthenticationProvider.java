@@ -26,7 +26,8 @@ public class GoogleAccountsAuthenticationProvider implements AuthenticationProvi
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
     	User googleUser = (User) authentication.getPrincipal();
-        OpenMFUser openMFUser = AppContext.getAppContext().getUserManager().getUserByEmail(googleUser.getEmail());
+        //OpenMFUser openMFUser = AppContext.getAppContext().getUserManager().getUserByEmail(googleUser.getEmail());
+    	OpenMFUser openMFUser = AppContext.getAppContext().getCurrentUser();
         if (openMFUser == null) {
             // User not a registered user. Needs to be registered by the institution
 			openMFUser = AppContext.getAppContext().getUserManager().newUser(googleUser.getUserId());

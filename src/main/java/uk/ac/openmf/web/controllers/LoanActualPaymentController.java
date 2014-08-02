@@ -61,7 +61,7 @@ public class LoanActualPaymentController {
 		if (currentUser != null) {
 			AppContext appContext = AppContext.getAppContext();
 			OpenMFLoanActualPaymentManager loanActualPaymentManager = appContext.getLoanActualPaymentManager();
-			OpenMFLoanActualPayment loanActualPayment = loanActualPaymentManager.newLoanActualPayment(currentUser.getUserId());
+			OpenMFLoanActualPayment loanActualPayment = loanActualPaymentManager.newLoanActualPayment(currentUser.getId().toString());
 			loanActualPayment.setCreatedById(currentUser.getUsername());
 			loanActualPayment.setTimestamp(System.currentTimeMillis());
 			loanActualPayment.setStatus(form.isStatus());

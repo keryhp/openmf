@@ -1,14 +1,19 @@
 package uk.ac.openmf.model.nosql;
 
+import java.util.ArrayList;
+
 import uk.ac.openmf.model.OpenMFClient;
 import uk.ac.openmf.model.OpenMFClientManager;
+import uk.ac.openmf.model.OpenMFLoanAccount;
 import uk.ac.openmf.model.OpenMFUser;
 import uk.ac.openmf.utils.OpenMFConstants;
 
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.SortDirection;
@@ -71,11 +76,17 @@ public class OpenMFClientManagerNoSql extends OpenMFEntityManagerNoSql<OpenMFCli
 	  }
 
 	@Override
-	public Iterable<OpenMFClient> getClientsByGroupId(String groupid) {
+	public ArrayList<OpenMFClient> getClientsByGroupId(String groupid) {
 		Query qry = new Query(getKind());
 		qry.setFilter(FilterOperator.EQUAL.of(OpenMFConstants.FIELD_NAME_GROUPID, groupid));
 		qry.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
 		FetchOptions options = FetchOptions.Builder.withLimit(100);
-		return queryEntities(qry, options);
+		//return queryEntities(qry, options);
+		PreparedQuery pq = DatastoreServiceFactory.getDatastoreService().prepare(qry);
+		ArrayList<OpenMFClient> clients = new ArrayList<OpenMFClient>();
+		for (Entity result : pq.asList(options)) {
+			clients.add(new OpenMFClientNoSql(result));
+		}
+		return clients;
 	}
 }

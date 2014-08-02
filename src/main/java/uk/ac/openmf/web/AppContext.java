@@ -22,6 +22,7 @@ import uk.ac.openmf.model.OpenMFUserManager;
 import uk.ac.openmf.security.AppRole;
 import uk.ac.openmf.services.EmailServiceManager;
 import uk.ac.openmf.services.PhotoServiceManager;
+import uk.ac.openmf.utils.PasswordHash;
 
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserServiceFactory;
@@ -41,6 +42,7 @@ public class AppContext {
 
 	private PhotoServiceManager photoServiceManager;
 	private EmailServiceManager emailServiceManager;
+	private OpenMFUser openMFUser = null;
 	// Prevent the class being instantiated externally.
 	private AppContext() {
 		configManager = new ConfigManager();
@@ -151,12 +153,15 @@ public class AppContext {
 		}
 		OpenMFUser openMFUser = openMFUserManager.getUserByEmail(user.getEmail());
 		if (openMFUser == null) {
-			openMFUser = openMFUserManager.newUser(user.getUserId());
-			openMFUser.setEmail(user.getEmail());
-			openMFUser.setUsername(user.getNickname());
-			openMFUser.setRole(AppRole.NEW_USER.toString());
+			openMFUser = openMFUserManager.newUser();
+			openMFUser.setEmail(user.getNickname());
+			openMFUser.setRole(AppRole.NEW_USER.toString());			
 			//openMFUserManager.upsertEntity(openMFUser);
 		}
 		return openMFUser;
+	}
+	
+	public void setCurrentUser(OpenMFUser openMFUser){
+		this.openMFUser = openMFUser;
 	}
 }

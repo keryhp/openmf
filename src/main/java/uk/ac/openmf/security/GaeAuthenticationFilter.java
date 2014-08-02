@@ -29,6 +29,7 @@ import org.springframework.web.filter.GenericFilterBean;
 
 import uk.ac.openmf.model.OpenMFUser;
 import uk.ac.openmf.users.GaeUser;
+import uk.ac.openmf.web.AppContext;
 
 /**
  * @author harish
@@ -70,7 +71,6 @@ public class GaeAuthenticationFilter extends GenericFilterBean {
 
 						return;
 					}
-
 				} catch (AuthenticationException e) {
 					failureHandler.onAuthenticationFailure((HttpServletRequest)request, (HttpServletResponse)response, e);
 
@@ -78,7 +78,6 @@ public class GaeAuthenticationFilter extends GenericFilterBean {
 				}
 			}
 		}
-
 		chain.doFilter(request, response);
 	}
 
@@ -93,16 +92,13 @@ public class GaeAuthenticationFilter extends GenericFilterBean {
 		//GaeUser gaeUser = (GaeUser)authentication.getPrincipal();
 		OpenMFUser openmfUser = (OpenMFUser)authentication.getPrincipal();
 
-		try{
-			if (openmfUser == null){
-				return false;
-			}else if(!("test".equalsIgnoreCase(openmfUser.getUsername())) && !openmfUser.getEmail().equals(googleUser.getEmail())){
-				return false;
-			}			
-		}catch(NullPointerException e){
-			logger.error("Not a registered user" + e.getMessage());
+		if(openmfUser == null || openmfUser.getEmail() == null){
+			return false;
+		}else if (!openmfUser.getEmail().equals(googleUser.getEmail())) {
+			return false;
 		}
-			return true;
+
+		return true;
 	}
 
 	@Override

@@ -107,7 +107,10 @@ public class OpenMFLoanProductNoSql extends OpenMFEntityNoSql  implements OpenMF
 
 	@Override
 	public boolean isActive() {
-		return (boolean) entity.getProperty(OpenMFConstants.FIELD_NAME_ACTIVE);
+		if(entity.getProperty(OpenMFConstants.FIELD_NAME_ACTIVE) == null)
+			return false;
+		else 
+			return (boolean) entity.getProperty(OpenMFConstants.FIELD_NAME_ACTIVE);	
 	}
 
 	@Override

@@ -22,84 +22,68 @@ import com.google.appengine.api.datastore.Query.SortDirection;
  */
 public class OpenMFSavingsScheduledDepositManagerNoSql extends OpenMFEntityManagerNoSql<OpenMFSavingsScheduledDeposit> implements OpenMFSavingsScheduledDepositManager {
 
-	  private final OpenMFUserManagerNoSql userManager;
+	private final OpenMFUserManagerNoSql userManager;
 
-	  public OpenMFSavingsScheduledDepositManagerNoSql(OpenMFUserManagerNoSql userManager) {
-	    super(OpenMFSavingsScheduledDeposit.class);
-	    this.userManager = userManager;
-	  }
+	public OpenMFSavingsScheduledDepositManagerNoSql(OpenMFUserManagerNoSql userManager) {
+		super(OpenMFSavingsScheduledDeposit.class);
+		this.userManager = userManager;
+	}
 
-	  @Override
-	  public OpenMFSavingsScheduledDeposit getSavingsScheduledDepositScheduleItem(Long clientId) {
-	    return getEntity(createSavingsScheduledDepositKey(null, clientId));
-	  }
+	@Override
+	public OpenMFSavingsScheduledDeposit getSavingsScheduledDepositScheduleItem(Long clientId) {
+		return getEntity(createSavingsScheduledDepositKey(null, clientId));
+	}
 
-	  @Override
-	  public Iterable<OpenMFSavingsScheduledDeposit> getAllSavingsScheduledDeposits() {
-	    Query query = new Query(getKind());
-	    query.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
-	    FetchOptions options = FetchOptions.Builder.withLimit(100);
-	    return queryEntities(query, options);
-	  }
+	@Override
+	public Iterable<OpenMFSavingsScheduledDeposit> getAllSavingsScheduledDeposits() {
+		Query query = new Query(getKind());
+		query.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
+		FetchOptions options = FetchOptions.Builder.withLimit(100);
+		return queryEntities(query, options);
+	}
 
-	  /**
-	   * Creates a role entity key.
-	   *
-	   * @param userId the user id. If null, no parent key is set.
-	   * @param clientId
-	   * @return a datastore key object.
-	   */
-	  public Key createSavingsScheduledDepositKey(String userId, Long clientId) {
-	    if (userId != null) {
-	      Key parentKey = KeyFactory.createKey(OpenMFConstants.ENTITY_USER_TYPE_GAE, userId);
-	      return KeyFactory.createKey(parentKey, getKind(), clientId);
-	    } else {
-	      return KeyFactory.createKey(getKind(), clientId);
-	    }
-	  }
+	/**
+	 * Creates a role entity key.
+	 *
+	 * @param userId the user id. If null, no parent key is set.
+	 * @param clientId
+	 * @return a datastore key object.
+	 */
+	public Key createSavingsScheduledDepositKey(String userId, Long clientId) {
+		if (userId != null) {
+			Key parentKey = KeyFactory.createKey(OpenMFConstants.ENTITY_USER_TYPE_GAE, userId);
+			return KeyFactory.createKey(parentKey, getKind(), clientId);
+		} else {
+			return KeyFactory.createKey(getKind(), clientId);
+		}
+	}
 
-	  @Override
-	  public OpenMFSavingsScheduledDepositNoSql fromParentKey(Key parentKey) {
-	    return new OpenMFSavingsScheduledDepositNoSql(parentKey, getKind());
-	  }
+	@Override
+	public OpenMFSavingsScheduledDepositNoSql fromParentKey(Key parentKey) {
+		return new OpenMFSavingsScheduledDepositNoSql(parentKey, getKind());
+	}
 
-	  @Override
-	  protected OpenMFSavingsScheduledDepositNoSql fromEntity(Entity entity) {
-	    return new OpenMFSavingsScheduledDepositNoSql(entity);
-	  }
+	@Override
+	protected OpenMFSavingsScheduledDepositNoSql fromEntity(Entity entity) {
+		return new OpenMFSavingsScheduledDepositNoSql(entity);
+	}
 
 	@Override
 	public OpenMFSavingsScheduledDeposit newSavingsScheduledDeposits(String userId) {
-		 return new OpenMFSavingsScheduledDepositNoSql(null, getKind());
+		return new OpenMFSavingsScheduledDepositNoSql(null, getKind());
 	}
 
 	@Override
 	public Iterable<OpenMFSavingsScheduledDeposit> getSavingsScheduledDepositBySavingsAccount(String savingsaccountid) {
 		Query qry = new Query(getKind());
 		qry.setFilter(FilterOperator.EQUAL.of(OpenMFConstants.FIELD_NAME_SAVINGSACCOUNTID, savingsaccountid));
-		//qry.addSort(OpenMFConstants.FIELD_NAME_SERIALNUMBER, SortDirection.ASCENDING);
-		//FetchOptions options = FetchOptions.Builder.withLimit(100);
+		qry.addSort(OpenMFConstants.FIELD_NAME_SERIALNUMBER, SortDirection.ASCENDING);
+		FetchOptions options = FetchOptions.Builder.withLimit(100);
 		PreparedQuery pq = DatastoreServiceFactory.getDatastoreService().prepare(qry);
-		OpenMFSavingsScheduledDeposit savingsdepsch = null; 
 		ArrayList<OpenMFSavingsScheduledDeposit> schedules = new ArrayList<OpenMFSavingsScheduledDeposit>();
-		for (Entity result : pq.asIterable()) {
-				savingsdepsch = new OpenMFSavingsScheduledDepositNoSql(result);
-				savingsdepsch.setCreatedById((String)result.getProperty(OpenMFConstants.FIELD_NAME_CREATEDBY));
-				savingsdepsch.setTimestamp(System.currentTimeMillis());
-				if(result.getProperty(OpenMFConstants.FIELD_NAME_ACTIVE) == null)
-					savingsdepsch.setActive(false);
-				else
-					savingsdepsch.setActive((boolean)result.getProperty(OpenMFConstants.FIELD_NAME_ACTIVE));			
-				savingsdepsch.setBalanceoutstandingamount((String)result.getProperty(OpenMFConstants.FIELD_NAME_BALANCEOUTSTANDINGAMOUNT));
-				savingsdepsch.setClientId((String)result.getProperty(OpenMFConstants.FIELD_NAME_CLIENTID));
-				savingsdepsch.setInterestamount((String)result.getProperty(OpenMFConstants.FIELD_NAME_INTERESTAMOUNT));
-				savingsdepsch.setSavingsaccountid(savingsaccountid);
-				savingsdepsch.setPaid((boolean)result.getProperty(OpenMFConstants.FIELD_NAME_PAID));
-				savingsdepsch.setPaidamount((String)result.getProperty(OpenMFConstants.FIELD_NAME_PAIDAMOUNT));
-				savingsdepsch.setPaiddate((String)result.getProperty(OpenMFConstants.FIELD_NAME_PAIDDATE));
-				savingsdepsch.setScheduledate((String)result.getProperty(OpenMFConstants.FIELD_NAME_SCHEDULEDATE));
-				savingsdepsch.setSerialnumber((String)result.getProperty(OpenMFConstants.FIELD_NAME_SERIALNUMBER));
-				schedules.add(savingsdepsch);
+		for (Entity result : pq.asIterable(options)) {
+			OpenMFSavingsScheduledDeposit savingsdepsch = new OpenMFSavingsScheduledDepositNoSql(result);
+			schedules.add(savingsdepsch);
 		}
 		return schedules;
 	}

@@ -87,7 +87,7 @@ public class LoanAccountController {
 			if(form.getGroupId() != null){
 				ArrayList<OpenMFClient> clients = OMFUtils.getClientsByGroupId(form.getGroupId());
 				for (OpenMFClient openMFClient : clients) {
-					OpenMFLoanAccount loanAccount = loanAccountManager.newLoanAccount(currentUser.getUserId());
+					OpenMFLoanAccount loanAccount = loanAccountManager.newLoanAccount(currentUser.getId().toString());
 					loanAccount.setClientId(openMFClient.getId().toString());
 					loanAccount.setGroupId(form.getGroupId());
 					loanAccount.setGrouploan(true);				
@@ -122,11 +122,11 @@ public class LoanAccountController {
 					loanAccount.setDefaulted(form.isDefaulted());
 					loanAccountManager.upsertEntity(loanAccount);
 					lnaccId = loanAccount.getId();
-					RepaymentService.generateRepaymentSchedule(loanAccount, AppContext.getAppContext().getLoanProductManager().getLoanProductByLoanCode(loanAccount.getLoancode()), AppContext.getAppContext().getCurrentUser().getUserId());					
+					RepaymentService.generateRepaymentSchedule(loanAccount, AppContext.getAppContext().getLoanProductManager().getLoanProductByLoanCode(loanAccount.getLoancode()), AppContext.getAppContext().getCurrentUser().getId().toString());					
 				}
 				return "redirect:/groups.htm";
 			}else{
-				OpenMFLoanAccount loanAccount = loanAccountManager.newLoanAccount(currentUser.getUserId());
+				OpenMFLoanAccount loanAccount = loanAccountManager.newLoanAccount(currentUser.getId().toString());
 				loanAccount.setGroupId(form.getGroupId());
 				loanAccount.setGrouploan(true);				
 				loanAccount.setCreatedById(currentUser.getUsername());
@@ -161,7 +161,7 @@ public class LoanAccountController {
 				loanAccount.setDefaulted(form.isDefaulted());
 				loanAccountManager.upsertEntity(loanAccount);
 				lnaccId = loanAccount.getId();
-				RepaymentService.generateRepaymentSchedule(loanAccount, AppContext.getAppContext().getLoanProductManager().getLoanProductByLoanCode(loanAccount.getLoancode()), AppContext.getAppContext().getCurrentUser().getUserId());
+				RepaymentService.generateRepaymentSchedule(loanAccount, AppContext.getAppContext().getLoanProductManager().getLoanProductByLoanCode(loanAccount.getLoancode()), AppContext.getAppContext().getCurrentUser().getId().toString());
 				return "redirect:/viewloanaccount.htm?lnaccId=" + lnaccId;
 			}
 		}

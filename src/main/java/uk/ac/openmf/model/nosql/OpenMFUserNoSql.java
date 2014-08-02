@@ -29,6 +29,8 @@ public class OpenMFUserNoSql extends OpenMFEntityNoSql  implements OpenMFUser, S
 
 	@Override
 	public String getUserId() {
+		if(entity == null || entity.getKey() == null)
+			return null;
 		return entity.getKey().getName();
 	}
 
@@ -41,8 +43,8 @@ public class OpenMFUserNoSql extends OpenMFEntityNoSql  implements OpenMFUser, S
 
 	@Override
 	public String getUsername() {
-		if(entity.getProperty(OpenMFConstants.FIELD_NAME_USERNAME) == null){
-			return "test";
+		if(entity == null || entity.getProperty(OpenMFConstants.FIELD_NAME_USERNAME) == null){
+			return null;
 		}else{
 			return (String) entity.getProperty(OpenMFConstants.FIELD_NAME_USERNAME);
 		}
@@ -177,5 +179,19 @@ public class OpenMFUserNoSql extends OpenMFEntityNoSql  implements OpenMFUser, S
 	@Override
 	public Long getId() {
 		return entity.getKey().getId();
+	}
+
+	@Override
+	public String toString() {
+		return "OpenMFUserNoSql [getUserId()=" + getUserId() + ", getEmail()="
+				+ getEmail() + ", getUsername()=" + getUsername()
+				+ ", getForename()=" + getForename() + ", getSurname()="
+				+ getSurname() + ", isEnabled()=" + isEnabled()
+				+ ", getMain_office()=" + getMain_office() + ", getContact()="
+				+ getContact() + ", getPassword()=" + getPassword()
+				+ ", getAddress()=" + getAddress() + ", getSupervisor()="
+				+ getSupervisor() + ", getRole()=" + getRole()
+				+ ", getTimestamp()=" + getTimestamp() + ", getCreatedById()="
+				+ getCreatedById() + ", getId()=" + getId() + "]";
 	}
 }

@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
-  <application>openmicrofinance</application>
-  <version>1</version>
+	<application>openmicrofinance</application>
+	<version>1</version>
 
-  <!--
-    Allows App Engine to send multiple requests to one instance in parallel:
-  -->
-  <threadsafe>true</threadsafe>
-    <system-properties>
-        <property name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>
-        		<property name="entityManagerFactory"
+	<!-- Allows App Engine to send multiple requests to one instance in parallel: -->
+	<threadsafe>true</threadsafe>
+	<static-files>
+		<include path="/static/**" expiration="1d 12h" />
+		<exclude path="/classes/**" />
+	</static-files>
+	<system-properties>
+		<property name="java.util.logging.config.file" value="WEB-INF/logging.properties" />
+		<property name="entityManagerFactory"
 			value="uk.ac.openmf.model.nosql.OpenMFEntityManagerNoSqlFactory" />
-        
-    </system-properties>
+
+	</system-properties>
 	<precompilation-enabled>false</precompilation-enabled>
-    <sessions-enabled>true</sessions-enabled>
+	<sessions-enabled>true</sessions-enabled>
 </appengine-web-app>
