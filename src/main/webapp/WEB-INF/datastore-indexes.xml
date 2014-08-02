@@ -39,7 +39,7 @@
 
 	<datastore-index kind="OpenMFSavingsScheduledDeposit"
 		ancestor="false" source="manual">
-		<property name="loanaccountid" direction="asc" />
+		<property name="savingsaccountid" direction="asc" />
 		<property name="timestamp" direction="desc" />
 	</datastore-index>
 
@@ -51,7 +51,7 @@
 
 	<datastore-index kind="OpenMFSavingsScheduledDeposit"
 		ancestor="false" source="manual">
-		<property name="loanaccountid" direction="asc" />
+		<property name="savingsaccountid" direction="asc" />
 		<property name="serialnumber" direction="asc" />
 	</datastore-index>
 
