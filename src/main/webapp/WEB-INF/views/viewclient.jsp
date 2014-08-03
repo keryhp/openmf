@@ -24,6 +24,8 @@
 			.getAttribute("loanAccounts");
 	ArrayList<OpenMFSavingsAccount> savingsAccounts = (ArrayList<OpenMFSavingsAccount>) request
 			.getAttribute("savingsAccounts");
+	ArrayList<OpenMFTransaction> transactions = (ArrayList<OpenMFTransaction>) request
+			.getAttribute("transactions");
 	int numofActiveLoans = 0;
 	int numofActiveSavings = 0;
 	double balLoan = 0.0;
@@ -84,7 +86,7 @@
 							<li><a href="/groups.htm">Groups</a></li>
 
 						</ul></li>
-					<li><a href="/finance/accounting.htm"><i
+					<li><a href="/finance/accountingcoa.htm"><i
 							class="fa fa-money"></i> Accounting</a></li>
 					<li class="dropdown" id="reports-menu"><a
 						class="dropdown-toggle" data-toggle="dropdown" href="#"><i
@@ -201,9 +203,9 @@
 									<div class="overflowhidden marginbottom0 ">
 										<ul id="myTab" class="nav nav-tabs">
 											<li class="active"><a href="#general" data-toggle="tab">General</a></li>
-											<li class=""><a href="#address" data-toggle="tab">Address</a></li>
 											<li class=""><a href="#transactions" data-toggle="tab">Transactions</a></li>
 											<li class=""><a href="#addphoto" data-toggle="tab">Photos</a></li>
+											<li class=""><a href="#address" data-toggle="tab">Address</a></li>
 											<!-- <li class=""><a href="#tab" data-toggle="tab">Tab
 											5</a></li> -->
 										</ul>
@@ -612,82 +614,43 @@
 												</p>
 											</div>
 											<div class="tab-pane" id="transactions">
-												<!-- <button class="btn btn-primary pull-right"
-														onclick="export()">Export</button> -->
 												<br />
 												<table class="table table-striped">
 													<colgroup span="4"></colgroup>
 													<thead>
 														<tr class="graybg">
-															<th class="pointer" onclick="changeTransactionSort('id')">Id</th>
-															<th class="pointer"
-																onclick="changeTransactionSort('officeName')">Office
-																Name</th>
-															<th class="pointer"
-																onclick="changeTransactionSort('date')">Transaction
-																Date</th>
-															<th class="pointer"
-																onclick="changeTransactionSort('type.value')">Type</th>
-															<th class="pointer"
-																onclick="changeTransactionSort('amount')">Amount</th>
-															<th class="pointer" colspan="5" scope="colgroup">Breakdown</th>
-														</tr>
-														<tr>
-															<th scope="col"></th>
-															<th scope="col"></th>
-															<th scope="col"></th>
-															<th scope="col"></th>
-															<th scope="col"></th>
-															<th class="pointer" scope="col"
-																onclick="changeTransactionSort('principalPortion')">Principal</th>
-															<th class="pointer" scope="col"
-																onclick="changeTransactionSort('interestPortion')">Interest</th>
-															<th class="pointer" scope="col"
-																onclick="changeTransactionSort('feeChargesPortion')">Fees</th>
-															<th class="pointer" scope="col"
-																onclick="changeTransactionSort('penaltyChargesPortion')">Penalties</th>
+															<th>Id</th>
+															<th>From Acc#</th>
+															<th>To Acc#</th>
+															<th>Transaction Date</th>
+															<th>Type</th>
+															<th>Product Id</th>
+															<th>Status</th>
+															<th>Posted By</th>
+															<th>Approved By</th>
 														</tr>
 													</thead>
 													<tbody>
-														<tr class="pointer-main">
-															<td class="pointer" onclick="viewTransactionFn(id);">
-																12334</td>
-															<td class="pointer" onclick="viewTransactionFn(id);">
-																Office Name</td>
-															<td class="pointer" onclick="viewTransactionFn(id);">
-																dd/mm/yyyy</td>
-															<td class="pointer" onclick="viewTransactionFn(id);">
-																withdrawal</td>
-															<td class="pointer" onclick="viewTransactionFn(id);">
-																100.00</td>
-															<td class="pointer" onclick="viewTransactionFn(id);">
-																105.00</td>
-															<td class="pointer" onclick="viewTransactionFn(id);">
-																5.00</td>
-															<td class="pointer" onclick="viewTransactionFn(id);">
-																0.00</td>
-															<td class="pointer" onclick="viewTransactionFn(id);">
-																0.00</td>
-														</tr>
-														<tr class="pointer-main">
-															<td class="pointer" onclick="viewTransactionFn(id);">
-																12335</td>
-															<td class="pointer" onclick="viewTransactionFn(id);">
-																Office Name</td>
-															<td class="pointer" onclick="viewTransactionFn(id);">
-																dd/mm/yyyy</td>
-															<td class="pointer" onclick="viewTransactionFn(id);">
-																withdrawal</td>
-															<td class="pointer" onclick="viewTransactionFn(id);">
-																100.00</td>
-															<td class="pointer" onclick="viewTransactionFn(id);">
-																105.00</td>
-															<td class="pointer" onclick="viewTransactionFn(id);">
-																5.00</td>
-															<td class="pointer" onclick="viewTransactionFn(id);">
-																0.00</td>
-															<td class="pointer" onclick="viewTransactionFn(id);">
-																0.00</td>
+														<tr>
+															<%
+																for (OpenMFTransaction transaction : transactions) {
+																			long saId = transaction.getId();
+															%>
+															<td><c:out value="<%=transaction.getId()%>" /></td>
+															<td><c:out
+																	value="<%=transaction.getFromaccountid()%>" /></td>
+															<td><c:out value="<%=transaction.getToaccountid()%>" /></td>
+															<td><c:out
+																	value="<%=transaction.getDateoftransaction()%>" /></td>
+															<td><c:out
+																	value="<%=transaction.getTransactiontype()%>" /></td>
+															<td><c:out value="<%=transaction.getProductid()%>" /></td>
+															<td><c:out value="<%=transaction.isStatus()%>" /></td>
+															<td><c:out value="<%=transaction.getPostedby()%>" /></td>
+															<td><c:out value="<%=transaction.getApprovedby()%>" /></td>
+															<%
+																}
+															%>
 														</tr>
 													</tbody>
 												</table>
@@ -713,7 +676,8 @@
 												%>
 												<div class="col-sm-3 col-md-3">
 													<div class="thumbnail row">
-														<img src="<%=serviceManager.getImageDownloadUrl(tmpPhoto)%>"
+														<img
+															src="<%=serviceManager.getImageDownloadUrl(tmpPhoto)%>"
 															alt="Photo Image" />
 													</div>
 												</div>
@@ -721,9 +685,6 @@
 													}
 												%>
 											</div>
-											<!-- <div class="tab-pane" id="tab">
-											<p>Sample tab data.</p>
-										</div> -->
 										</div>
 									</div>
 								</div>

@@ -8,6 +8,11 @@ function viewClientFn(clientId){
 	window.location.href = "/viewclient.htm?clientId=" + clientId;
 };
 
+function viewChartOfAccountsFn(coaId){
+	"use strict";
+	window.location.href = "/finance/viewcoa.htm?coaId=" + coaId;
+};
+
 function viewGroupFn(groupId){
 	"use strict";
 	window.location.href = "/viewgroup.htm?groupId=" + groupId;

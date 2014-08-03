@@ -21,22 +21,16 @@ import uk.ac.openmf.web.ConfigManager;
 public class EmailServiceManager {
 	private static final Logger logger =
 			Logger.getLogger(EmailServiceManager.class.getCanonicalName());
-
+	
 	private ConfigManager configManager;
 
 	public EmailServiceManager(ConfigManager configManager) {
 		this.configManager = configManager;
 	}
 
-	public void sendEmail(OpenMFUser user) throws UnsupportedEncodingException{
+	public void sendEmail(OpenMFUser user, StringBuilder sb, String subject) throws UnsupportedEncodingException{
 		Properties props = new Properties();
-		Session session = Session.getDefaultInstance(props, null);
-
-		//String msgBody = "Dear "+ user.getName() +",\n please find the list of your events and their bookings.";
-		StringBuilder sb = new StringBuilder();
-		//TODO get the reporting work here
-		sb.append("</table></body></html>");
-		
+		Session session = Session.getDefaultInstance(props, null);		
 		String appid = System.getProperty("com.google.appengine.application.id");
 		String senderAddress = "admin@" + appid + ".appspotmail.com";
 		try {
@@ -44,16 +38,16 @@ public class EmailServiceManager {
 			msg.setFrom(new InternetAddress(senderAddress, "OpenMFI Admin"));
 			msg.addRecipient(Message.RecipientType.TO,
 					new InternetAddress(user.getEmail(), user.getUsername()));
-			msg.setSubject("[Daily mail] Your task list");
+			msg.setSubject(subject);
 			msg.setContent(sb.toString(), "text/html");
 			Transport.send(msg);
 
 		} catch (AddressException e) {
-			System.out.println("Error sending email 2\n");
+			logger.severe("Error sending email 2\n");
 			e.printStackTrace();
 		} catch (MessagingException e) {
 			// ...
-			System.out.println("Error sending email 3\n");
+			logger.severe("Error sending email 3\n");
 			e.printStackTrace();
 
 		}

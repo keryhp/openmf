@@ -17,7 +17,7 @@ import uk.ac.openmf.model.OpenMFLoanAccount;
 import uk.ac.openmf.model.OpenMFLoanAccountManager;
 import uk.ac.openmf.model.OpenMFLoanProduct;
 import uk.ac.openmf.model.nosql.OpenMFUserNoSql;
-import uk.ac.openmf.services.RepaymentService;
+import uk.ac.openmf.services.ScheduledRepaymentService;
 import uk.ac.openmf.utils.GenerateAccountNumber;
 import uk.ac.openmf.utils.OMFUtils;
 import uk.ac.openmf.utils.ServletUtils;
@@ -122,7 +122,7 @@ public class LoanAccountController {
 					loanAccount.setDefaulted(form.isDefaulted());
 					loanAccountManager.upsertEntity(loanAccount);
 					lnaccId = loanAccount.getId();
-					RepaymentService.generateRepaymentSchedule(loanAccount, AppContext.getAppContext().getLoanProductManager().getLoanProductByLoanCode(loanAccount.getLoancode()), AppContext.getAppContext().getCurrentUser().getId().toString());					
+					ScheduledRepaymentService.generateRepaymentSchedule(loanAccount, AppContext.getAppContext().getLoanProductManager().getLoanProductByLoanCode(loanAccount.getLoancode()), AppContext.getAppContext().getCurrentUser().getId().toString());					
 				}
 				return "redirect:/groups.htm";
 			}else{
@@ -161,7 +161,7 @@ public class LoanAccountController {
 				loanAccount.setDefaulted(form.isDefaulted());
 				loanAccountManager.upsertEntity(loanAccount);
 				lnaccId = loanAccount.getId();
-				RepaymentService.generateRepaymentSchedule(loanAccount, AppContext.getAppContext().getLoanProductManager().getLoanProductByLoanCode(loanAccount.getLoancode()), AppContext.getAppContext().getCurrentUser().getId().toString());
+				ScheduledRepaymentService.generateRepaymentSchedule(loanAccount, AppContext.getAppContext().getLoanProductManager().getLoanProductByLoanCode(loanAccount.getLoancode()), AppContext.getAppContext().getCurrentUser().getId().toString());
 				return "redirect:/viewloanaccount.htm?lnaccId=" + lnaccId;
 			}
 		}

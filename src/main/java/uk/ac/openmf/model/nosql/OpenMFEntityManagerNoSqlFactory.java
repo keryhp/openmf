@@ -1,7 +1,10 @@
 package uk.ac.openmf.model.nosql;
 
+import uk.ac.openmf.model.OpenMFChartOfAccountsManager;
 import uk.ac.openmf.model.OpenMFClientManager;
 import uk.ac.openmf.model.OpenMFEntityManagerFactory;
+import uk.ac.openmf.model.OpenMFGeneralJournalManager;
+import uk.ac.openmf.model.OpenMFGeneralLedgerManager;
 import uk.ac.openmf.model.OpenMFGroupManager;
 import uk.ac.openmf.model.OpenMFLoanAccountManager;
 import uk.ac.openmf.model.OpenMFLoanActualPaymentManager;
@@ -15,6 +18,7 @@ import uk.ac.openmf.model.OpenMFSavingsDepositManager;
 import uk.ac.openmf.model.OpenMFSavingsProductManager;
 import uk.ac.openmf.model.OpenMFSavingsScheduledDepositManager;
 import uk.ac.openmf.model.OpenMFSavingsWithdrawalManager;
+import uk.ac.openmf.model.OpenMFTransactionManager;
 import uk.ac.openmf.model.OpenMFUserManager;
 import uk.ac.openmf.web.ConfigManager;
 
@@ -40,6 +44,11 @@ public class OpenMFEntityManagerNoSqlFactory implements OpenMFEntityManagerFacto
 	private OpenMFSavingsWithdrawalManagerNoSql openMFSavingsWithdrawalManager;
 	private OpenMFSavingsScheduledDepositManagerNoSql openMFSavingsScheduledDepositManager;
 	private OpenMFPhotoManagerNoSql openMFPhotoManager;
+	private OpenMFChartOfAccountsManagerNoSql openMFChartOfAccountsManager;
+	private OpenMFGeneralJournalManagerNoSql openMFGeneralJournalManager;
+	private OpenMFGeneralLedgerManagerNoSql openMFGeneralLedgerManager;
+	private OpenMFTransactionManagerNoSql openMFTransactionManager;
+	
 	private boolean initialized;
 
 
@@ -76,6 +85,10 @@ public class OpenMFEntityManagerNoSqlFactory implements OpenMFEntityManagerFacto
 			openMFSavingsWithdrawalManager = new OpenMFSavingsWithdrawalManagerNoSql(openMFUserManager);
 			openMFSavingsScheduledDepositManager = new OpenMFSavingsScheduledDepositManagerNoSql(openMFUserManager);
 			openMFPhotoManager = new OpenMFPhotoManagerNoSql(openMFUserManager);
+			openMFChartOfAccountsManager = new OpenMFChartOfAccountsManagerNoSql(openMFUserManager);
+			openMFGeneralJournalManager = new OpenMFGeneralJournalManagerNoSql(openMFUserManager);
+			openMFGeneralLedgerManager = new OpenMFGeneralLedgerManagerNoSql(openMFUserManager);
+			openMFTransactionManager = new OpenMFTransactionManagerNoSql(openMFUserManager);
 			initialized = true;
 		} else {
 			throw new IllegalStateException("Should not initialize the factory more than once.");
@@ -140,5 +153,25 @@ public class OpenMFEntityManagerNoSqlFactory implements OpenMFEntityManagerFacto
 	@Override
 	public OpenMFPhotoManager getPhotoManager() {
 		return openMFPhotoManager;
+	}
+
+	@Override
+	public OpenMFChartOfAccountsManager getChartOfAccountsManager() {
+		return openMFChartOfAccountsManager;
+	}
+
+	@Override
+	public OpenMFGeneralJournalManager getGeneralJournalManager() {
+		return openMFGeneralJournalManager;
+	}
+
+	@Override
+	public OpenMFGeneralLedgerManager getGeneralLedgerManager() {
+		return openMFGeneralLedgerManager;
+	}
+
+	@Override
+	public OpenMFTransactionManager getTransactionManager() {
+		return openMFTransactionManager;
 	}
 }

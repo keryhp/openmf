@@ -107,19 +107,9 @@ public class GaeAppController {
         return "accountsclosure";
     }
     
-    @RequestMapping(value = "/accountingcoa.htm", method= RequestMethod.GET)
-    public String accountingcoa() {
-        return "accountingcoa";
-    }
-    
     @RequestMapping(value = "/createcenter.htm", method= RequestMethod.GET)
     public String createcenter() {
         return "createcenter";
-    }
-    
-    @RequestMapping(value = "/accounting.htm", method= RequestMethod.GET)
-    public String accounting() {
-        return "accounting";
     }
     
     @RequestMapping(value = "/reports/allrep.htm", method= RequestMethod.GET)

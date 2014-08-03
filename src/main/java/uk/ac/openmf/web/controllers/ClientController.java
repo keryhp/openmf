@@ -33,6 +33,7 @@ public class ClientController {
 
 	protected static final Logger logger =
 			Logger.getLogger(ClientController.class.getCanonicalName());	
+	
 	@RequestMapping(value = "/clients.htm", method= RequestMethod.GET)
 	public String clients(HttpServletRequest req) {
 		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
@@ -59,6 +60,7 @@ public class ClientController {
 		ArrayList<OpenMFSavingsAccount> savingsAccounts = OMFUtils.getSavingsAccountsByClientList(clientId);
 		req.setAttribute("loanAccounts", loanAccounts);
 		req.setAttribute("savingsAccounts", savingsAccounts);
+		req.setAttribute("transactions", OMFUtils.getTransactionByClientId(clientId));
 		logger.info("clientId" + clientId + " loanAccounts"  + loanAccounts + " savingsAccounts" + savingsAccounts);
 		return "viewclient";
 	}

@@ -2,8 +2,11 @@ package uk.ac.openmf.web;
 
 import java.util.logging.Logger;
 
+import uk.ac.openmf.model.OpenMFChartOfAccountsManager;
 import uk.ac.openmf.model.OpenMFClientManager;
 import uk.ac.openmf.model.OpenMFEntityManagerFactory;
+import uk.ac.openmf.model.OpenMFGeneralJournalManager;
+import uk.ac.openmf.model.OpenMFGeneralLedgerManager;
 import uk.ac.openmf.model.OpenMFGroupManager;
 import uk.ac.openmf.model.OpenMFLoanAccountManager;
 import uk.ac.openmf.model.OpenMFLoanActualPaymentManager;
@@ -17,12 +20,12 @@ import uk.ac.openmf.model.OpenMFSavingsDepositManager;
 import uk.ac.openmf.model.OpenMFSavingsProductManager;
 import uk.ac.openmf.model.OpenMFSavingsScheduledDepositManager;
 import uk.ac.openmf.model.OpenMFSavingsWithdrawalManager;
+import uk.ac.openmf.model.OpenMFTransactionManager;
 import uk.ac.openmf.model.OpenMFUser;
 import uk.ac.openmf.model.OpenMFUserManager;
 import uk.ac.openmf.security.AppRole;
 import uk.ac.openmf.services.EmailServiceManager;
 import uk.ac.openmf.services.PhotoServiceManager;
-import uk.ac.openmf.utils.PasswordHash;
 
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserServiceFactory;
@@ -136,6 +139,22 @@ public class AppContext {
 	public OpenMFPhotoManager getPhotoManager(){
 		return entityManagerFactory.getPhotoManager();
 	}
+
+	public OpenMFChartOfAccountsManager getChartOfAccountsManager(){
+		return entityManagerFactory.getChartOfAccountsManager();
+	}
+	
+	public OpenMFGeneralJournalManager getGeneralJournalManager(){
+		return entityManagerFactory.getGeneralJournalManager();
+	}
+	
+	public OpenMFGeneralLedgerManager getGeneralLedgerManager(){
+		return entityManagerFactory.getGeneralLedgerManager();
+	}
+	
+	public OpenMFTransactionManager getTransactionManager(){
+		return entityManagerFactory.getTransactionManager();
+	}
 	
 	public PhotoServiceManager getPhotoServiceManager(){
 		return this.photoServiceManager;
@@ -144,7 +163,7 @@ public class AppContext {
 	public EmailServiceManager getEmailServiceManager(){
 		return this.emailServiceManager;
 	}
-
+	
 	public OpenMFUser getCurrentUser() {
 		OpenMFUserManager openMFUserManager = entityManagerFactory.getUserManager();
 		User user = UserServiceFactory.getUserService().getCurrentUser();

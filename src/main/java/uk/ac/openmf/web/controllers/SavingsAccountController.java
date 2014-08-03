@@ -16,7 +16,7 @@ import uk.ac.openmf.model.OpenMFSavingsAccount;
 import uk.ac.openmf.model.OpenMFSavingsAccountManager;
 import uk.ac.openmf.model.OpenMFSavingsProduct;
 import uk.ac.openmf.model.nosql.OpenMFUserNoSql;
-import uk.ac.openmf.services.DepositService;
+import uk.ac.openmf.services.ScheduledDepositService;
 import uk.ac.openmf.utils.GenerateAccountNumber;
 import uk.ac.openmf.utils.OMFUtils;
 import uk.ac.openmf.utils.ServletUtils;
@@ -105,7 +105,7 @@ public class SavingsAccountController {
 			sgaccId = savingsAccount.getId();
 			OpenMFSavingsProduct savingsProduct = AppContext.getAppContext().getSavingsProductManager().getSavingsProductBySavingsCode(savingsAccount.getSavingscode());
 			if(savingsProduct.getSavingstype().equalsIgnoreCase("COMPULSORY")){
-				DepositService.generateSavingsScheduledDeposits(savingsAccount, savingsProduct, AppContext.getAppContext().getCurrentUser().getId().toString(), form.getTotalprincipaldeposit());
+				ScheduledDepositService.generateSavingsScheduledDeposits(savingsAccount, savingsProduct, AppContext.getAppContext().getCurrentUser().getId().toString(), form.getTotalprincipaldeposit());
 			}
 		} else {
 			//return null;

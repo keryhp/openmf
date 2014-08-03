@@ -31,4 +31,20 @@ public class GenerateAccountNumber {
   public String generateGroupAccNumber(int nextAvail){
 	  return "OMF-HO-GRP-00" + nextAvail;
   }
+  
+  public String generateCoAAccNumber(int nextAvail){
+	  return "OMF-HO-COA-00" + nextAvail;
+  }
+  
+  public String generateTransactionNumber(int nextAvail){
+	  return "OMF-HO-TXN-00" + nextAvail;
+  }
+  
+  public String generateLedgerAccNumber(int nextAvail){
+	  return "OMF-HO-GLD-00" + nextAvail;
+  }
+  
+  public String generateJournalAccNumber(int nextAvail){
+	  return "OMF-HO-GJR-00" + nextAvail;
+  }
 }

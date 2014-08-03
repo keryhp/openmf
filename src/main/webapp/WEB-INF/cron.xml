@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cronentries>
+	<cron>
+		<url>/closingentries</url>
+		<description>Reconcile and Close Daily Ledgers and update CoA</description>
+		<schedule>every day 20:00</schedule>
+		<!-- <schedule>every 15 minutes from 09:00 to 00:00</schedule> -->
+		<timezone>Europe/London</timezone>
+		<target>version-1</target>
+	</cron>
+</cronentries>

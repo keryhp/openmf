@@ -18,7 +18,7 @@
 	pageContext.setAttribute("currentUser", currentUser);
 	ArrayList<OpenMFClient> clients = (ArrayList<OpenMFClient>) request
 			.getAttribute("clients");
-	pageContext.setAttribute("omfusers", clients);
+	pageContext.setAttribute("clients", clients);
 %>
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB" xml:lang="en-GB">
@@ -67,7 +67,7 @@
 							<li><a href="/groups.htm">Groups</a></li>
 							
 						</ul></li>
-					<li><a href="/finance/accounting.htm"><i class="fa fa-money"></i>
+					<li><a href="/finance/accountingcoa.htm"><i class="fa fa-money"></i>
 							Accounting</a></li>
 					<li class="dropdown" id="reports-menu"><a
 						class="dropdown-toggle" data-toggle="dropdown" href="#"><i

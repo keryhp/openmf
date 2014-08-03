@@ -51,4 +51,12 @@ public interface OpenMFEntityManagerFactory {
 	OpenMFSavingsScheduledDepositManager getSavingsScheduledDepositManager();
 	
 	OpenMFPhotoManager getPhotoManager();
+	
+	OpenMFChartOfAccountsManager getChartOfAccountsManager();
+	
+	OpenMFGeneralJournalManager getGeneralJournalManager();
+	
+	OpenMFGeneralLedgerManager getGeneralLedgerManager();
+	
+	OpenMFTransactionManager getTransactionManager();
 }

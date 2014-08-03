@@ -12,12 +12,18 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import uk.ac.openmf.model.OpenMFChartOfAccounts;
 import uk.ac.openmf.model.OpenMFClient;
+import uk.ac.openmf.model.OpenMFGeneralJournal;
 import uk.ac.openmf.model.OpenMFSavingsAccount;
 import uk.ac.openmf.model.OpenMFSavingsWithdrawal;
 import uk.ac.openmf.model.OpenMFSavingsWithdrawalManager;
+import uk.ac.openmf.model.OpenMFTransaction;
 import uk.ac.openmf.model.nosql.OpenMFUserNoSql;
+import uk.ac.openmf.utils.GenerateAccountNumber;
+import uk.ac.openmf.utils.MFIAccountTypes;
 import uk.ac.openmf.utils.OMFUtils;
+import uk.ac.openmf.utils.OpenMFConstants;
 import uk.ac.openmf.utils.ServletUtils;
 import uk.ac.openmf.web.AppContext;
 import uk.ac.openmf.web.forms.SavingsWithdrawalForm;
@@ -83,7 +89,50 @@ public class SavingsWithdrawalController {
 			balanceVal -= new Double(form.getWithdrawalamount());
 			savingsaccount.setAvailablebalance(balanceVal.toString());
 			appContext.getAppContext().getSavingsAccountManager().upsertEntity(savingsaccount);
-			//TODO update transactions
+			//TODO update Transactions and general journal
+			//get chart of account by mfi account type
+			//incase of repayment account receivable
+			OpenMFChartOfAccounts openMFChartOfAccounts = appContext.getAppContext().getChartOfAccountsManager().getChartOfAccountsByMFIAccountType(MFIAccountTypes.ACCOUNT_PAYABLE.getAccountType());
+			//add a journal double entry for credit and debit
+			OpenMFGeneralJournal openMFGeneralJournal = appContext.getAppContext().getGeneralJournalManager().newGeneralJournal(currentUser.getId().toString());
+			openMFGeneralJournal.setApprovedby(savingsWithdrawal.getCreatedById());
+			openMFGeneralJournal.setClientaccountid(savingsWithdrawal.getSavingsaccountid());
+			openMFGeneralJournal.setCoaid(openMFChartOfAccounts.getCoaid());
+			openMFGeneralJournal.setCreatedById(currentUser.getId().toString());
+			//openMFGeneralJournal.setGeneraljournalid(generaljournalid);
+			openMFGeneralJournal.setPostedby(savingsWithdrawal.getPostedby());
+			openMFGeneralJournal.setStatus(true);
+			openMFGeneralJournal.setTimestamp(System.currentTimeMillis());
+			openMFGeneralJournal.setTransactionamount(savingsWithdrawal.getDateofwithdrawal());
+			openMFGeneralJournal.setTransactiontype(OpenMFConstants.FIELD_VALUE_DEBIT);
+			appContext.getAppContext().getGeneralJournalManager().upsertEntity(openMFGeneralJournal);
+			OpenMFGeneralJournal openMFGeneralJournal_credit = appContext.getAppContext().getGeneralJournalManager().newGeneralJournal(currentUser.getId().toString());
+			openMFGeneralJournal_credit.setApprovedby(savingsWithdrawal.getCreatedById());
+			openMFGeneralJournal_credit.setClientaccountid(savingsWithdrawal.getSavingsaccountid());
+			openMFGeneralJournal_credit.setCoaid(openMFChartOfAccounts.getCoaid());
+			openMFGeneralJournal_credit.setCreatedById(currentUser.getId().toString());
+			//openMFGeneralJournal.setGeneraljournalid(generaljournalid);
+			openMFGeneralJournal_credit.setPostedby(savingsWithdrawal.getPostedby());
+			openMFGeneralJournal_credit.setStatus(true);
+			openMFGeneralJournal_credit.setTimestamp(System.currentTimeMillis());
+			openMFGeneralJournal_credit.setTransactionamount(savingsWithdrawal.getWithdrawalamount());
+			openMFGeneralJournal_credit.setTransactiontype(OpenMFConstants.FIELD_VALUE_CREDIT);
+			appContext.getAppContext().getGeneralJournalManager().upsertEntity(openMFGeneralJournal_credit);
+			//add a transaction entry
+			OpenMFTransaction transaction = appContext.getAppContext().getTransactionManager().newTransaction(currentUser.getId().toString());
+			transaction.setApprovedby(savingsWithdrawal.getCreatedById());
+			transaction.setCreatedById(savingsWithdrawal.getCreatedById());
+			transaction.setDateoftransaction(savingsWithdrawal.getDateofwithdrawal());
+			transaction.setFromaccountid(savingsaccount.getSavingsaccountnumber());
+			transaction.setPostedby(savingsWithdrawal.getPostedby());
+			transaction.setProductid(savingsaccount.getSavingscode());
+			transaction.setStatus(true);
+			transaction.setClientId(savingsaccount.getClientId());
+			transaction.setTransactiontype(OpenMFConstants.FIELD_VALUE_WITHDRAWAL);
+			transaction.setTimestamp(System.currentTimeMillis());
+			transaction.setToaccountid(openMFChartOfAccounts.getCoaid());
+			transaction.setTransactionid(GenerateAccountNumber.getAccNumberService().generateTransactionNumber(appContext.getAppContext().getTransactionManager().entityCount() + 1));
+			appContext.getAppContext().getTransactionManager().upsertEntity(transaction);
 		}
 		return "redirect:/viewsavingsaccount.htm?sgaccId=" + sgaccId;
 	}

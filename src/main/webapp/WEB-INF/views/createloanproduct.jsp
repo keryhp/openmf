@@ -74,7 +74,7 @@ $(document).ready(function (){
 							<li><a href="/groups.htm">Groups</a></li>
 							
 						</ul></li>
-					<li><a href="/finance/accounting.htm"><i class="fa fa-money"></i>
+					<li><a href="/finance/accountingcoa.htm"><i class="fa fa-money"></i>
 							Accounting</a></li>
 					<li class="dropdown" id="reports-menu"><a
 						class="dropdown-toggle" data-toggle="dropdown" href="#"><i

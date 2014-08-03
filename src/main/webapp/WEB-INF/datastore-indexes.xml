@@ -55,4 +55,14 @@
 		<property name="serialnumber" direction="asc" />
 	</datastore-index>
 
+	<datastore-index kind="OpenMFTransaction" ancestor="false" source="manual">
+        <property name="clientId" direction="asc"/>
+        <property name="timestamp" direction="desc"/>
+    </datastore-index>
+	
+	<datastore-index kind="OpenMFChartOfAccounts" ancestor="false" source="manual">
+        <property name="mfiaccounttype" direction="asc"/>
+        <property name="timestamp" direction="desc"/>
+    </datastore-index>
+	
 </datastore-indexes>

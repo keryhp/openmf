@@ -1,10 +1,17 @@
 package uk.ac.openmf.utils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.logging.Logger;
 
+import uk.ac.openmf.model.OpenMFChartOfAccounts;
+import uk.ac.openmf.model.OpenMFChartOfAccountsManager;
 import uk.ac.openmf.model.OpenMFClient;
 import uk.ac.openmf.model.OpenMFClientManager;
+import uk.ac.openmf.model.OpenMFGeneralJournal;
+import uk.ac.openmf.model.OpenMFGeneralJournalManager;
+import uk.ac.openmf.model.OpenMFGeneralLedger;
+import uk.ac.openmf.model.OpenMFGeneralLedgerManager;
 import uk.ac.openmf.model.OpenMFGroup;
 import uk.ac.openmf.model.OpenMFGroupManager;
 import uk.ac.openmf.model.OpenMFLoanAccount;
@@ -21,6 +28,8 @@ import uk.ac.openmf.model.OpenMFSavingsProduct;
 import uk.ac.openmf.model.OpenMFSavingsProductManager;
 import uk.ac.openmf.model.OpenMFSavingsScheduledDeposit;
 import uk.ac.openmf.model.OpenMFSavingsScheduledDepositManager;
+import uk.ac.openmf.model.OpenMFTransaction;
+import uk.ac.openmf.model.OpenMFTransactionManager;
 import uk.ac.openmf.model.OpenMFUser;
 import uk.ac.openmf.model.OpenMFUserManager;
 import uk.ac.openmf.model.nosql.OpenMFPhotoNoSql;
@@ -198,6 +207,20 @@ public final class OMFUtils {
 		}
 		return clients;
 	}
+	
+	public static ArrayList<OpenMFChartOfAccounts> getAllCoAsList(){
+		OpenMFChartOfAccountsManager coAManager = AppContext.getAppContext().getChartOfAccountsManager();
+		Iterable<OpenMFChartOfAccounts> coasiter = coAManager.getAllChartOfAccounts();
+		ArrayList<OpenMFChartOfAccounts> coas = new ArrayList<OpenMFChartOfAccounts>();
+		try {
+			for (OpenMFChartOfAccounts coa : coasiter) {
+				coas.add(coa);
+			}
+		} catch (DatastoreNeedIndexException e) {
+			//log error
+		}
+		return coas;
+	}
 
 	public static ArrayList<OpenMFGroup> getAllGroupsList(){
 		OpenMFGroupManager groupManager = AppContext.getAppContext().getGroupManager();
@@ -317,4 +340,47 @@ public final class OMFUtils {
 		}
 		return schedules;
 	}
+	
+	public static ArrayList<OpenMFGeneralJournal> getTodaysGeneralJournalByMFIAccType(String mfiaccounttype){
+		OpenMFGeneralJournalManager generalJournalManager = AppContext.getAppContext().getGeneralJournalManager();
+		Iterable<OpenMFGeneralJournal> entriesiter = generalJournalManager.getGeneralJournalByDate(mfiaccounttype, OMFDateUtils.formatter.format(Calendar.getInstance().getTime()));
+		ArrayList<OpenMFGeneralJournal> entries = new ArrayList<OpenMFGeneralJournal>();
+		try {
+			for (OpenMFGeneralJournal entry : entriesiter) {
+				entries.add(entry);
+			}
+		} catch (DatastoreNeedIndexException e) {
+			//log error
+		}
+		return entries;
+	}
+	
+	public static ArrayList<OpenMFGeneralLedger> getTodaysGeneralLedgerByMFIAccType(String mfiaccounttype){
+		OpenMFGeneralLedgerManager generalLedgerManager = AppContext.getAppContext().getGeneralLedgerManager();
+		Iterable<OpenMFGeneralLedger> entriesiter = generalLedgerManager.getGeneralLedgerByDate(mfiaccounttype, OMFDateUtils.formatter.format(Calendar.getInstance().getTime()));
+		ArrayList<OpenMFGeneralLedger> entries = new ArrayList<OpenMFGeneralLedger>();
+		try {
+			for (OpenMFGeneralLedger entry : entriesiter) {
+				entries.add(entry);
+			}
+		} catch (DatastoreNeedIndexException e) {
+			//log error
+		}
+		return entries;
+	}
+	
+	public static ArrayList<OpenMFTransaction> getTransactionByClientId(String clientId){
+		OpenMFTransactionManager generalLedgerManager = AppContext.getAppContext().getTransactionManager();
+		Iterable<OpenMFTransaction> entriesiter = generalLedgerManager.getTransactionsByClientId(clientId);
+		ArrayList<OpenMFTransaction> entries = new ArrayList<OpenMFTransaction>();
+		try {
+			for (OpenMFTransaction entry : entriesiter) {
+				entries.add(entry);
+			}
+		} catch (DatastoreNeedIndexException e) {
+			//log error
+		}
+		return entries;
+	}
+	
 }

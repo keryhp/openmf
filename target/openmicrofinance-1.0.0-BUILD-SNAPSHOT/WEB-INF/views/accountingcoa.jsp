@@ -12,11 +12,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-								<%
-	UserService userService = UserServiceFactory.getUserService();
-	AppContext appContext = AppContext.getAppContext();
-	ConfigManager configManager = appContext.getConfigManager();
-	OpenMFUser currentUser = appContext.getCurrentUser();
+<%
+	OpenMFUser currentUser = (OpenMFUser) request
+			.getAttribute("currentUser");
+	pageContext.setAttribute("currentUser", currentUser);
+	ArrayList<OpenMFChartOfAccounts> coas = (ArrayList<OpenMFChartOfAccounts>) request
+			.getAttribute("coas");
+	pageContext.setAttribute("coas", coas);
 %>
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB" xml:lang="en-GB">
@@ -65,10 +67,10 @@
 						<ul class="dropdown-menu" id="swatch-menu">
 							<li><a href="/clients.htm">Clients</a></li>
 							<li><a href="/groups.htm">Groups</a></li>
-							
+
 						</ul></li>
-					<li><a href="/finance/accounting.htm"><i class="fa fa-money"></i>
-							Accounting</a></li>
+					<li><a href="/finance/accountingcoa.htm"><i
+							class="fa fa-money"></i> Accounting</a></li>
 					<li class="dropdown" id="reports-menu"><a
 						class="dropdown-toggle" data-toggle="dropdown" href="#"><i
 							class="fa fa-bar-chart-o"></i> Reports<b class="caret"></b></a>
@@ -97,8 +99,8 @@
 						<ul class="dropdown-menu">
 							<li><a id="help" href="/help.htm"><i
 									class="fa fa-question-circle"></i> Help</a></li>
-							<li><a href="/viewuser.htm?omfuId=<%=currentUser.getId()%>"><i class="fa fa-user"></i>
-									Profile</a></li>
+							<li><a href="/viewuser.htm?omfuId=<%=currentUser.getId()%>"><i
+									class="fa fa-user"></i> Profile</a></li>
 							<li><a href="/usersetting.htm"><i class="fa fa-cog"></i>
 									Settings</a></li>
 							<li><a href="/logout.htm"><i class="fa fa-off"></i>Logout</a></li>
@@ -154,16 +156,70 @@
 		</ul>
 	</div>
 
-	<div class="container whitebg fullscreen">
+		<div class="container whitebg fullscreen">
 		<div>
 			<div class="row whitebg">
 				<div class="col-md-12 pull-right whitebg">
 					<div class="whitebg">
-						<p>Page under construction</p>
+						<div class="col-md-12">
+							<ul class="breadcrumb">
+								<li class="active">CoAs</li>
+							</ul>
+						</div>
+						<div class="col-md-12">
+							<div class="pull-right">
+								<a href="/finance/createcoa.htm" class="btn btn-primary"><i
+									class="fa fa-plus fa fa-white"></i>Create CoA</a>
+							</div>
+							<input type="search"
+								class="light-table-filter marginbottom0px form-control"
+								data-table="order-table"
+								placeholder="Filter by Name/Account#/Staff/Office" />
+							<table class="order-table table">
+								<thead>
+									<tr class="graybg">
+										<th>Name</th>
+										<th>Account#</th>
+										<th>Type</th>
+										<th>Office</th>
+									</tr>
+								</thead>
+								<tbody>
+									<%
+										int count = 0;
+										for (OpenMFChartOfAccounts coa : coas) {
+											long coaId = coa.getId().longValue();
+									%>
+									<tr class="pointer-main" onclick="viewChartOfAccountsFn(<%=coaId%>);">
+										<td class="pointer" onclick="viewChartOfAccountsFn(<%=coaId%>);"><c:out
+												value="<%=coa.getCoaname()%>" escapeXml="true" /></td>
+										<td class="pointer" onclick="viewChartOfAccountsFn(<%=coaId%>);"><c:out
+												value="<%=coa.getCoaid()%>"></c:out></td>
+										<td class="pointer" onclick="viewChartOfAccountsFn(<%=coaId%>);"><c:out
+												value="<%=coa.getMfiaccounttype()%>"></c:out></td>
+										<td class="pointer" onclick="viewChartOfAccountsFn(<%=coaId%>);"><c:out
+												value="<%=coa.getOffice()%>"></c:out></td>
+									</tr>
+									<%
+										}
+									%>
+								</tbody>
+							</table>
+							<ul class="pager">
+								<li class="previous"><a id="prev" href=""><i
+										class="fa fa-long-arrow-left"></i> Previous</a></li>
+								<li class="next"><a id="next" href="">Next <i
+										class="fa fa-long-arrow-right"></i></a></li>
+							</ul>
+						</div>
 					</div>
 				</div>
+				<!-- Footer -->
 			</div>
+			<!-- /row-fluid -->
 		</div>
+		<!-- /blockui-->
 	</div>
+	<!-- /container -->
 </body>
 </html>

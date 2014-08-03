@@ -4,9 +4,16 @@ public class OpenMFConstants {
 
 	public static final String ENTITY_USER_TYPE_GAE = "GaeUser";
 	public static final String FIELD_NAME_USER_AUTHORITIES = "authorities";
-	
+	public static final String FIELD_VALUE_DEBIT ="debit";
+	public static final String FIELD_VALUE_CREDIT ="credit";	
 	public static final String FIELD_VALUE_ZERO = "0.00";
-
+	public static final String FIELD_VALUE_REPAYMENT = "Repayment";
+	public static final String FIELD_VALUE_DEPOSIT = "Deposit";
+	public static final String FIELD_VALUE_WITHDRAWAL = "Withdrawal";
+	public static final String FIELD_VALUE_DISBURSAL = "Disbursal";
+	public static final String FIELD_VALUE_SYSTEMRECONCILATION = "System Reconcilation";	
+	public static final String FIELD_VALUE_CLOSINGENTRIES = "[Daily] Closing entiries";
+	
 	public static final String FIELD_NAME_ID = "id";
 	public static final String FIELD_NAME_USERID = "userId";
 	public static final String FIELD_NAME_USERNAME = "username";
@@ -108,5 +115,21 @@ public class OpenMFConstants {
 	public static final String FIELD_NAME_TYPE = "type";
 	public static final String FIELD_NAME_TYPEID = "typeId";
 	public static final String FIELD_NAME_BLOB_KEY = "blobKey";
-
+	public static final String FIELD_NAME_OFFICE = "office";
+	public static final String FIELD_NAME_MFIACCOUNTTYPE = "mfiaccounttype";
+	public static final String FIELD_NAME_COAID = "coaid";
+	public static final String FIELD_NAME_CLIENTACCOUNTID = "clientaccountid";
+	public static final String FIELD_NAME_TRANSACTIONTYPE = "transactiontype";
+	public static final String FIELD_NAME_GENERALJOURNALID = "generaljournalid";
+	public static final String FIELD_NAME_BALANCEPENDING = "balancePending";
+	public static final String FIELD_NAME_GENERALLEDGERID = "generalledgerid";
+	public static final String FIELD_NAME_TRANSACTIONID = "transactionid";
+	public static final String FIELD_NAME_FROMACCOUNTID = "fromaccountid";
+	public static final String FIELD_NAME_TOACCOUNTID = "toaccountid";
+	public static final String FIELD_NAME_DATEOFTRANSACTION = "dateoftransaction";
+	public static final String FIELD_NAME_PRODUCTID = "productid";
+	public static final String FIELD_NAME_COANAME = "coaname";
+	public static final String FIELD_NAME_TRANSACTIONAMOUNT = "transactionamount";
+	public static final String FIELD_NAME_FUNDS = "funds";
+	public static final String FIELD_NAME_FORDATE = "fordate";
 }
