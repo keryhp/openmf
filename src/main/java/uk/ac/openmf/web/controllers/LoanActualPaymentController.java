@@ -36,7 +36,7 @@ import uk.ac.openmf.web.forms.LoanActualPaymentForm;
 @Controller
 public class LoanActualPaymentController {
 
-	@RequestMapping(value="/loanactualpayment.htm", method= RequestMethod.GET)
+	@RequestMapping(value="/loanactualpayment", method= RequestMethod.GET)
 	public LoanActualPaymentForm loanActualPaymentForm(HttpServletRequest req) {
 		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		String lnaccId = req.getParameter("lnaccId");
@@ -55,7 +55,7 @@ public class LoanActualPaymentController {
 		return form;
 	}
 
-	@RequestMapping(value="/loanactualpayment.htm", method = RequestMethod.POST)
+	@RequestMapping(value="/loanactualpayment", method = RequestMethod.POST)
 	public String loanactualpayment(LoanActualPaymentForm form, BindingResult result) throws ParseException {
 		if (result.hasErrors()) {
 			return null;
@@ -170,6 +170,6 @@ public class LoanActualPaymentController {
 				}
 			}
 		}
-		return "redirect:/viewloanaccount.htm?lnaccId=" + lnaccId;
+		return "redirect:/viewloanaccount?lnaccId=" + lnaccId;
 	}
 }

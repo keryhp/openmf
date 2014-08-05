@@ -5,62 +5,62 @@ function goback(){
 
 function viewClientFn(clientId){
 	"use strict";
-	window.location.href = "/viewclient.htm?clientId=" + clientId;
+	window.location.href = "/viewclient?clientId=" + clientId;
 };
 
 function viewChartOfAccountsFn(coaId){
 	"use strict";
-	window.location.href = "/finance/viewcoa.htm?coaId=" + coaId;
+	window.location.href = "/finance/viewcoa?coaId=" + coaId;
 };
 
 function viewGroupFn(groupId){
 	"use strict";
-	window.location.href = "/viewgroup.htm?groupId=" + groupId;
+	window.location.href = "/viewgroup?groupId=" + groupId;
 };
 
 function viewUserDetailsFn(omfuId){
 	"use strict";
-	window.location.href = "/viewuser.htm?omfuId=" + omfuId;
+	window.location.href = "/viewuser?omfuId=" + omfuId;
 };
 
 function viewLoanDetailsFn(lpId){
 	"use strict";
-	window.location.href = "/loanproductdetails.htm?lpId=" + lpId;
+	window.location.href = "/loanproductdetails?lpId=" + lpId;
 };
 
 function viewSavingsDetailsFn(spId){
 	"use strict";
-	window.location.href = "/savingsproductdetails.htm?spId=" + spId;
+	window.location.href = "/savingsproductdetails?spId=" + spId;
 };
 
 function viewLoanAccountFn(lnaccId){
 	"use strict";
-	window.location.href = "/viewloanaccount.htm?lnaccId=" + lnaccId;
+	window.location.href = "/viewloanaccount?lnaccId=" + lnaccId;
 };
 
 function viewSavingsAccountFn(sgaccId){
 	"use strict";
-	window.location.href = "/viewsavingsaccount.htm?sgaccId=" + sgaccId;
+	window.location.href = "/viewsavingsaccount?sgaccId=" + sgaccId;
 };
 
 function createLoanAccountFn(clientaccountid){
 	"use strict";
-	window.location.href = "/createloanaccount.htm?clientId=" + clientaccountid;
+	window.location.href = "/createloanaccount?clientId=" + clientaccountid;
 };
 
 function createGroupLoanAccountsFn(groupId){
 	"use strict";
-	window.location.href = "/createloanaccount.htm?groupId=" + groupId;
+	window.location.href = "/createloanaccount?groupId=" + groupId;
 };
 
 function createSavingsAccountFn(clientaccountid){
 	"use strict";
-	window.location.href = "/createsavingsaccount.htm?clientId=" + clientaccountid;
+	window.location.href = "/createsavingsaccount?clientId=" + clientaccountid;
 };
 
 function viewRolesFn(){
 	"use strict";
-	window.location.href = "/viewroles.htm";
+	window.location.href = "/viewroles";
 };
 
 function onFileSelected() {
@@ -109,27 +109,27 @@ function showClosedTable(idVal){
 
 function loanRepayment(lnaccId){
 	"use strict";
-	window.location.href = "/loanactualpayment.htm?lnaccId=" + lnaccId;
+	window.location.href = "/loanactualpayment?lnaccId=" + lnaccId;
 };
 
 function loanDisburse(lnaccId){
 	"use strict";
-	window.location.href = "/loandisburse.htm?lnaccId=" + lnaccId;
+	window.location.href = "/loandisburse?lnaccId=" + lnaccId;
 };
 
 /*function loanPenalty(val){
 	"use strict";
-	window.location.href = "/loanpenalty.htm?lnaccId=" + lnaccId;
+	window.location.href = "/loanpenalty?lnaccId=" + lnaccId;
 };*/
 
 function savingsDeposit(sgaccId){
 	"use strict";
-	window.location.href = "/savingsdeposit.htm?sgaccId=" + sgaccId;
+	window.location.href = "/savingsdeposit?sgaccId=" + sgaccId;
 };
 
 function savingsWithdrawal(sgaccId){
 	"use strict";
-	window.location.href = "/savingswithdrawal.htm?sgaccId=" + sgaccId;
+	window.location.href = "/savingswithdrawal?sgaccId=" + sgaccId;
 };
 
 function showOrHideGroup(sel){
@@ -143,5 +143,5 @@ function showOrHideGroup(sel){
 
 function assignGroupFn(clientId){
 	"use strict";
-	window.location.href = "/assigngroup.htm?clientId=" + clientId;
+	window.location.href = "/assigngroup?clientId=" + clientId;
 };

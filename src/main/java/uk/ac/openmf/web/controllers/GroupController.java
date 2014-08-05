@@ -27,14 +27,14 @@ import uk.ac.openmf.web.forms.GroupForm;
 @Controller
 public class GroupController {
 
-	@RequestMapping(value = "/groups.htm", method= RequestMethod.GET)
+	@RequestMapping(value = "/groups", method= RequestMethod.GET)
 	public String groups(HttpServletRequest req) {
 		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		req.setAttribute("groups", OMFUtils.getAllGroupsList());
 		return "groups";
 	}
 
-	@RequestMapping(value = "/viewgroup.htm", method= RequestMethod.GET)
+	@RequestMapping(value = "/viewgroup", method= RequestMethod.GET)
 	public String viewGroup(HttpServletRequest req) {
 		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		String groupId = req.getParameter("groupId");
@@ -49,14 +49,14 @@ public class GroupController {
 		return "viewgroup";
 	}
 
-	@RequestMapping(value="/creategroup.htm", method= RequestMethod.GET)
+	@RequestMapping(value="/creategroup", method= RequestMethod.GET)
 	public GroupForm groupForm(HttpServletRequest req) {
 		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		req.setAttribute("omfusers", OMFUtils.getUsersList());
 		return new GroupForm();
 	}
 
-	@RequestMapping(value="/creategroup.htm", method = RequestMethod.POST)
+	@RequestMapping(value="/creategroup", method = RequestMethod.POST)
 	public String creategroup(GroupForm form, BindingResult result) {
 		if (result.hasErrors()) {
 			return null;
@@ -84,10 +84,10 @@ public class GroupController {
 			group.setLeadclientname(form.getLeadclientname());
 			groupManager.upsertEntity(group);
 		} 
-		return "redirect:/groups.htm";
+		return "redirect:/groups";
 	}
 
-	@RequestMapping(value = "/assigngroup.htm", method= RequestMethod.GET)
+	@RequestMapping(value = "/assigngroup", method= RequestMethod.GET)
 	public AssignGroupForm assignGroup(HttpServletRequest req) {
 		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		String clientId = req.getParameter("clientId");
@@ -101,7 +101,7 @@ public class GroupController {
 		return new AssignGroupForm();
 	}
 	
-	@RequestMapping(value="/assigngroup.htm", method = RequestMethod.POST)
+	@RequestMapping(value="/assigngroup", method = RequestMethod.POST)
 	public String assigngroup(AssignGroupForm form, BindingResult result) {
 		if (result.hasErrors()) {
 			return null;
@@ -115,6 +115,6 @@ public class GroupController {
 			client.setGroupid(form.getGroupid());
 			clientManager.upsertEntity(client);
 		} 
-		return "redirect:/groups.htm";
+		return "redirect:/groups";
 	}
 }

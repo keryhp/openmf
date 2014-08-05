@@ -10,15 +10,15 @@
     <!-- / is at webapp level -->
     <http pattern="/static/**" security="none" />
     <http pattern="/favicon.ico" security="none" />
-    <http pattern="/logout.htm" security="none" />
-    <http pattern="/disabled.htm" security="none" />
+    <http pattern="/logout" security="none" />
+    <http pattern="/disabled" security="none" />
     <!--  this pattern /_ah/** is required for local dev server -->
     <http pattern="/_ah/**" security="none" />
 
     <http use-expressions="true" entry-point-ref="openmfEntryPoint">
         <intercept-url pattern="/" access="hasAnyRole('USER', 'NEW_USER', 'ADMIN','FIELD_OFFICER','SUPERVISOR','ACCOUNTANT','BRANCH_MANAGER','GENERAL_MANAGER', 'HIGH_LEVEL')" />
-        <intercept-url pattern="/logout.htm" access="permitAll" />
-        <intercept-url pattern="/register.htm*" access="isAuthenticated()" />
+        <intercept-url pattern="/logout" access="permitAll" />
+        <intercept-url pattern="/register*" access="isAuthenticated()" />
        <!--  <intercept-url pattern="/**" access="hasAnyRole('ADMIN','FIELD_OFFICER','SUPERVISOR','ACCOUNTANT','BRANCH_MANAGER','GENERAL_MANAGER', 'HIGH_LEVEL')" /> -->
         <!-- 'ADMIN', 'USER','CLIENT', 'FIELD_OFFICER','SUPERVISOR','ACCOUNTANT','BRANCH_MANAGER','GENERAL_MANAGER', 'HIGH_LEVEL'-->
         <intercept-url pattern="/finance/*" access="hasAnyRole('ACCOUNTANT', 'BRANCH_MANAGER','GENERAL_MANAGER', 'HIGH_LEVEL')" />
@@ -36,7 +36,7 @@
             <b:bean class="org.springframework.security.web.authentication.ExceptionMappingAuthenticationFailureHandler">
                 <b:property name="exceptionMappings">
                     <b:map>
-                        <b:entry key="org.springframework.security.authentication.DisabledException" value="/disabled.htm" />
+                        <b:entry key="org.springframework.security.authentication.DisabledException" value="/disabled" />
                     </b:map>
                 </b:property>
             </b:bean>

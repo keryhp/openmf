@@ -76,31 +76,31 @@ $(document).ready(function (){
 						data-toggle="dropdown" href="#"><i class="fa fa-group"></i>
 							Clients<b class="caret"></b></a>
 						<ul class="dropdown-menu" id="swatch-menu">
-							<li><a href="/clients.htm">Clients</a></li>
-							<li><a href="/groups.htm">Groups</a></li>
+							<li><a href="/clients">Clients</a></li>
+							<li><a href="/groups">Groups</a></li>
 							
 						</ul></li>
-					<li><a href="/finance/accountingcoa.htm"><i class="fa fa-money"></i>
+					<li><a href="/finance/accountingcoa"><i class="fa fa-money"></i>
 							Accounting</a></li>
 					<li class="dropdown" id="reports-menu"><a
 						class="dropdown-toggle" data-toggle="dropdown" href="#"><i
 							class="fa fa-bar-chart-o"></i> Reports<b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a href="/reports/allrep.htm">All</a></li>
-							<li><a href="/reports/clientsrep.htm">Clients</a></li>
-							<li><a href="/reports/loansrep.htm">Loans</a></li>
-							<li><a href="/reports/savingsrep.htm">Savings</a></li>
-							<li><a href="/reports/fundsrep.htm">Funds</a></li>
-							<li><a href="/reports/accountingrep.htm">Accounting</a></li>
+							<li><a href="/reports/allrep">All</a></li>
+							<li><a href="/reports/clientsrep">Clients</a></li>
+							<li><a href="/reports/loansrep">Loans</a></li>
+							<li><a href="/reports/savingsrep">Savings</a></li>
+							<li><a href="/reports/fundsrep">Funds</a></li>
+							<li><a href="/reports/accountingrep">Accounting</a></li>
 						</ul></li>
 					<li class="dropdown" id="preview-menu"><a
 						class="dropdown-toggle" data-toggle="dropdown" href="#"><i
 							class="fa fa-wrench"></i> Admin<b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a href="/admin/users.htm">Users</a></li>
-							<li><a href="/admin/organization.htm">Organization</a></li>
-							<li><a href="/admin/system.htm">System</a></li>
-							<li><a href="/admin/products.htm">Products</a></li>
+							<li><a href="/admin/users">Users</a></li>
+							<li><a href="/admin/organization">Organization</a></li>
+							<li><a href="/admin/system">System</a></li>
+							<li><a href="/admin/products">Products</a></li>
 						</ul></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right" id="main-menu-right">
@@ -108,13 +108,13 @@ $(document).ready(function (){
 						class="dropdown-toggle" data-toggle="dropdown" href="#"><c:out
 								value="<%=currentUser.getUsername()%>"></c:out><b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a id="help" href="/help.htm"><i
+							<li><a id="help" href="/help"><i
 									class="fa fa-question-circle"></i> Help</a></li>
-							<li><a href="/viewuser.htm?omfuId=<%=currentUser.getId()%>"><i class="fa fa-user"></i>
+							<li><a href="/viewuser?omfuId=<%=currentUser.getId()%>"><i class="fa fa-user"></i>
 									Profile</a></li>
-							<li><a href="/usersetting.htm"><i class="fa fa-cog"></i>
+							<li><a href="/usersetting"><i class="fa fa-cog"></i>
 									Settings</a></li>
-							<li><a href="/logout.htm"><i class="fa fa-off"></i>Logout</a></li>
+							<li><a href="/logout"><i class="fa fa-off"></i>Logout</a></li>
 						</ul></li>
 				</ul>
 				<form class="navbar-form navbar-right">
@@ -125,44 +125,29 @@ $(document).ready(function (){
 		</div>
 	</nav>
 
-	<div class="left-nav">
+<div class="left-nav">
 		<ul class="nav nav-pills nav-stacked margin-nav">
 			<li><a class="black" href="/"><i class="fa fa-desktop fa-fw"></i>Dashboard</a></li>
 			<li class="divider"></li>
-			<li><a class="black" href="/advsearch.htm"><i
-					class="fa fa-search fa-fw"></i>Advanced Search</a></li>
+			<li><a class="black" href="/clients"><i
+					class="fa fa-group fa-fw"></i> Clients</a></li>
 			<li class="divider"></li>
-			<li><a class="black" href="/offices.htm"><i
-					class="fa fa-compass fa-fw"></i>Offices</a></li>
+			<li><a class="black" href="/groups"><i
+					class="fa fa-group fa-fw"></i> Groups</a></li>
 			<li class="divider"></li>
-			<li><a class="black" href="/tasks.htm"><i
-					class="fa fa-check fa-fw"></i>Tasks</a></li>
+			<li><a class="black" href="/admin/users"><i
+					class="fa fa-user fa-fw"></i>Users</a></li>
 			<li class="divider"></li>
-			<li><a class="black" href="/entercollectionsheet.htm"><i
-					class="fa fa-tasks fa-fw"></i>Collections</a></li>
+			<li><a class="black" href="/finance/accountingcoa"><i
+					class="fa fa-tasks fa-fw"></i>Chart of Accounts</a></li>
 			<li class="divider"></li>
-			<li><a class="black" href="/finance/freqposting.htm"><i
-					class="fa fa-repeat fa-fw"></i>Frequent Postings</a></li>
+			<li><a class="black" href="/admin/products"><i
+					class="fa fa-plus fa-fw"></i>Products</a></li>
 			<li class="divider"></li>
-			<li><a class="black" href="/finance/journalentry.htm"><i
-					class="fa fa-plus fa-fw"></i>+ Journal Entry</a></li>
+			<li><a class="black" href="/admin/organization"><i
+					class="fa fa-sitemap fa-fw"></i>Organization</a></li>
 			<li class="divider"></li>
-			<li><a class="black" href="/finance/accountsclosure.htm"><i
-					class="fa fa-bell-o fa-fw"></i>Closing Entries</a></li>
-			<li class="divider"></li>
-			<li><a class="black" href="/finance/accountingcoa.htm"><i
-					class="fa fa-sitemap fa-fw"></i>Chart of Accounts</a></li>
-			<li class="divider"></li>
-			<li><a class="black" href="/createclient.htm"><i
-					class="fa fa-user fa-fw"></i>+ Client</a></li>
-			<li class="divider"></li>
-			<li><a class="black" href="/creategroup.htm"><i
-					class="fa fa-group fa-fw"></i>+ Group</a></li>
-			<li class="divider"></li>
-			<li><a class="black" href="/createcenter.htm"><i
-					class="fa fa-group fa-fw"></i> + Center</a></li>
-			<li class="divider"></li>
-			<li><a class="black" href="/help.htm"><i
+			<li><a class="black" href="/help"><i
 					class="fa fa-question-circle fa-fw"></i>Help</a></li>
 		</ul>
 	</div>
@@ -174,7 +159,7 @@ $(document).ready(function (){
 					<div class="whitebg ng-scope">
 						<div class="col-md-12">
 							<ul class="breadcrumb">
-								<li><a href="/savingsproducts.htm">Savings Products</a></li>
+								<li><a href="/savingsproducts">Savings Products</a></li>
 								<li class="active">Overview</li>
 							</ul>
 							<div class="span gray-head">

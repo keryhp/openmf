@@ -34,7 +34,7 @@ import uk.ac.openmf.web.forms.SavingsWithdrawalForm;
 @Controller
 public class SavingsWithdrawalController {
 
-	@RequestMapping(value="/savingswithdrawal.htm", method= RequestMethod.GET)
+	@RequestMapping(value="/savingswithdrawal", method= RequestMethod.GET)
 	public SavingsWithdrawalForm savingsWithdrawalForm(HttpServletRequest req) {
 		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		String sgaccId = req.getParameter("sgaccId");
@@ -53,7 +53,7 @@ public class SavingsWithdrawalController {
 		return form;
 	}
 
-	@RequestMapping(value="/savingswithdrawal.htm", method = RequestMethod.POST)
+	@RequestMapping(value="/savingswithdrawal", method = RequestMethod.POST)
 	public String savingswithdrawal(SavingsWithdrawalForm form, BindingResult result) throws ParseException {
 		if (result.hasErrors()) {
 			return null;
@@ -134,6 +134,6 @@ public class SavingsWithdrawalController {
 			transaction.setTransactionid(GenerateAccountNumber.getAccNumberService().generateTransactionNumber(appContext.getAppContext().getTransactionManager().entityCount() + 1));
 			appContext.getAppContext().getTransactionManager().upsertEntity(transaction);
 		}
-		return "redirect:/viewsavingsaccount.htm?sgaccId=" + sgaccId;
+		return "redirect:/viewsavingsaccount?sgaccId=" + sgaccId;
 	}
 }

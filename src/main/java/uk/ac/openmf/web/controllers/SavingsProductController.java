@@ -24,7 +24,7 @@ import uk.ac.openmf.web.forms.SavingsProductForm;
 @Controller
 public class SavingsProductController {
 
-	@RequestMapping(value = "/savingsproductdetails.htm", method= RequestMethod.GET)
+	@RequestMapping(value = "/savingsproductdetails", method= RequestMethod.GET)
 	public String savingsproductdetails(HttpServletRequest req) {
 		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		String spId = req.getParameter("spId");
@@ -37,20 +37,20 @@ public class SavingsProductController {
 		return "savingsproductdetails";
 	}
 
-    @RequestMapping(value = "/savingsproducts.htm", method= RequestMethod.GET)
+    @RequestMapping(value = "/savingsproducts", method= RequestMethod.GET)
     public String savingsproducts(HttpServletRequest req) {
 		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		req.setAttribute("savingsProducts", OMFUtils.getSavingsProductsList());
         return "savingsproducts";
     }
     
-	@RequestMapping(value="/createsavingsproduct.htm", method= RequestMethod.GET)
+	@RequestMapping(value="/createsavingsproduct", method= RequestMethod.GET)
 	public SavingsProductForm savingsProductForm(HttpServletRequest req) {
 		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		return new SavingsProductForm();
 	}
 
-	@RequestMapping(value="/createsavingsproduct.htm", method = RequestMethod.POST)
+	@RequestMapping(value="/createsavingsproduct", method = RequestMethod.POST)
 	public String createsavingsproduct(SavingsProductForm form, BindingResult result) {
 		if (result.hasErrors()) {
 			return null;
@@ -87,6 +87,6 @@ public class SavingsProductController {
 			//return null;
 		}
 
-		return "redirect:/savingsproducts.htm";
+		return "redirect:/savingsproducts";
 	}
 }

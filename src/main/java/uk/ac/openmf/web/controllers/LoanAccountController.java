@@ -30,7 +30,7 @@ import uk.ac.openmf.web.forms.LoanAccountForm;
 @Controller
 public class LoanAccountController {
 
-	@RequestMapping(value = "/viewloanaccount.htm", method= RequestMethod.GET)
+	@RequestMapping(value = "/viewloanaccount", method= RequestMethod.GET)
 	public String loanaccountdetails(HttpServletRequest req) {
 		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		String lnaccId = req.getParameter("lnaccId");
@@ -50,13 +50,13 @@ public class LoanAccountController {
 		return "viewloanaccount";
 	}
 
-	@RequestMapping(value = "/loanaccounts.htm", method= RequestMethod.GET)
+	@RequestMapping(value = "/loanaccounts", method= RequestMethod.GET)
 	public String loanaccounts(HttpServletRequest req) {
 		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		return "loanaccounts";
 	}
 
-	@RequestMapping(value="/createloanaccount.htm", method= RequestMethod.GET)
+	@RequestMapping(value="/createloanaccount", method= RequestMethod.GET)
 	public LoanAccountForm loanAccountForm(HttpServletRequest req) {
 		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		String clientId = req.getParameter("clientId");
@@ -72,7 +72,7 @@ public class LoanAccountController {
 		return form;
 	}
 
-	@RequestMapping(value="/createloanaccount.htm", method = RequestMethod.POST)
+	@RequestMapping(value="/createloanaccount", method = RequestMethod.POST)
 	public String createloanaccount(LoanAccountForm form, BindingResult result) throws ParseException {
 		if (result.hasErrors()) {
 			return null;
@@ -124,7 +124,7 @@ public class LoanAccountController {
 					lnaccId = loanAccount.getId();
 					ScheduledRepaymentService.generateRepaymentSchedule(loanAccount, AppContext.getAppContext().getLoanProductManager().getLoanProductByLoanCode(loanAccount.getLoancode()), AppContext.getAppContext().getCurrentUser().getId().toString());					
 				}
-				return "redirect:/groups.htm";
+				return "redirect:/groups";
 			}else{
 				OpenMFLoanAccount loanAccount = loanAccountManager.newLoanAccount(currentUser.getId().toString());
 				loanAccount.setGroupId(form.getGroupId());
@@ -162,9 +162,9 @@ public class LoanAccountController {
 				loanAccountManager.upsertEntity(loanAccount);
 				lnaccId = loanAccount.getId();
 				ScheduledRepaymentService.generateRepaymentSchedule(loanAccount, AppContext.getAppContext().getLoanProductManager().getLoanProductByLoanCode(loanAccount.getLoancode()), AppContext.getAppContext().getCurrentUser().getId().toString());
-				return "redirect:/viewloanaccount.htm?lnaccId=" + lnaccId;
+				return "redirect:/viewloanaccount?lnaccId=" + lnaccId;
 			}
 		}
-		return "redirect:/groups.htm";
+		return "redirect:/groups";
 	}
 }

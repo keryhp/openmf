@@ -36,7 +36,7 @@ import uk.ac.openmf.web.forms.LoanDisburseForm;
 @Controller
 public class LoanDisburseController {
 
-	@RequestMapping(value="/loandisburse.htm", method= RequestMethod.GET)
+	@RequestMapping(value="/loandisburse", method= RequestMethod.GET)
 	public LoanDisburseForm loanDisburseForm(HttpServletRequest req) {
 		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		String lnaccId = req.getParameter("lnaccId");
@@ -55,7 +55,7 @@ public class LoanDisburseController {
 		return form;
 	}
 
-	@RequestMapping(value="/loandisburse.htm", method = RequestMethod.POST)
+	@RequestMapping(value="/loandisburse", method = RequestMethod.POST)
 	public String loandisburse(LoanDisburseForm form, BindingResult result) throws ParseException {
 		if (result.hasErrors()) {
 			return null;
@@ -139,6 +139,6 @@ public class LoanDisburseController {
 			appContext.getAppContext().getTransactionManager().upsertEntity(transaction);
 
 		}
-		return "redirect:/viewloanaccount.htm?lnaccId=" + lnaccId;
+		return "redirect:/viewloanaccount?lnaccId=" + lnaccId;
 	}
 }

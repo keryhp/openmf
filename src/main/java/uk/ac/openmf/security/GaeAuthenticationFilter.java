@@ -35,7 +35,7 @@ import uk.ac.openmf.web.AppContext;
  * @author harish
  */
 public class GaeAuthenticationFilter extends GenericFilterBean {
-	private static final String REGISTRATION_URL = "/register.htm";
+	private static final String REGISTRATION_URL = "/register";
 
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 

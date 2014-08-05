@@ -16,19 +16,20 @@
 	OpenMFUser currentUser = (OpenMFUser) request
 			.getAttribute("currentUser");
 	pageContext.setAttribute("currentUser", currentUser);
-	ArrayList<OpenMFGroup> groups = (ArrayList<OpenMFGroup>) request
-			.getAttribute("groups");
-	pageContext.setAttribute("omfusers", groups);
+	ArrayList<OpenMFChartOfAccounts> coas = (ArrayList<OpenMFChartOfAccounts>) request
+			.getAttribute("coas");
+	pageContext.setAttribute("coas", coas);
 %>
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB" xml:lang="en-GB">
 <head>
 <meta charset="utf-8" />
-<meta name="description" content="This is the Groups Info Page." />
+<meta name="description"
+	content="This is the 'Open Microfinance' landing page." />
 <meta name="keywords" content="Open Microfinance" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Groups Info</title>
+<title>Accounting CoA</title>
 <link href="/favicon.ico" rel="shortcut icon" type="image/ico" />
 <!-- Bootstrap core CSS -->
 <link type="text/css" href="/static/css/bootstrap.min.css"
@@ -66,10 +67,10 @@
 						<ul class="dropdown-menu" id="swatch-menu">
 							<li><a href="/clients">Clients</a></li>
 							<li><a href="/groups">Groups</a></li>
-							
+
 						</ul></li>
-					<li><a href="/finance/accountingcoa"><i class="fa fa-money"></i>
-							Accounting</a></li>
+					<li><a href="/finance/accountingcoa"><i
+							class="fa fa-money"></i> Accounting</a></li>
 					<li class="dropdown" id="reports-menu"><a
 						class="dropdown-toggle" data-toggle="dropdown" href="#"><i
 							class="fa fa-bar-chart-o"></i> Reports<b class="caret"></b></a>
@@ -98,8 +99,8 @@
 						<ul class="dropdown-menu">
 							<li><a id="help" href="/help"><i
 									class="fa fa-question-circle"></i> Help</a></li>
-							<li><a href="/viewuser?omfuId=<%=currentUser.getId()%>"><i class="fa fa-user"></i>
-									Profile</a></li>
+							<li><a href="/viewuser?omfuId=<%=currentUser.getId()%>"><i
+									class="fa fa-user"></i> Profile</a></li>
 							<li><a href="/usersetting"><i class="fa fa-cog"></i>
 									Settings</a></li>
 							<li><a href="/logout"><i class="fa fa-off"></i>Logout</a></li>
@@ -140,20 +141,20 @@
 		</ul>
 	</div>
 
-	<div class="container whitebg fullscreen">
+		<div class="container whitebg fullscreen">
 		<div>
 			<div class="row whitebg">
 				<div class="col-md-12 pull-right whitebg">
 					<div class="whitebg">
 						<div class="col-md-12">
 							<ul class="breadcrumb">
-								<li class="active">Groups</li>
+								<li class="active">CoAs</li>
 							</ul>
 						</div>
 						<div class="col-md-12">
 							<div class="pull-right">
-								<a href="/creategroup" class="btn btn-primary"><i
-									class="fa fa-plus fa fa-white"></i>Create Group</a>
+								<a href="/finance/createcoa" class="btn btn-primary"><i
+									class="fa fa-plus fa fa-white"></i>Create CoA</a>
 							</div>
 							<input type="search"
 								class="light-table-filter marginbottom0px form-control"
@@ -163,43 +164,38 @@
 								<thead>
 									<tr class="graybg">
 										<th>Name</th>
-										<th>Group#</th>
-										<th>Status</th>
+										<th>Account#</th>
+										<th>Type</th>
 										<th>Office</th>
-										<th>Staff</th>
 									</tr>
 								</thead>
 								<tbody>
 									<%
 										int count = 0;
-										for (OpenMFGroup group : groups) {
-											long groupId = group.getId().longValue();
+										for (OpenMFChartOfAccounts coa : coas) {
+											long coaId = coa.getId().longValue();
 									%>
-									<tr class="pointer-main" onclick="viewGroupFn(<%=groupId%>);">
-										<td class="pointer" onclick="viewGroupFn(<%=groupId%>);"><c:out
-												value="<%=group.getGroupname()%>" escapeXml="true" /></td>
-										<td class="pointer" onclick="viewGroupFn(<%=groupId%>);"><c:out
-												value="<%=group.getAccountnumber()%>"></c:out></td>
-										<c:choose>
-											<c:when test="${group.active == false }">
-												<td class="pointer" onclick="viewGroupFn(<%=groupId%>);"><i
-													class="fa fa-stop cstatusprogress"></i>Closed</td>
-											</c:when>
-											<c:otherwise>
-												<td class="pointer" onclick="viewGroupFn(<%=groupId%>);"><i
-													class="fa fa-stop cstatusactive"></i>Active</td>
-											</c:otherwise>
-										</c:choose>
-										<td class="pointer" onclick="viewGroupFn(<%=groupId%>);"><c:out
-												value="<%=group.getOffice()%>"></c:out></td>
-										<td class="pointer" onclick="viewGroupFn(<%=groupId%>);"><c:out
-												value="<%=group.getSupervisor()%>"></c:out></td>
+									<tr class="pointer-main" onclick="viewChartOfAccountsFn(<%=coaId%>);">
+										<td class="pointer" onclick="viewChartOfAccountsFn(<%=coaId%>);"><c:out
+												value="<%=coa.getCoaname()%>" escapeXml="true" /></td>
+										<td class="pointer" onclick="viewChartOfAccountsFn(<%=coaId%>);"><c:out
+												value="<%=coa.getCoaid()%>"></c:out></td>
+										<td class="pointer" onclick="viewChartOfAccountsFn(<%=coaId%>);"><c:out
+												value="<%=coa.getMfiaccounttype()%>"></c:out></td>
+										<td class="pointer" onclick="viewChartOfAccountsFn(<%=coaId%>);"><c:out
+												value="<%=coa.getOffice()%>"></c:out></td>
 									</tr>
 									<%
 										}
 									%>
 								</tbody>
 							</table>
+							<ul class="pager">
+								<li class="previous"><a id="prev" href=""><i
+										class="fa fa-long-arrow-left"></i> Previous</a></li>
+								<li class="next"><a id="next" href="">Next <i
+										class="fa fa-long-arrow-right"></i></a></li>
+							</ul>
 						</div>
 					</div>
 				</div>

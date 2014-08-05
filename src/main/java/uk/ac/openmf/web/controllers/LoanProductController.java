@@ -24,7 +24,7 @@ import uk.ac.openmf.web.forms.LoanProductForm;
 @Controller
 public class LoanProductController {
 
-	@RequestMapping(value = "/loanproductdetails.htm", method= RequestMethod.GET)
+	@RequestMapping(value = "/loanproductdetails", method= RequestMethod.GET)
 	public String loanproductdetails(HttpServletRequest req) {
 		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		String lpId = req.getParameter("lpId");
@@ -37,20 +37,20 @@ public class LoanProductController {
 		return "loanproductdetails";
 	}
 
-    @RequestMapping(value = "/loanproducts.htm", method= RequestMethod.GET)
+    @RequestMapping(value = "/loanproducts", method= RequestMethod.GET)
     public String loanproducts(HttpServletRequest req) {
 		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		req.setAttribute("loanProducts", OMFUtils.getLoanProductsList());
         return "loanproducts";
     }
     
-	@RequestMapping(value="/createloanproduct.htm", method= RequestMethod.GET)
+	@RequestMapping(value="/createloanproduct", method= RequestMethod.GET)
 	public LoanProductForm loanProductForm(HttpServletRequest req) {
 		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		return new LoanProductForm();
 	}
 
-	@RequestMapping(value="/createloanproduct.htm", method = RequestMethod.POST)
+	@RequestMapping(value="/createloanproduct", method = RequestMethod.POST)
 	public String createloanproduct(LoanProductForm form, BindingResult result) {
 		if (result.hasErrors()) {
 			return null;
@@ -87,6 +87,6 @@ public class LoanProductController {
 			//return null;
 		}
 
-		return "redirect:/loanproducts.htm";
+		return "redirect:/loanproducts";
 	}
 }

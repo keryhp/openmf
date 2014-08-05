@@ -23,14 +23,14 @@ import uk.ac.openmf.web.forms.RolesForm;
 @Controller
 public class RolesController {
 	
-	@RequestMapping(value = "/assignroles.htm", method= RequestMethod.GET)
+	@RequestMapping(value = "/assignroles", method= RequestMethod.GET)
     public String assignroles(HttpServletRequest req) {
 		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		req.setAttribute("roles", OMFUtils.getAllRolesList());
         return "assignroles";
     }
 	
-	@RequestMapping(value="/createrole.htm", method= RequestMethod.GET)
+	@RequestMapping(value="/createrole", method= RequestMethod.GET)
     public RolesForm rolesForm(HttpServletRequest req) {
 		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		req.setAttribute("roles", OMFUtils.getAllRolesList());
@@ -40,7 +40,7 @@ public class RolesController {
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
-	@RequestMapping(value="/createrole.htm", method = RequestMethod.POST)
+	@RequestMapping(value="/createrole", method = RequestMethod.POST)
 	public String createrole(RolesForm form, BindingResult result) {
 		if (result.hasErrors()) {
             return null;
@@ -67,6 +67,6 @@ public class RolesController {
 			} else {
 				//return null;
 			}
-		return "redirect:/assignroles.htm";
+		return "redirect:/assignroles";
 	}
 }

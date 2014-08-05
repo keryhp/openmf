@@ -29,14 +29,14 @@ public class CoAController {
 	protected static final Logger logger =
 			Logger.getLogger(CoAController.class.getCanonicalName());	
 
-	@RequestMapping(value = "/finance/accountingcoa.htm", method= RequestMethod.GET)
+	@RequestMapping(value = "/finance/accountingcoa", method= RequestMethod.GET)
 	public String coas(HttpServletRequest req) {
 		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		req.setAttribute("coas", OMFUtils.getAllCoAsList());
-		return "accountingcoa";
+		return "/finance/accountingcoa";
 	}
 
-	@RequestMapping(value = "/finance/viewcoa.htm", method= RequestMethod.GET)
+	@RequestMapping(value = "/finance/viewcoa", method= RequestMethod.GET)
 	public String viewCoA(HttpServletRequest req) {
 		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		String coaId = req.getParameter("coaId");
@@ -51,17 +51,17 @@ public class CoAController {
 //		req.setAttribute("todaysjournal", OMFUtils.getTodaysGeneralJournalByMFIAccType(coa.getMfiaccounttype()));
 		req.setAttribute("todaysledger", OMFUtils.getTodaysGeneralLedgerByMFIAccType(coa.getCoaid()));
 		req.setAttribute("todaysjournal", OMFUtils.getTodaysGeneralJournalByMFIAccType(coa.getCoaid()));
-		return "viewcoa";
+		return "/finance/viewcoa";
 	}
 
-	@RequestMapping(value = "/finance/createcoa.htm", method= RequestMethod.GET)
+	@RequestMapping(value = "/finance/createcoa", method= RequestMethod.GET)
 	public ChartOfAccountsForm coAForm(HttpServletRequest req) {
 		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		req.setAttribute("omfusers", OMFUtils.getUsersList());
 		return new ChartOfAccountsForm();
 	}
 
-	@RequestMapping(value="/finance/createcoa.htm", method = RequestMethod.POST)
+	@RequestMapping(value="/finance/createcoa", method = RequestMethod.POST)
 	public String createcoa(ChartOfAccountsForm form, BindingResult result) {
 		if (result.hasErrors()) {
 			return null;
@@ -82,6 +82,6 @@ public class CoAController {
 			coa.setFunds(form.getFunds());
 			coaManager.upsertEntity(coa);
 		}
-		return "redirect:/finance/accountingcoa.htm";
+		return "redirect:/finance/accountingcoa";
 	}
 }

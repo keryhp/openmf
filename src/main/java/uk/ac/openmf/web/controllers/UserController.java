@@ -1,11 +1,9 @@
 package uk.ac.openmf.web.controllers;
 
-import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,11 +12,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.google.appengine.api.blobstore.BlobKey;
-import com.google.appengine.api.blobstore.BlobstoreService;
-import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
-
-import uk.ac.openmf.model.OpenMFPhoto;
 import uk.ac.openmf.model.OpenMFUser;
 import uk.ac.openmf.model.OpenMFUserManager;
 import uk.ac.openmf.model.nosql.OpenMFUserNoSql;
@@ -35,14 +28,14 @@ import uk.ac.openmf.web.forms.UserForm;
 public class UserController {
 
 
-	@RequestMapping(value = "/admin/users.htm", method= RequestMethod.GET)
+	@RequestMapping(value = "/admin/users", method= RequestMethod.GET)
 	public String users(HttpServletRequest req) {
 		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		req.setAttribute("omfusers", OMFUtils.getUsersList());
-		return "users";
+		return "/admin/users";
 	}
 
-	@RequestMapping(value = "/viewuser.htm", method= RequestMethod.GET)
+	@RequestMapping(value = "/viewuser", method= RequestMethod.GET)
 	public String viewuser(HttpServletRequest req){
 		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		String omfuId = req.getParameter("omfuId");
@@ -54,10 +47,11 @@ public class UserController {
 		req.setAttribute("omfuser", omfuser);
 		req.setAttribute("clients", OMFUtils.getClientsBySupervisor(omfuser.getUsername()));
 		req.setAttribute("groups", OMFUtils.getGroupsBySupervisor(omfuser.getUsername()));
+		req.setAttribute("tasks", OMFUtils.getTasksByUsername(omfuser.getUsername(), false));
 		return "viewuser";
 	}
 
-	@RequestMapping(value="/admin/createuser.htm", method= RequestMethod.GET)
+	@RequestMapping(value="/admin/createuser", method= RequestMethod.GET)
 	public UserForm userForm(HttpServletRequest req) {
 		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		req.setAttribute("omfusers", OMFUtils.getUsersList());
@@ -69,7 +63,7 @@ public class UserController {
 	 * @throws InvalidKeySpecException 
 	 * @throws NoSuchAlgorithmException 
 	 */
-	@RequestMapping(value="/admin/createuser.htm", method = RequestMethod.POST)
+	@RequestMapping(value="/admin/createuser", method = RequestMethod.POST)
 	public String createuser(UserForm form, BindingResult result) throws NoSuchAlgorithmException, InvalidKeySpecException {
 		if (result.hasErrors()) {
 			return null;
@@ -77,7 +71,6 @@ public class UserController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		//GaeUser currentUser = (GaeUser)authentication.getPrincipal();
 		OpenMFUserNoSql currentUser = (OpenMFUserNoSql)authentication.getPrincipal();
-		boolean succeeded = false;
 		if (currentUser != null) {
 			OpenMFUserManager userManager = AppContext.getAppContext().getUserManager();
 			OpenMFUser user = userManager.newUser();
@@ -99,16 +92,7 @@ public class UserController {
 			user.setSupervisor(form.getSupervisor());
 			user.setEmail(form.getEmail());
 			userManager.upsertEntity(user);
-			succeeded = true;
-			if (succeeded) {
-				//redirect to new role created 
-			} else {
-				//redirect to error page
-			}
-			//return openMFRoles;
-		} else {
-			//return null;
 		}
-		return "redirect:/admin/users.htm";
+		return "redirect:/admin/users";
 	}
 }

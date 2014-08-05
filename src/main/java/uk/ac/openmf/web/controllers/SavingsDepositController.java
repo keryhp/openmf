@@ -35,7 +35,7 @@ import uk.ac.openmf.web.forms.SavingsDepositForm;
 @Controller
 public class SavingsDepositController {
 
-	@RequestMapping(value="/savingsdeposit.htm", method= RequestMethod.GET)
+	@RequestMapping(value="/savingsdeposit", method= RequestMethod.GET)
 	public SavingsDepositForm savingsDepositForm(HttpServletRequest req) {
 		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		String sgaccId = req.getParameter("sgaccId");
@@ -54,7 +54,7 @@ public class SavingsDepositController {
 		return form;
 	}
 
-	@RequestMapping(value="/savingsdeposit.htm", method = RequestMethod.POST)
+	@RequestMapping(value="/savingsdeposit", method = RequestMethod.POST)
 	public String savingsactualpayment(SavingsDepositForm form, BindingResult result) throws ParseException {
 		if (result.hasErrors()) {
 			return null;
@@ -169,6 +169,6 @@ public class SavingsDepositController {
 				}
 			}
 		}
-		return "redirect:/viewsavingsaccount.htm?sgaccId=" + sgaccId;
+		return "redirect:/viewsavingsaccount?sgaccId=" + sgaccId;
 	}
 }

@@ -43,7 +43,7 @@ public class ConfigManager {
   }
   
   public String getDownloadHandlerUrl() {
-	    return "/download.htm";
+	    return "/download";
 	  }
 
   public String getErrorMessage(int code) {

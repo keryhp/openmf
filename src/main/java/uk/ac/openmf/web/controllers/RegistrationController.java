@@ -30,7 +30,7 @@ import com.google.appengine.api.users.UserServiceFactory;
  * @author harish
  */
 @Controller
-@RequestMapping(value="/register.htm")
+@RequestMapping(value="/register")
 public class RegistrationController {
 
 	@Autowired
@@ -70,15 +70,15 @@ public class RegistrationController {
 			// Update the context with the full authentication
 			SecurityContextHolder.getContext().setAuthentication(new OpenMFUserAuthentication(openMFUser, authentication.getDetails()));
 			AppContext.getAppContext().setCurrentUser(openMFUser);
-			return "redirect:/clients.htm";			
+			return "redirect:/clients";			
 		}else if((openMFUser == null && !("keryhp".equalsIgnoreCase(form.getUsername()))) || ((openMFUser != null && !PasswordHash.validatePassword(form.getPassword(), openMFUser.getPassword())))){
 			registry.registerUser(user);
-			return "redirect:/register.htm";
+			return "redirect:/register";
 		}else{
 			// Update the context with the full authentication
 			SecurityContextHolder.getContext().setAuthentication(new OpenMFUserAuthentication(openMFUser, authentication.getDetails()));
 			AppContext.getAppContext().setCurrentUser(openMFUser);
-			return "redirect:/clients.htm";
+			return "redirect:/clients";
 		}
 	}
 }

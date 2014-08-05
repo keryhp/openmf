@@ -30,7 +30,7 @@ public class ScheduledDepositService {
 
 		Calendar calendar = Calendar.getInstance();
 		Date startdate = OMFDateUtils.formatter.parse(savingsaccount.getSavingsstartdate());
-		calendar.set(startdate.getYear(), startdate.getMonth(), startdate.getDate());
+		calendar.setTime(startdate);
 		boolean flag = true;
 		int temp = frequencyVal;
 		int count = 0;

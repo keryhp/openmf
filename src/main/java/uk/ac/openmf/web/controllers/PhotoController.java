@@ -28,7 +28,7 @@ import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 public class PhotoController {
 
 
-	@RequestMapping(value="/download.htm", method = RequestMethod.GET)
+	@RequestMapping(value="/download", method = RequestMethod.GET)
 	public void downloadphoto(HttpServletRequest req, HttpServletResponse res) throws IOException {
 	    Long typeId = ServletUtils.validatePhotoId(req.getParameter("typeId"));
 	    String id = req.getParameter("id");
@@ -57,10 +57,10 @@ public class PhotoController {
 		String respurl = null;
 		if("user".equalsIgnoreCase(type)){
 			typeId = req.getParameter("userId");
-			respurl = "redirect:/admin/users.htm";
+			respurl = "redirect:/admin/users";
 		}else{
 			typeId = req.getParameter("clientId");
-			respurl = "redirect:/clients.htm";
+			respurl = "redirect:/clients";
 		}
 		List<BlobKey> keys = blobs.get("photo");
 		String id = null;

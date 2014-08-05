@@ -29,7 +29,7 @@ import uk.ac.openmf.web.forms.SavingsAccountForm;
 @Controller
 public class SavingsAccountController {
 
-	@RequestMapping(value = "/viewsavingsaccount.htm", method= RequestMethod.GET)
+	@RequestMapping(value = "/viewsavingsaccount", method= RequestMethod.GET)
 	public String savingsaccountdetails(HttpServletRequest req) {
 		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		String sgaccId = req.getParameter("sgaccId");
@@ -49,13 +49,13 @@ public class SavingsAccountController {
 		return "viewsavingsaccount";
 	}
 
-	@RequestMapping(value = "/savingsaccounts.htm", method= RequestMethod.GET)
+	@RequestMapping(value = "/savingsaccounts", method= RequestMethod.GET)
 	public String savingsaccounts(HttpServletRequest req) {
 		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		return "savingsaccounts";
 	}
 
-	@RequestMapping(value="/createsavingsaccount.htm", method= RequestMethod.GET)
+	@RequestMapping(value="/createsavingsaccount", method= RequestMethod.GET)
 	public SavingsAccountForm savingsAccountForm(HttpServletRequest req) {
 		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		String clientId = req.getParameter("clientId");
@@ -67,7 +67,7 @@ public class SavingsAccountController {
 		return form;
 	}
 
-	@RequestMapping(value="/createsavingsaccount.htm", method = RequestMethod.POST)
+	@RequestMapping(value="/createsavingsaccount", method = RequestMethod.POST)
 	public String createsavingsaccount(SavingsAccountForm form, BindingResult result) throws ParseException {
 		if (result.hasErrors()) {
 			return null;
@@ -110,6 +110,6 @@ public class SavingsAccountController {
 		} else {
 			//return null;
 		}
-		return "redirect:/viewsavingsaccount.htm?sgaccId=" + sgaccId;
+		return "redirect:/viewsavingsaccount?sgaccId=" + sgaccId;
 	}
 }

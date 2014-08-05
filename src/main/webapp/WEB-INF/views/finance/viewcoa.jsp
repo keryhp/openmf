@@ -1,7 +1,9 @@
 <!DOCTYPE html>
+<%@page import="uk.ac.openmf.utils.*"%>
 <%@page import="java.util.*"%>
 <%@page import="uk.ac.openmf.model.*"%>
 <%@page import="uk.ac.openmf.web.*"%>
+<%@page import="uk.ac.openmf.services.*"%>
 <%@ page language="java"
 	contentType="application/xhtml+xml; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@page session="false"%>
@@ -16,19 +18,21 @@
 	OpenMFUser currentUser = (OpenMFUser) request
 			.getAttribute("currentUser");
 	pageContext.setAttribute("currentUser", currentUser);
-	ArrayList<OpenMFGroup> groups = (ArrayList<OpenMFGroup>) request
-			.getAttribute("groups");
-	pageContext.setAttribute("omfusers", groups);
+	OpenMFChartOfAccounts coa = (OpenMFChartOfAccounts) request
+			.getAttribute("coa");
+	ArrayList<OpenMFGeneralLedger> todaysledger = (ArrayList<OpenMFGeneralLedger>) request
+			.getAttribute("todaysledger");
+	ArrayList<OpenMFGeneralJournal> todaysjournal = (ArrayList<OpenMFGeneralJournal>) request
+			.getAttribute("todaysjournal");
 %>
-
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB" xml:lang="en-GB">
 <head>
 <meta charset="utf-8" />
-<meta name="description" content="This is the Groups Info Page." />
+<meta name="description" content="This is the Clients Info Page." />
 <meta name="keywords" content="Open Microfinance" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Groups Info</title>
+<title>User Info</title>
 <link href="/favicon.ico" rel="shortcut icon" type="image/ico" />
 <!-- Bootstrap core CSS -->
 <link type="text/css" href="/static/css/bootstrap.min.css"
@@ -66,10 +70,10 @@
 						<ul class="dropdown-menu" id="swatch-menu">
 							<li><a href="/clients">Clients</a></li>
 							<li><a href="/groups">Groups</a></li>
-							
+
 						</ul></li>
-					<li><a href="/finance/accountingcoa"><i class="fa fa-money"></i>
-							Accounting</a></li>
+					<li><a href="/finance/accountingcoa"><i
+							class="fa fa-money"></i> Accounting</a></li>
 					<li class="dropdown" id="reports-menu"><a
 						class="dropdown-toggle" data-toggle="dropdown" href="#"><i
 							class="fa fa-bar-chart-o"></i> Reports<b class="caret"></b></a>
@@ -98,8 +102,8 @@
 						<ul class="dropdown-menu">
 							<li><a id="help" href="/help"><i
 									class="fa fa-question-circle"></i> Help</a></li>
-							<li><a href="/viewuser?omfuId=<%=currentUser.getId()%>"><i class="fa fa-user"></i>
-									Profile</a></li>
+							<li><a href="/viewuser?omfuId=<%=currentUser.getId()%>"><i
+									class="fa fa-user"></i> Profile</a></li>
 							<li><a href="/usersetting"><i class="fa fa-cog"></i>
 									Settings</a></li>
 							<li><a href="/logout"><i class="fa fa-off"></i>Logout</a></li>
@@ -144,71 +148,137 @@
 		<div>
 			<div class="row whitebg">
 				<div class="col-md-12 pull-right whitebg">
-					<div class="whitebg">
-						<div class="col-md-12">
-							<ul class="breadcrumb">
-								<li class="active">Groups</li>
-							</ul>
+					<div class="paddedbottom10">
+						<ul class="breadcrumb">
+							<li><a href="/finance/accountingcoa">CoAs</a></li>
+							<li class="active">CoA Details</li>
+						</ul>
+					</div>
+
+					<div class="row">
+						<div class="col-md-8 col-sm-8">
+							<h3 class="client-title">
+								<i class="fa fa-user fa-white"></i> <strong><c:out
+										value="${coa.coaname }" escapeXml="true" /> | <c:out
+										value="${coa.coaid}" escapeXml="true" /> | <c:out
+										value="${coa.mfiaccounttype }" escapeXml="true" /> | <c:out
+										value="${coa.office }" escapeXml="true" />  | <c:out
+										value="${coa.funds }" escapeXml="true" /></strong>
+							</h3>
 						</div>
-						<div class="col-md-12">
-							<div class="pull-right">
-								<a href="/creategroup" class="btn btn-primary"><i
-									class="fa fa-plus fa fa-white"></i>Create Group</a>
+					</div>
+					<div class="overflowhidden marginbottom0 ">
+						<ul id="myTab" class="nav nav-tabs">
+							<li class="active"><a href="#todaysledger" data-toggle="tab">Overview</a></li>
+							<li class=""><a href="#ledgersearch" data-toggle="tab">Ledger Search</a></li>
+							<li class=""><a href="#jorunalsearch" data-toggle="tab">Journal Search</a></li>
+						</ul>
+						<div class="tab-content">
+							<div class="tab-pane active" id="todaysledger">
+								<div class="col-md-12 col-sm-12">
+									<div class="row client">
+										<div class="col-sm-9 col-md-9 paddingleft0px">
+											<div>
+												<div>
+													<div class="span gray-head">
+														<span class="boldlabel"> <strong class="">General
+																Legder Details</strong>
+														</span>
+													</div>
+													<table class="table table-condensed">
+														<tr class="graybg">
+															<th>Id</th>
+															<th>CoA Id</th>
+															<th>Status</th>
+															<th>Bal. Available</th>
+															<th>Bal. Pending</th>
+														</tr>
+														<tr>
+															<%
+																for (OpenMFGeneralLedger generalledger : todaysledger) {
+																	long ledgerId = generalledger.getId();
+															%>
+															<td><c:out
+																	value="<%=generalledger.getGeneralledgerid()%>"
+																	escapeXml="true" /></td>
+															<td><c:out value="<%=generalledger.getCoaid()%>"
+																	escapeXml="true" /></td>
+															<td><c:out value="<%=generalledger.getStatus()%>"
+																	escapeXml="true" /></td>
+															<td><c:out
+																	value="<%=generalledger.getBalanceavailable()%>"
+																	escapeXml="true" /></td>
+															<td><c:out
+																	value="<%=generalledger.getBalancePending()%>"
+																	escapeXml="true" /></td>
+															<%
+																}
+															%>
+														</tr>
+													</table>
+												</div>
+												<div>
+													<div class="span gray-head">
+														<span class="boldlabel"> <strong>General
+																Journal Overview</strong>
+														</span>
+													</div>
+													<table class="table table-condensed">
+														<tr class="graybg">
+															<th>Transaction Type</th>
+															<th>Client Acc#</th>
+															<th>Posted By</th>
+															<th>Approved By</th>
+															<th>Transaction Amount</th>
+															<th>Status</th>
+														</tr>
+														<%
+															for (OpenMFGeneralJournal generaljournal : todaysjournal) {
+																long journalId = generaljournal.getId();
+														%>
+														<tr>
+															<td><c:out
+																	value="<%=generaljournal.getTransactiontype()%>"
+																	escapeXml="true" /></td>
+															<td><c:out
+																	value="<%=generaljournal.getClientaccountid()%>"
+																	escapeXml="true" /></td>
+															<td><c:out value="<%=generaljournal.getPostedby()%>"
+																	escapeXml="true" /></td>
+															<td><c:out
+																	value="<%=generaljournal.getApprovedby()%>"
+																	escapeXml="true" /></td>
+															<td><c:out
+																	value="<%=generaljournal.getTransactionamount()%>"
+																	escapeXml="true" /></td>
+															<td><c:out value="<%=generaljournal.getStatus()%>"
+																	escapeXml="true" /></td>
+														</tr>
+														<%
+															}
+														%>
+													</table>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+
 							</div>
-							<input type="search"
-								class="light-table-filter marginbottom0px form-control"
-								data-table="order-table"
-								placeholder="Filter by Name/Account#/Staff/Office" />
-							<table class="order-table table">
-								<thead>
-									<tr class="graybg">
-										<th>Name</th>
-										<th>Group#</th>
-										<th>Status</th>
-										<th>Office</th>
-										<th>Staff</th>
-									</tr>
-								</thead>
-								<tbody>
-									<%
-										int count = 0;
-										for (OpenMFGroup group : groups) {
-											long groupId = group.getId().longValue();
-									%>
-									<tr class="pointer-main" onclick="viewGroupFn(<%=groupId%>);">
-										<td class="pointer" onclick="viewGroupFn(<%=groupId%>);"><c:out
-												value="<%=group.getGroupname()%>" escapeXml="true" /></td>
-										<td class="pointer" onclick="viewGroupFn(<%=groupId%>);"><c:out
-												value="<%=group.getAccountnumber()%>"></c:out></td>
-										<c:choose>
-											<c:when test="${group.active == false }">
-												<td class="pointer" onclick="viewGroupFn(<%=groupId%>);"><i
-													class="fa fa-stop cstatusprogress"></i>Closed</td>
-											</c:when>
-											<c:otherwise>
-												<td class="pointer" onclick="viewGroupFn(<%=groupId%>);"><i
-													class="fa fa-stop cstatusactive"></i>Active</td>
-											</c:otherwise>
-										</c:choose>
-										<td class="pointer" onclick="viewGroupFn(<%=groupId%>);"><c:out
-												value="<%=group.getOffice()%>"></c:out></td>
-										<td class="pointer" onclick="viewGroupFn(<%=groupId%>);"><c:out
-												value="<%=group.getSupervisor()%>"></c:out></td>
-									</tr>
-									<%
-										}
-									%>
-								</tbody>
-							</table>
+							<!-- end of general tab -->
+							<div class="tab-pane" id="ledgersearch">
+								<br></br>
+								<p>Ledger search</p>
+							</div>
+							<div class="tab-pane" id="jorunalsearch">
+								<br />
+								<p>Journal search</p>
+							</div>
 						</div>
 					</div>
 				</div>
-				<!-- Footer -->
 			</div>
-			<!-- /row-fluid -->
 		</div>
-		<!-- /blockui-->
 	</div>
-	<!-- /container -->
 </body>
 </html>

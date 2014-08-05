@@ -34,14 +34,14 @@ public class ClientController {
 	protected static final Logger logger =
 			Logger.getLogger(ClientController.class.getCanonicalName());	
 	
-	@RequestMapping(value = "/clients.htm", method= RequestMethod.GET)
+	@RequestMapping(value = "/clients", method= RequestMethod.GET)
 	public String clients(HttpServletRequest req) {
 		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		req.setAttribute("clients", OMFUtils.getAllClientsList());
 		return "clients";
 	}
 
-	@RequestMapping(value = "/viewclient.htm", method= RequestMethod.GET)
+	@RequestMapping(value = "/viewclient", method= RequestMethod.GET)
 	public String viewClient(HttpServletRequest req) {
 		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		String clientId = req.getParameter("clientId");
@@ -65,7 +65,7 @@ public class ClientController {
 		return "viewclient";
 	}
 
-	@RequestMapping(value="/createclient.htm", method= RequestMethod.GET)
+	@RequestMapping(value="/createclient", method= RequestMethod.GET)
 	public ClientForm clientForm(HttpServletRequest req) {
 		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		req.setAttribute("omfusers", OMFUtils.getUsersList());
@@ -73,7 +73,7 @@ public class ClientController {
 		return new ClientForm();
 	}
 
-	@RequestMapping(value="/createclient.htm", method = RequestMethod.POST)
+	@RequestMapping(value="/createclient", method = RequestMethod.POST)
 	public String createclient(ClientForm form, BindingResult result) {
 		if (result.hasErrors()) {
 			return null;
@@ -110,6 +110,6 @@ public class ClientController {
 				client.setGroupid(form.getGroupid());
 			clientManager.upsertEntity(client);
 		}
-		return "redirect:/clients.htm";
+		return "redirect:/clients";
 	}
 }
