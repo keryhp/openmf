@@ -89,9 +89,9 @@ function togglePhotoPost(expanded) {
 	}
 };
 
-function showRowSpan(idVal){
+function deleteUser(idVal){
 	"use strict";
-	document.getElementById(idVal).className = "row client show";
+	confirm("Delete user ?");
 };
 
 function updateLoanAmount(sel){

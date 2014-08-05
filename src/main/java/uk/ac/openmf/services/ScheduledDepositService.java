@@ -5,12 +5,18 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import uk.ac.openmf.model.OpenMFSavingsAccount;
 import uk.ac.openmf.model.OpenMFSavingsProduct;
 import uk.ac.openmf.model.OpenMFSavingsScheduledDeposit;
 import uk.ac.openmf.model.OpenMFSavingsScheduledDepositManager;
+import uk.ac.openmf.model.nosql.OpenMFUserNoSql;
 import uk.ac.openmf.utils.OMFDateUtils;
 import uk.ac.openmf.web.AppContext;
+
+import com.google.appengine.api.datastore.DatastoreNeedIndexException;
 
 public class ScheduledDepositService {
 
@@ -63,10 +69,10 @@ public class ScheduledDepositService {
 			savingsDepositSchedule.setSerialnumber(new Integer(count).toString());
 			savingsDepositSchedule.setActive(true);
 			savingsDepositSchedule.setInterestamount(null);
+			savingsDepositSchedule.setSupervisor(savingsaccount.getSavingsofficer());
 			savingsRepaymentManager.upsertEntity(savingsDepositSchedule);
 			savingsRepayments.add(savingsDepositSchedule);			
 		}
 		return savingsRepayments;
 	}
-
 }

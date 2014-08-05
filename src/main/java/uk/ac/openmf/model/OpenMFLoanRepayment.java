@@ -40,4 +40,6 @@ public interface OpenMFLoanRepayment extends OpenMFEntity {
 	public void setPaidamount(String paidamount);
 	public String getBalanceoutstandingamount();
 	public void setBalanceoutstandingamount(String balanceoutstandingamount);
+	String getSupervisor();
+	void setSupervisor(String supervisor);
 }

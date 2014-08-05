@@ -116,7 +116,7 @@ public class ScheduledRepaymentService{
 
 		Calendar calendar = Calendar.getInstance();
 		Date startdate = OMFDateUtils.formatter.parse(loanaccount.getLoanstartdate());
-		calendar.set(startdate.getYear(), startdate.getMonth(), startdate.getDate());
+		calendar.setTime(startdate);
 		boolean flag = true;
 		int temp = frequencyVal;
 		int count = 0;
@@ -145,6 +145,7 @@ public class ScheduledRepaymentService{
 			loanRepaymentSchedule.setPrincipaldue(calcPrincipalDue(loanaccount.getDisbursedamount(), loanaccount.getFees(), loanaccount.getPenalties(), loanaccount.getTotalrepaymentamount(), balanceofloan));
 			loanRepaymentSchedule.setScheduledate(OMFDateUtils.formatter.format(calendar.getTime()));
 			loanRepaymentSchedule.setSerialnumber(new Integer(count).toString());
+			loanRepaymentSchedule.setSupervisor(loanaccount.getFieldofficer());
 			loanRepaymentSchedule.setActive(true);
 			loanRepaymentManager.upsertEntity(loanRepaymentSchedule);
 			loanRepayments.add(loanRepaymentSchedule);

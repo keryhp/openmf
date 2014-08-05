@@ -154,4 +154,14 @@ public class OpenMFSavingsScheduledDepositNoSql extends OpenMFEntityNoSql  imple
 	public void setSerialnumber(String serialnumber) {
 		entity.setProperty(OpenMFConstants.FIELD_NAME_SERIALNUMBER, serialnumber);
 	}
+
+	@Override
+	public String getSupervisor() {
+		return (String) entity.getProperty(OpenMFConstants.FIELD_NAME_SUPERVISOR);
+	}
+
+	@Override
+	public void setSupervisor(String supervisor) {
+		entity.setProperty(OpenMFConstants.FIELD_NAME_SUPERVISOR, supervisor);
+	}
 }

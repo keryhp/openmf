@@ -1,15 +1,12 @@
 package uk.ac.openmf.model.nosql;
 
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Arrays;
 import java.util.Date;
-import java.util.concurrent.ArrayBlockingQueue;
+import java.util.List;
 
 import uk.ac.openmf.model.OpenMFGeneralJournal;
 import uk.ac.openmf.model.OpenMFGeneralJournalManager;
-import uk.ac.openmf.model.OpenMFGeneralLedger;
-import uk.ac.openmf.model.OpenMFUser;
-import uk.ac.openmf.utils.OMFDateUtils;
 import uk.ac.openmf.utils.OpenMFConstants;
 
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -19,6 +16,8 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
+import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.SortDirection;
 
@@ -83,11 +82,16 @@ implements OpenMFGeneralJournalManager {
 
 	@Override
 	public Iterable<OpenMFGeneralJournal> getGeneralJournalByDate(
-			String mfiaccounttype, String date) {
+			String coaid, String date) {
 		Query query = new Query(getKind());
-		query.setFilter(FilterOperator.EQUAL.of(OpenMFConstants.FIELD_NAME_MFIACCOUNTTYPE, mfiaccounttype));
-		query.setFilter(FilterOperator.GREATER_THAN_OR_EQUAL.of(OpenMFConstants.FIELD_NAME_TIMESTAMP, new Date(date).getTime()));
-		query.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
+//		query.setFilter(FilterOperator.EQUAL.of(OpenMFConstants.FIELD_NAME_MFIACCOUNTTYPE, mfiaccounttype));
+//		query.setFilter(FilterOperator.GREATER_THAN_OR_EQUAL.of(OpenMFConstants.FIELD_NAME_TIMESTAMP, new Date(date).getTime()));
+		Query.Filter f1 = new Query.FilterPredicate(OpenMFConstants.FIELD_NAME_COAID, FilterOperator.EQUAL, coaid);
+		Query.Filter f2 = new Query.FilterPredicate(OpenMFConstants.FIELD_NAME_TIMESTAMP, FilterOperator.GREATER_THAN_OR_EQUAL, new Date(date).getTime());
+		List<Filter> filters = Arrays.asList(f1, f2);
+		Filter filter = new Query.CompositeFilter(CompositeFilterOperator.AND, filters);
+		query.setFilter(filter);
+		//query.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
 		FetchOptions options = FetchOptions.Builder.withLimit(100);
 		PreparedQuery pq = DatastoreServiceFactory.getDatastoreService().prepare(query);
 		ArrayList<OpenMFGeneralJournal> entries = new ArrayList<OpenMFGeneralJournal>();
@@ -102,9 +106,14 @@ implements OpenMFGeneralJournalManager {
 	public OpenMFGeneralJournal getGeneralJournalByCoAandDate(String coaid,
 			String date) {
 		Query query = new Query(getKind());
-		query.setFilter(FilterOperator.EQUAL.of(OpenMFConstants.FIELD_NAME_COAID, coaid));
-		query.setFilter(FilterOperator.GREATER_THAN_OR_EQUAL.of(OpenMFConstants.FIELD_NAME_TIMESTAMP, new Date(date).getTime()));
-		query.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
+//		query.setFilter(FilterOperator.EQUAL.of(OpenMFConstants.FIELD_NAME_COAID, coaid));
+//		query.setFilter(FilterOperator.GREATER_THAN_OR_EQUAL.of(OpenMFConstants.FIELD_NAME_TIMESTAMP, new Date(date).getTime()));
+		Query.Filter f1 = new Query.FilterPredicate(OpenMFConstants.FIELD_NAME_COAID, FilterOperator.EQUAL, coaid);
+		Query.Filter f2 = new Query.FilterPredicate(OpenMFConstants.FIELD_NAME_TIMESTAMP, FilterOperator.GREATER_THAN_OR_EQUAL, new Date(date).getTime());
+		List<Filter> filters = Arrays.asList(f1, f2);
+		Filter filter = new Query.CompositeFilter(CompositeFilterOperator.AND, filters);
+		query.setFilter(filter);
+		//query.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
 		FetchOptions options = FetchOptions.Builder.withLimit(100);
 		PreparedQuery pq = DatastoreServiceFactory.getDatastoreService().prepare(query);
 		OpenMFGeneralJournal generalJournalEntry = null;

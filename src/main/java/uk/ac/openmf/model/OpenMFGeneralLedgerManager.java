@@ -10,7 +10,8 @@ public interface OpenMFGeneralLedgerManager extends OpenMFEntityManager<OpenMFGe
   OpenMFGeneralLedger getGeneralLedger(Long generalledgerId);
   
   Iterable<OpenMFGeneralLedger> getAllGeneralLedger();
-  Iterable<OpenMFGeneralLedger> getGeneralLedgerByDate(String mfiaccounttype, String date);
+  //Iterable<OpenMFGeneralLedger> getGeneralLedgerByDate(String mfiaccounttype, String date);
+  Iterable<OpenMFGeneralLedger> getGeneralLedgerByDate(String coaid, String date); 
   OpenMFGeneralLedger getGeneralLedgerByCoAandDate(String coaid, String date);
   /**
    * Creates a new role object.

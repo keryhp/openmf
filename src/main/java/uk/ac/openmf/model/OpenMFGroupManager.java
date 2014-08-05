@@ -10,6 +10,8 @@ public interface OpenMFGroupManager extends OpenMFEntityManager<OpenMFGroup> {
 	  
 	  Iterable<OpenMFGroup> getAllGroups();
 
+	  Iterable<OpenMFGroup> getGroupsBySupervisor(String username);
+	  
 	  /**
 	   * Creates a new Group object.
 	   *

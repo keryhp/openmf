@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.logging.Logger;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import uk.ac.openmf.model.OpenMFChartOfAccounts;
 import uk.ac.openmf.model.OpenMFChartOfAccountsManager;
 import uk.ac.openmf.model.OpenMFClient;
@@ -28,11 +31,13 @@ import uk.ac.openmf.model.OpenMFSavingsProduct;
 import uk.ac.openmf.model.OpenMFSavingsProductManager;
 import uk.ac.openmf.model.OpenMFSavingsScheduledDeposit;
 import uk.ac.openmf.model.OpenMFSavingsScheduledDepositManager;
+import uk.ac.openmf.model.OpenMFTask;
 import uk.ac.openmf.model.OpenMFTransaction;
 import uk.ac.openmf.model.OpenMFTransactionManager;
 import uk.ac.openmf.model.OpenMFUser;
 import uk.ac.openmf.model.OpenMFUserManager;
 import uk.ac.openmf.model.nosql.OpenMFPhotoNoSql;
+import uk.ac.openmf.model.nosql.OpenMFUserNoSql;
 import uk.ac.openmf.web.AppContext;
 import uk.ac.openmf.web.controllers.ClientController;
 
@@ -194,6 +199,58 @@ public final class OMFUtils {
 		return clients;
 	}
 
+	public static ArrayList<OpenMFClient> getClientsBySupervisor(String username){
+		Iterable<OpenMFClient> clientsiter = AppContext.getAppContext().getClientManager().getClientsBySupervisor(username);
+		ArrayList<OpenMFClient> clients = new ArrayList<OpenMFClient>();
+		try {
+			for (OpenMFClient client : clientsiter) {
+				clients.add(client);
+			}
+		} catch (DatastoreNeedIndexException e) {
+			//log the error
+		}
+		return clients;
+	}
+
+	public static ArrayList<OpenMFGroup> getGroupsBySupervisor(String username){
+		Iterable<OpenMFGroup> groupsiter = AppContext.getAppContext().getGroupManager().getGroupsBySupervisor(username);
+		ArrayList<OpenMFGroup> groups = new ArrayList<OpenMFGroup>();
+		try {
+			for (OpenMFGroup group : groupsiter) {
+				groups.add(group);
+			}
+		} catch (DatastoreNeedIndexException e) {
+			//log the error
+		}
+		return groups;
+	}
+
+	public static ArrayList<OpenMFTask> getTasksByUsername(String username, boolean status){
+		Iterable<OpenMFTask> tasksiter = AppContext.getAppContext().getTasksManager().getTasksByUsername(username, status);
+		ArrayList<OpenMFTask> tasks = new ArrayList<OpenMFTask>();
+		try {
+			for (OpenMFTask task : tasksiter) {
+				tasks.add(task);
+			}
+		} catch (DatastoreNeedIndexException e) {
+			//log the error
+		}
+		return tasks;
+	}
+
+	public static ArrayList<OpenMFTask> getAllTasksByUsername(String username){
+		Iterable<OpenMFTask> tasksiter = AppContext.getAppContext().getTasksManager().getAllTasksByUsername(username);
+		ArrayList<OpenMFTask> tasks = new ArrayList<OpenMFTask>();
+		try {
+			for (OpenMFTask task : tasksiter) {
+				tasks.add(task);
+			}
+		} catch (DatastoreNeedIndexException e) {
+			//log the error
+		}
+		return tasks;
+	}
+
 	public static ArrayList<OpenMFClient> getAllClientsList(){
 		OpenMFClientManager clientManager = AppContext.getAppContext().getClientManager();
 		Iterable<OpenMFClient> clientsiter = clientManager.getAllClients();
@@ -207,7 +264,7 @@ public final class OMFUtils {
 		}
 		return clients;
 	}
-	
+
 	public static ArrayList<OpenMFChartOfAccounts> getAllCoAsList(){
 		OpenMFChartOfAccountsManager coAManager = AppContext.getAppContext().getChartOfAccountsManager();
 		Iterable<OpenMFChartOfAccounts> coasiter = coAManager.getAllChartOfAccounts();
@@ -340,7 +397,7 @@ public final class OMFUtils {
 		}
 		return schedules;
 	}
-	
+
 	public static ArrayList<OpenMFGeneralJournal> getTodaysGeneralJournalByMFIAccType(String mfiaccounttype){
 		OpenMFGeneralJournalManager generalJournalManager = AppContext.getAppContext().getGeneralJournalManager();
 		Iterable<OpenMFGeneralJournal> entriesiter = generalJournalManager.getGeneralJournalByDate(mfiaccounttype, OMFDateUtils.formatter.format(Calendar.getInstance().getTime()));
@@ -354,7 +411,7 @@ public final class OMFUtils {
 		}
 		return entries;
 	}
-	
+
 	public static ArrayList<OpenMFGeneralLedger> getTodaysGeneralLedgerByMFIAccType(String mfiaccounttype){
 		OpenMFGeneralLedgerManager generalLedgerManager = AppContext.getAppContext().getGeneralLedgerManager();
 		Iterable<OpenMFGeneralLedger> entriesiter = generalLedgerManager.getGeneralLedgerByDate(mfiaccounttype, OMFDateUtils.formatter.format(Calendar.getInstance().getTime()));
@@ -368,7 +425,7 @@ public final class OMFUtils {
 		}
 		return entries;
 	}
-	
+
 	public static ArrayList<OpenMFTransaction> getTransactionByClientId(String clientId){
 		OpenMFTransactionManager generalLedgerManager = AppContext.getAppContext().getTransactionManager();
 		Iterable<OpenMFTransaction> entriesiter = generalLedgerManager.getTransactionsByClientId(clientId);
@@ -382,5 +439,62 @@ public final class OMFUtils {
 		}
 		return entries;
 	}
-	
+
+	public static ArrayList<OpenMFSavingsScheduledDeposit> getTodaysScheduledDepositsByUser(String userId){
+		//get all scheduled deposits by supervisor and todays date
+		String today = OMFDateUtils.formatter.format(Calendar.getInstance().getTime());
+		Iterable<OpenMFSavingsScheduledDeposit> schiter = AppContext.getAppContext().getSavingsScheduledDepositManager().getSavingsScheduledDepositBySupervisorAndDate(userId, today);
+		ArrayList<OpenMFSavingsScheduledDeposit> schdep = new ArrayList<OpenMFSavingsScheduledDeposit>();
+		try {
+			for (OpenMFSavingsScheduledDeposit dep : schiter) {
+				schdep.add(dep);
+			}
+		} catch (DatastoreNeedIndexException e) {
+			//log error
+		}
+		return schdep;	
+	}
+
+	public static ArrayList<OpenMFSavingsScheduledDeposit> getAllScheduledDepositsByDate(String date){
+		//get all scheduled deposits by todays date
+		Iterable<OpenMFSavingsScheduledDeposit> schiter = AppContext.getAppContext().getSavingsScheduledDepositManager().getAllSavingsScheduledDepositByDate(date);
+		ArrayList<OpenMFSavingsScheduledDeposit> schdep = new ArrayList<OpenMFSavingsScheduledDeposit>();
+		try {
+			for (OpenMFSavingsScheduledDeposit dep : schiter) {
+				schdep.add(dep);
+			}
+		} catch (DatastoreNeedIndexException e) {
+			//log error
+		}
+		return schdep;	
+	}
+
+	public static ArrayList<OpenMFLoanRepayment> getTodaysLoanRepaymentByUser(String userId){
+		//get all scheduled repayment by supervisor and todays date
+		String today = OMFDateUtils.formatter.format(Calendar.getInstance().getTime());
+		Iterable<OpenMFLoanRepayment> schiter = AppContext.getAppContext().getLoanRepaymentManager().getScheduledRepaymentBySupervisorAndDate(userId, today);
+		ArrayList<OpenMFLoanRepayment> schdep = new ArrayList<OpenMFLoanRepayment>();
+		try {
+			for (OpenMFLoanRepayment dep : schiter) {
+				schdep.add(dep);
+			}
+		} catch (DatastoreNeedIndexException e) {
+			//log error
+		}
+		return schdep;	
+	}
+
+	public static ArrayList<OpenMFLoanRepayment> getAllScheduledLoanRepaymentByDate(String date){
+		//get all scheduled repayment by todays date
+		Iterable<OpenMFLoanRepayment> schiter = AppContext.getAppContext().getLoanRepaymentManager().getAllScheduledRepaymentByDate(date);
+		ArrayList<OpenMFLoanRepayment> schdep = new ArrayList<OpenMFLoanRepayment>();
+		try {
+			for (OpenMFLoanRepayment dep : schiter) {
+				schdep.add(dep);
+			}
+		} catch (DatastoreNeedIndexException e) {
+			//log error
+		}
+		return schdep;	
+	}
 }

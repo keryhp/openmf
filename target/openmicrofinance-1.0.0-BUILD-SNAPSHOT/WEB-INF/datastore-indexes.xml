@@ -31,6 +31,18 @@
 		<property name="timestamp" direction="desc" />
 	</datastore-index>
 
+	<datastore-index kind="OpenMFGroup" ancestor="false"
+		source="manual">
+		<property name="supervisor" direction="asc" />
+		<property name="timestamp" direction="desc" />
+	</datastore-index>
+
+	<datastore-index kind="OpenMFClient" ancestor="false"
+		source="manual">
+		<property name="supervisor" direction="asc" />
+		<property name="timestamp" direction="desc" />
+	</datastore-index>
+
 	<datastore-index kind="OpenMFLoanRepayment" ancestor="false"
 		source="manual">
 		<property name="loanaccountid" direction="asc" />
@@ -55,14 +67,71 @@
 		<property name="serialnumber" direction="asc" />
 	</datastore-index>
 
-	<datastore-index kind="OpenMFTransaction" ancestor="false" source="manual">
-        <property name="clientId" direction="asc"/>
-        <property name="timestamp" direction="desc"/>
-    </datastore-index>
-	
-	<datastore-index kind="OpenMFChartOfAccounts" ancestor="false" source="manual">
-        <property name="mfiaccounttype" direction="asc"/>
-        <property name="timestamp" direction="desc"/>
+	<datastore-index kind="OpenMFTransaction" ancestor="false"
+		source="manual">
+		<property name="clientId" direction="asc" />
+		<property name="timestamp" direction="desc" />
+	</datastore-index>
+
+	<datastore-index kind="OpenMFChartOfAccounts" ancestor="false"
+		source="manual">
+		<property name="mfiaccounttype" direction="asc" />
+		<property name="timestamp" direction="desc" />
+	</datastore-index>
+
+	<datastore-index kind="OpenMFGeneralLedger" ancestor="false"
+		source="manual">
+		<property name="coaid" direction="asc" />
+		<property name="timestamp" direction="desc" />
+	</datastore-index>
+
+	<datastore-index kind="OpenMFGeneralJournal" ancestor="false"
+		source="manual">
+		<property name="coaid" direction="asc" />
+		<property name="timestamp" direction="desc" />
+	</datastore-index>
+
+	<datastore-index kind="OpenMFGeneralLedger" ancestor="false"
+		source="manual">
+		<property name="mfiaccounttype" direction="asc" />
+		<property name="timestamp" direction="desc" />
+	</datastore-index>
+
+	<datastore-index kind="OpenMFGeneralJournal" ancestor="false"
+		source="manual">
+		<property name="mfiaccounttype" direction="asc" />
+		<property name="timestamp" direction="desc" />
+	</datastore-index>
+
+	<datastore-index kind="OpenMFSavingsScheduledDeposit"
+		ancestor="false" source="manual">
+		<property name="scheduledate" direction="asc" />
+		<property name="timestamp" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="OpenMFLoanRepayment" ancestor="false"
+		source="manual">
+		<property name="scheduledate" direction="asc" />
+		<property name="timestamp" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="OpenMFSavingsScheduledDeposit"
+		ancestor="false" source="manual">
+		<property name="scheduledate" direction="asc" />
+		<property name="supervisor" direction="asc" />
+		<property name="timestamp" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="OpenMFLoanRepayment" ancestor="false"
+		source="manual">
+		<property name="scheduledate" direction="asc" />
+		<property name="supervisor" direction="asc" />
+		<property name="timestamp" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="OpenMFTask" ancestor="false" source="manual">
+        <property name="assignedto" direction="asc"/>
+        <property name="status" direction="asc"/>
     </datastore-index>
 	
 </datastore-indexes>

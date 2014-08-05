@@ -47,8 +47,10 @@ public class CoAController {
 		}
 		req.setAttribute("coa", coa);
 		//TODO
-		req.setAttribute("todaysledger", OMFUtils.getTodaysGeneralLedgerByMFIAccType(coa.getMfiaccounttype()));
-		req.setAttribute("todaysjournal", OMFUtils.getTodaysGeneralJournalByMFIAccType(coa.getMfiaccounttype()));
+//		req.setAttribute("todaysledger", OMFUtils.getTodaysGeneralLedgerByMFIAccType(coa.getMfiaccounttype()));
+//		req.setAttribute("todaysjournal", OMFUtils.getTodaysGeneralJournalByMFIAccType(coa.getMfiaccounttype()));
+		req.setAttribute("todaysledger", OMFUtils.getTodaysGeneralLedgerByMFIAccType(coa.getCoaid()));
+		req.setAttribute("todaysjournal", OMFUtils.getTodaysGeneralJournalByMFIAccType(coa.getCoaid()));
 		return "viewcoa";
 	}
 

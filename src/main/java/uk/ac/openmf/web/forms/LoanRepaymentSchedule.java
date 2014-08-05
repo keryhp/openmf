@@ -20,7 +20,14 @@ public class LoanRepaymentSchedule {
 	private String paidamount;
 	private String balanceoutstandingamount;
 	private boolean active;
-	
+	private String supervisor;
+
+	public String getSupervisor() {
+		return supervisor;
+	}
+	public void setSupervisor(String supervisor) {
+		this.supervisor = supervisor;
+	}
 	public String getClientId() {
 		return clientId;
 	}

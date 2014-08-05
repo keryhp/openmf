@@ -441,38 +441,38 @@
 								<tr>
 									<td>35 (21 to 25 July)</td>
 									<td>13</td>
-									<td>Learning</td>
-									<td>In progress</td>
+									<td>Done</td>
+									<td style="color: green;">Complete</td>
 								</tr>
 								<tr>
 									<td>35 (21 to 25 July)</td>
 									<td>14</td>
 									<td>Developing</td>
-									<td>In progress</td>
+									<td>Part Complete</td>
 								</tr>
 								<tr>
 									<td>35 (21 to 25 July)</td>
 									<td>15</td>
-									<td>Developing</td>
-									<td>In progress</td>
+									<td>Done</td>
+									<td style="color: green;">Complete</td>
 								</tr>
 								<tr>
 									<td>36 (28 July to 1 Aug)</td>
 									<td>16</td>
-									<td>Developing</td>
-									<td>In progress</td>
+									<td>Done</td>
+									<td style="color: green;">Complete</td>
 								</tr>
 								<tr>
 									<td>36 (28 July to 1 Aug)</td>
 									<td>17</td>
-									<td>Developing</td>
-									<td>In progress</td>
+									<td>Done</td>
+									<td style="color: green;">Complete</td>
 								</tr>
 								<tr>
 									<td>36 (28 July to 1 Aug)</td>
 									<td>18</td>
-									<td>Developing</td>
-									<td>In progress</td>
+									<td>Done</td>
+									<td style="color: green;">Complete</td>
 								</tr>
 								<tr>
 									<td>36 (28 July to 1 Aug)</td>
@@ -489,20 +489,20 @@
 								<tr>
 									<td>37 (4 Aug to 8 Aug)</td>
 									<td>21</td>
-									<td></td>
-									<td></td>
+									<td>Done</td>
+									<td style="color: green;">Complete</td>
 								</tr>
 								<tr>
 									<td>37 (4 Aug to 8 Aug)</td>
 									<td>22</td>
-									<td></td>
-									<td></td>
+									<td>Testing and issue fixes in progress</td>
+									<td>In Progress</td>
 								</tr>
 								<tr>
 									<td>37 (4 Aug to 8 Aug)</td>
 									<td>23</td>
-									<td></td>
-									<td></td>
+									<td>Developing</td>
+									<td>In Progress</td>
 								</tr>
 								<tr>
 									<td>38 (11 Aug to 15 Aug)</td>

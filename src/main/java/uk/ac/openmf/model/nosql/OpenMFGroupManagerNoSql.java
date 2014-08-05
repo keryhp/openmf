@@ -1,14 +1,20 @@
 package uk.ac.openmf.model.nosql;
 
+import java.util.ArrayList;
+
+import uk.ac.openmf.model.OpenMFClient;
 import uk.ac.openmf.model.OpenMFGroup;
 import uk.ac.openmf.model.OpenMFGroupManager;
 import uk.ac.openmf.utils.OpenMFConstants;
 
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.SortDirection;
 
 /**
@@ -67,4 +73,18 @@ public class OpenMFGroupManagerNoSql extends OpenMFEntityManagerNoSql<OpenMFGrou
 	  protected OpenMFGroupNoSql fromEntity(Entity entity) {
 	    return new OpenMFGroupNoSql(entity);
 	  }
+
+	@Override
+	public Iterable<OpenMFGroup> getGroupsBySupervisor(String username) {
+		Query qry = new Query(getKind());
+		qry.setFilter(FilterOperator.EQUAL.of(OpenMFConstants.FIELD_NAME_SUPERVISOR, username));
+		qry.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
+		FetchOptions options = FetchOptions.Builder.withLimit(100);
+		PreparedQuery pq = DatastoreServiceFactory.getDatastoreService().prepare(qry);
+		ArrayList<OpenMFGroup> groups = new ArrayList<OpenMFGroup>();
+		for (Entity result : pq.asList(options)) {
+			groups.add(new OpenMFGroupNoSql(result));
+		}
+		return groups;
+	}
 }

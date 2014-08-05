@@ -59,4 +59,6 @@ public interface OpenMFEntityManagerFactory {
 	OpenMFGeneralLedgerManager getGeneralLedgerManager();
 	
 	OpenMFTransactionManager getTransactionManager();
+	
+	OpenMFTasksManager getTasksManager();
 }

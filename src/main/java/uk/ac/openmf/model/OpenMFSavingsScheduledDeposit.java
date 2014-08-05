@@ -32,4 +32,6 @@ public interface OpenMFSavingsScheduledDeposit extends OpenMFEntity {
 	void setBalanceoutstandingamount(String balanceoutstandingamount);
 	boolean isActive();
 	void setActive(boolean active);
+	String getSupervisor();
+	void setSupervisor(String supervisor);
 }

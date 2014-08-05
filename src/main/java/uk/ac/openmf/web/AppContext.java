@@ -20,6 +20,7 @@ import uk.ac.openmf.model.OpenMFSavingsDepositManager;
 import uk.ac.openmf.model.OpenMFSavingsProductManager;
 import uk.ac.openmf.model.OpenMFSavingsScheduledDepositManager;
 import uk.ac.openmf.model.OpenMFSavingsWithdrawalManager;
+import uk.ac.openmf.model.OpenMFTasksManager;
 import uk.ac.openmf.model.OpenMFTransactionManager;
 import uk.ac.openmf.model.OpenMFUser;
 import uk.ac.openmf.model.OpenMFUserManager;
@@ -79,11 +80,11 @@ public class AppContext {
 	public OpenMFUserManager getUserManager() {
 		return entityManagerFactory.getUserManager();
 	}
-	
+
 	public OpenMFRolesManager getRolesManager() {
 		return entityManagerFactory.getRolesManager();
 	}
-	
+
 	public OpenMFLoanProductManager getLoanProductManager() {
 		return entityManagerFactory.getLoanProductManager();
 	}
@@ -99,7 +100,7 @@ public class AppContext {
 	public ConfigManager getConfigManager() {
 		return configManager;
 	}
-	
+
 	public OpenMFSavingsProductManager getSavingsProductManager() {
 		return entityManagerFactory.getSavingsProductManager();
 	}
@@ -107,15 +108,15 @@ public class AppContext {
 	public OpenMFLoanAccountManager getLoanAccountManager() {
 		return entityManagerFactory.getLoanAccountManager();
 	}
-	
+
 	public OpenMFSavingsAccountManager getSavingsAccountManager() {
 		return entityManagerFactory.getSavingsAccountManager();
 	}
-	
+
 	public OpenMFLoanRepaymentManager getLoanRepaymentManager() {
 		return entityManagerFactory.getLoanRepaymentManager();
 	}
-	
+
 	public OpenMFLoanActualPaymentManager getLoanActualPaymentManager() {
 		return entityManagerFactory.getLoanActualPaymentManager();
 	}
@@ -135,7 +136,7 @@ public class AppContext {
 	public OpenMFSavingsScheduledDepositManager getSavingsScheduledDepositManager() {
 		return entityManagerFactory.getSavingsScheduledDepositManager();
 	}
-	
+
 	public OpenMFPhotoManager getPhotoManager(){
 		return entityManagerFactory.getPhotoManager();
 	}
@@ -143,27 +144,31 @@ public class AppContext {
 	public OpenMFChartOfAccountsManager getChartOfAccountsManager(){
 		return entityManagerFactory.getChartOfAccountsManager();
 	}
-	
+
 	public OpenMFGeneralJournalManager getGeneralJournalManager(){
 		return entityManagerFactory.getGeneralJournalManager();
 	}
-	
+
 	public OpenMFGeneralLedgerManager getGeneralLedgerManager(){
 		return entityManagerFactory.getGeneralLedgerManager();
 	}
-	
+
 	public OpenMFTransactionManager getTransactionManager(){
 		return entityManagerFactory.getTransactionManager();
 	}
-	
+
+	public OpenMFTasksManager getTasksManager(){
+		return entityManagerFactory.getTasksManager();
+	}
+
 	public PhotoServiceManager getPhotoServiceManager(){
 		return this.photoServiceManager;
 	}
-	
+
 	public EmailServiceManager getEmailServiceManager(){
 		return this.emailServiceManager;
 	}
-	
+
 	public OpenMFUser getCurrentUser() {
 		OpenMFUserManager openMFUserManager = entityManagerFactory.getUserManager();
 		User user = UserServiceFactory.getUserService().getCurrentUser();
@@ -179,7 +184,7 @@ public class AppContext {
 		}
 		return openMFUser;
 	}
-	
+
 	public void setCurrentUser(OpenMFUser openMFUser){
 		this.openMFUser = openMFUser;
 	}

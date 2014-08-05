@@ -1,6 +1,8 @@
 package uk.ac.openmf.model.nosql;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import uk.ac.openmf.model.OpenMFSavingsScheduledDeposit;
 import uk.ac.openmf.model.OpenMFSavingsScheduledDepositManager;
@@ -13,6 +15,8 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
+import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.SortDirection;
 
@@ -78,6 +82,43 @@ public class OpenMFSavingsScheduledDepositManagerNoSql extends OpenMFEntityManag
 		Query qry = new Query(getKind());
 		qry.setFilter(FilterOperator.EQUAL.of(OpenMFConstants.FIELD_NAME_SAVINGSACCOUNTID, savingsaccountid));
 		qry.addSort(OpenMFConstants.FIELD_NAME_SERIALNUMBER, SortDirection.ASCENDING);
+		FetchOptions options = FetchOptions.Builder.withLimit(100);
+		PreparedQuery pq = DatastoreServiceFactory.getDatastoreService().prepare(qry);
+		ArrayList<OpenMFSavingsScheduledDeposit> schedules = new ArrayList<OpenMFSavingsScheduledDeposit>();
+		for (Entity result : pq.asIterable(options)) {
+			OpenMFSavingsScheduledDeposit savingsdepsch = new OpenMFSavingsScheduledDepositNoSql(result);
+			schedules.add(savingsdepsch);
+		}
+		return schedules;
+	}
+
+	@Override
+	public Iterable<OpenMFSavingsScheduledDeposit> getSavingsScheduledDepositBySupervisorAndDate(
+			String supervisor, String date) {
+		Query qry = new Query(getKind());
+//		qry.setFilter(FilterOperator.EQUAL.of(OpenMFConstants.FIELD_NAME_SUPERVISOR, supervisor));
+//		qry.setFilter(FilterOperator.EQUAL.of(OpenMFConstants.FIELD_NAME_SCHEDULEDATE, date));
+		Query.Filter f1 = new Query.FilterPredicate(OpenMFConstants.FIELD_NAME_SUPERVISOR, FilterOperator.EQUAL, supervisor);
+		Query.Filter f2 = new Query.FilterPredicate(OpenMFConstants.FIELD_NAME_SCHEDULEDATE, FilterOperator.GREATER_THAN_OR_EQUAL, date);
+		List<Filter> filters = Arrays.asList(f1, f2);
+		Filter filter = new Query.CompositeFilter(CompositeFilterOperator.AND, filters);
+		qry.setFilter(filter);		
+		//qry.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.ASCENDING);
+		FetchOptions options = FetchOptions.Builder.withLimit(100);
+		PreparedQuery pq = DatastoreServiceFactory.getDatastoreService().prepare(qry);
+		ArrayList<OpenMFSavingsScheduledDeposit> schedules = new ArrayList<OpenMFSavingsScheduledDeposit>();
+		for (Entity result : pq.asIterable(options)) {
+			OpenMFSavingsScheduledDeposit savingsdepsch = new OpenMFSavingsScheduledDepositNoSql(result);
+			schedules.add(savingsdepsch);
+		}
+		return schedules;
+	}
+	
+	@Override
+	public Iterable<OpenMFSavingsScheduledDeposit> getAllSavingsScheduledDepositByDate(String date) {
+		Query qry = new Query(getKind());
+		qry.setFilter(FilterOperator.EQUAL.of(OpenMFConstants.FIELD_NAME_SCHEDULEDATE, date));
+		//qry.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.ASCENDING);
 		FetchOptions options = FetchOptions.Builder.withLimit(100);
 		PreparedQuery pq = DatastoreServiceFactory.getDatastoreService().prepare(qry);
 		ArrayList<OpenMFSavingsScheduledDeposit> schedules = new ArrayList<OpenMFSavingsScheduledDeposit>();

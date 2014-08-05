@@ -13,6 +13,10 @@ public class OpenMFConstants {
 	public static final String FIELD_VALUE_DISBURSAL = "Disbursal";
 	public static final String FIELD_VALUE_SYSTEMRECONCILATION = "System Reconcilation";	
 	public static final String FIELD_VALUE_CLOSINGENTRIES = "[Daily] Closing entiries";
+	public static final String FIELD_VALUE_CLOSINGENTRIESFAIL = "[EMAIL GENRATION FAILED] Closing entiries";
+	public static final String FIELD_VALUE_TASKLIST= "[Daily] List of Tasks";
+	public static final String FIELD_VALUE_TASKLISTFAIL = "[TASK GENRATION FAILED] List of Tasks";
+	public static final String FIELD_VALUE_SYSTEM = "System";
 	
 	public static final String FIELD_NAME_ID = "id";
 	public static final String FIELD_NAME_USERID = "userId";
@@ -132,4 +136,13 @@ public class OpenMFConstants {
 	public static final String FIELD_NAME_TRANSACTIONAMOUNT = "transactionamount";
 	public static final String FIELD_NAME_FUNDS = "funds";
 	public static final String FIELD_NAME_FORDATE = "fordate";
+	public static final String FIELD_NAME_DATECOMPLETED = "datecompleted";
+	public static final String FIELD_NAME_NEWCLIENT = "newclient";
+	public static final String FIELD_NAME_COLLECTIONTYPE = "collectiontype";
+	public static final String FIELD_NAME_CASHIER = "cashier";
+	public static final String FIELD_NAME_AMOUNT = "amount";
+	public static final String FIELD_NAME_DATEASSIGNED = "dateassigned";
+	public static final String FIELD_NAME_ASSIGNEDTO = "assignedto";
+	public static final String FIELD_NAME_TASKID = "taskid";
+
 }

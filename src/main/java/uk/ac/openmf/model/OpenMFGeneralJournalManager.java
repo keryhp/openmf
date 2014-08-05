@@ -10,7 +10,8 @@ public interface OpenMFGeneralJournalManager extends OpenMFEntityManager<OpenMFG
 	OpenMFGeneralJournal getGeneralJournal(Long generaljournalId);
 
 	Iterable<OpenMFGeneralJournal> getAllGeneralJournal();
-	Iterable<OpenMFGeneralJournal> getGeneralJournalByDate(String mfiaccounttype, String date);
+	//Iterable<OpenMFGeneralJournal> getGeneralJournalByDate(String mfiaccounttype, String date);
+	Iterable<OpenMFGeneralJournal> getGeneralJournalByDate(String coaid, String date);
 	OpenMFGeneralJournal getGeneralJournalByCoAandDate(String coaid, String date);
 	/**
 	 * Creates a new role object.

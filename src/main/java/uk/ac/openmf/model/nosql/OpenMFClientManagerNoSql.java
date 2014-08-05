@@ -89,4 +89,18 @@ public class OpenMFClientManagerNoSql extends OpenMFEntityManagerNoSql<OpenMFCli
 		}
 		return clients;
 	}
+
+	@Override
+	public ArrayList<OpenMFClient> getClientsBySupervisor(String username) {
+		Query qry = new Query(getKind());
+		qry.setFilter(FilterOperator.EQUAL.of(OpenMFConstants.FIELD_NAME_SUPERVISOR, username));
+		qry.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
+		FetchOptions options = FetchOptions.Builder.withLimit(100);
+		PreparedQuery pq = DatastoreServiceFactory.getDatastoreService().prepare(qry);
+		ArrayList<OpenMFClient> clients = new ArrayList<OpenMFClient>();
+		for (Entity result : pq.asList(options)) {
+			clients.add(new OpenMFClientNoSql(result));
+		}
+		return clients;
+	}
 }

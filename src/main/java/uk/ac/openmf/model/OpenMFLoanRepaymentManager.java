@@ -10,6 +10,8 @@ public interface OpenMFLoanRepaymentManager extends OpenMFEntityManager<OpenMFLo
 	  
 	  Iterable<OpenMFLoanRepayment> getAllLoanRepaymentSchedules();
 	  Iterable<OpenMFLoanRepayment> getLoanRepaymentSchedulesByLoanAccount(String loanaccountid);
+	  Iterable<OpenMFLoanRepayment> getScheduledRepaymentBySupervisorAndDate(String supervisor, String date);
+	  Iterable<OpenMFLoanRepayment> getAllScheduledRepaymentByDate(String date);
 
 	  /**
 	   * Creates a new Client object.

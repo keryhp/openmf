@@ -52,6 +52,8 @@ public class UserController {
 			omfuser = AppContext.getAppContext().getUserManager().getUser(ServletUtils.validateEventId(omfuId));
 		}
 		req.setAttribute("omfuser", omfuser);
+		req.setAttribute("clients", OMFUtils.getClientsBySupervisor(omfuser.getUsername()));
+		req.setAttribute("groups", OMFUtils.getGroupsBySupervisor(omfuser.getUsername()));
 		return "viewuser";
 	}
 

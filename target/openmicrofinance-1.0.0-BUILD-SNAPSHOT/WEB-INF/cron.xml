@@ -8,4 +8,12 @@
 		<timezone>Europe/London</timezone>
 		<target>version-1</target>
 	</cron>
+	<cron>
+		<url>/generatetasks</url>
+		<description>Generate and Mail out a Daily report on tasks</description>
+		<schedule>every day 20:10</schedule>
+		<!-- <schedule>every 15 minutes from 09:00 to 00:00</schedule> -->
+		<timezone>Europe/London</timezone>
+		<target>version-1</target>
+	</cron>
 </cronentries>

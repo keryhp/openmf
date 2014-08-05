@@ -18,6 +18,7 @@ import uk.ac.openmf.model.OpenMFSavingsDepositManager;
 import uk.ac.openmf.model.OpenMFSavingsProductManager;
 import uk.ac.openmf.model.OpenMFSavingsScheduledDepositManager;
 import uk.ac.openmf.model.OpenMFSavingsWithdrawalManager;
+import uk.ac.openmf.model.OpenMFTasksManager;
 import uk.ac.openmf.model.OpenMFTransactionManager;
 import uk.ac.openmf.model.OpenMFUserManager;
 import uk.ac.openmf.web.ConfigManager;
@@ -48,7 +49,7 @@ public class OpenMFEntityManagerNoSqlFactory implements OpenMFEntityManagerFacto
 	private OpenMFGeneralJournalManagerNoSql openMFGeneralJournalManager;
 	private OpenMFGeneralLedgerManagerNoSql openMFGeneralLedgerManager;
 	private OpenMFTransactionManagerNoSql openMFTransactionManager;
-	
+	private OpenMFTasksManagerNoSql openMFTasksManager;
 	private boolean initialized;
 
 
@@ -89,6 +90,7 @@ public class OpenMFEntityManagerNoSqlFactory implements OpenMFEntityManagerFacto
 			openMFGeneralJournalManager = new OpenMFGeneralJournalManagerNoSql(openMFUserManager);
 			openMFGeneralLedgerManager = new OpenMFGeneralLedgerManagerNoSql(openMFUserManager);
 			openMFTransactionManager = new OpenMFTransactionManagerNoSql(openMFUserManager);
+			openMFTasksManager = new OpenMFTasksManagerNoSql(openMFUserManager);
 			initialized = true;
 		} else {
 			throw new IllegalStateException("Should not initialize the factory more than once.");
@@ -173,5 +175,10 @@ public class OpenMFEntityManagerNoSqlFactory implements OpenMFEntityManagerFacto
 	@Override
 	public OpenMFTransactionManager getTransactionManager() {
 		return openMFTransactionManager;
+	}
+	
+	@Override
+	public OpenMFTasksManager getTasksManager() {
+		return openMFTasksManager;
 	}
 }

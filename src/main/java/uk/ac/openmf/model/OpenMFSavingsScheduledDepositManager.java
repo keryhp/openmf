@@ -10,7 +10,8 @@ public interface OpenMFSavingsScheduledDepositManager extends OpenMFEntityManage
 	  
 	  Iterable<OpenMFSavingsScheduledDeposit> getAllSavingsScheduledDeposits();
 	  Iterable<OpenMFSavingsScheduledDeposit> getSavingsScheduledDepositBySavingsAccount(String savingsaccountid);
-
+	  Iterable<OpenMFSavingsScheduledDeposit> getSavingsScheduledDepositBySupervisorAndDate(String supervisor, String date);
+	  Iterable<OpenMFSavingsScheduledDeposit> getAllSavingsScheduledDepositByDate(String date);
 	  /**
 	   * Creates a new Client object.
 	   *

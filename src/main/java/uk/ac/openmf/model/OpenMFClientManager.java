@@ -5,17 +5,19 @@ package uk.ac.openmf.model;
  *
  */
 public interface OpenMFClientManager extends OpenMFEntityManager<OpenMFClient> {
+
+	OpenMFClient getClient(Long clientId);
+
+	Iterable<OpenMFClient> getAllClients();
+
+	Iterable<OpenMFClient> getClientsByGroupId(String groupid);
 	
-	 OpenMFClient getClient(Long clientId);
-	  
-	  Iterable<OpenMFClient> getAllClients();
+	Iterable<OpenMFClient> getClientsBySupervisor(String username);
 
-	  Iterable<OpenMFClient> getClientsByGroupId(String groupid);
-
-	  /**
-	   * Creates a new Client object.
-	   *
-	   * @return a Client entity.
-	   */
-	  OpenMFClient newClient(String userId);
+	/**
+	 * Creates a new Client object.
+	 *
+	 * @return a Client entity.
+	 */
+	OpenMFClient newClient(String userId);
 }

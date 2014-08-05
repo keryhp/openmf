@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<%@page import="uk.ac.openmf.utils.*"%>
+<%@page import="uk.ac.openmf.utils.OMFDateUtils"%>
+<%@page import="uk.ac.openmf.utils.OMFUtils"%>
+<%@page import="uk.ac.openmf.services.*"%>
 <%@page import="java.util.*"%>
 <%@page import="uk.ac.openmf.model.*"%>
 <%@page import="uk.ac.openmf.web.*"%>
-<%@page import="uk.ac.openmf.services.*"%>
 <%@ page language="java"
 	contentType="application/xhtml+xml; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@page session="false"%>
@@ -21,8 +22,12 @@
 	OpenMFUser omfuser = (OpenMFUser) request.getAttribute("omfuser");
 	PhotoServiceManager serviceManager = AppContext.getAppContext()
 			.getPhotoServiceManager();
-	OpenMFPhoto photo = (OpenMFPhoto) OMFUtils.getPhotoByTypeId(omfuser.getId());
-	
+	OpenMFPhoto photo = (OpenMFPhoto) OMFUtils.getPhotoByTypeId(omfuser
+			.getId());
+	ArrayList<OpenMFClient> clients = (ArrayList<OpenMFClient>) request
+			.getAttribute("clients");
+	ArrayList<OpenMFGroup> groups = (ArrayList<OpenMFGroup>) request
+			.getAttribute("groups");
 %>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB" xml:lang="en-GB">
 <head>
@@ -162,148 +167,259 @@
 		<div>
 			<div class="row whitebg">
 				<div class="col-md-12 pull-right whitebg">
-
-					<div class="paddedbottom10">
-						<ul class="breadcrumb">
-							<li><a href="/admin/users.htm">Users</a></li>
-							<li class="active">User Details</li>
-						</ul>
-					</div>
-
 					<c:choose>
-						<c:when test="${omfuser != null }">
-							<div id="changepassword" class="row client hide">
-								<div class="modal-header silver">
-									<h3 class="bolder">Change Password</h3>
-								</div>
-
-
-								<div class="modal-body form-horizontal">
-									<br></br>
-									<div class="form-group">
-										<label class="control-label col-sm-4" for="password">Password</label>
-
-										<div class="col-sm-5">
-											<input type="password" id="password" class="form-control" />
+						<c:when test="${omfuser != null}">
+							<div class="whitebg">
+								<div class="col-md-12">
+									<div>
+										<ul class="breadcrumb">
+											<li><a href="/admin/users.htm">Users</a></li>
+											<li class="active">View user</li>
+										</ul>
+									</div>
+									<div class="row">
+										<div class="col-md-8 col-sm-8">
+											<h3 class="client-title">
+												<i class="fa fa-user fa-white"></i> <strong><c:out
+														value="${omfuser.forename }" escapeXml="true" /> <c:out
+														value="${omfuser.surname }" escapeXml="true" /></strong> <small>
+													| <c:out value="<%=omfuser.getMain_office()%>"></c:out> | <c:out
+														value="<%=omfuser.getSupervisor()%>"></c:out>
+												</small>
+											</h3>
 										</div>
 									</div>
-									<div class="form-group">
-										<label class="control-label col-sm-4" for="repeatPassword">Repeat
-											password</label>
+									<div class="overflowhidden marginbottom0 ">
+										<ul id="myTab" class="nav nav-tabs">
+											<li class="active"><a href="#general" data-toggle="tab">General</a></li>
+											<li class=""><a href="#changepassword" data-toggle="tab">Change
+													Password</a></li>
+											<li class=""><a href="#addphoto" data-toggle="tab">Photos</a></li>
+											<li class=""><a href="#address" data-toggle="tab">Address</a></li>
+										</ul>
+										<div class="tab-content">
+											<div class="tab-pane active" id="general">
+												<div class="col-md-12 col-sm-12">
+													<div class="row primarydiv">
+														<div class="pull-right">
+															<span> <a
+																onclick="deleteUser(<%=omfuser.getId()%>)"
+																class="btn btn-primary"> <i
+																	class="fa fa-arrow-right fa-white"></i>Delete User
+															</a>
+															</span>
+														</div>
+													</div>
 
-										<div class="col-sm-5">
-											<input type="password" id="repeatPassword"
-												class="form-control" />
-										</div>
-									</div>
-								</div>
+													<div class="row client">
+														<div class="col-sm-9 col-md-9 paddingleft0px">
+															<div>
+																<div>
+																	<div class="span gray-head">
+																		<span class="boldlabel"> <strong class="">Supervisor
+																				for Clients</strong>
+																		</span>
+																	</div>
+																	<table class="table table-condensed">
+																		<tr class="graybg">
+																			<th>Client Acc#</th>
+																			<th>Name</th>
+																		</tr>
+																		<%
+																			for (OpenMFClient client : clients) {
+																						long clientId = client.getId();
+																						if (client.isActive()) {
+																		%>
+																		<tr class="pointer"
+																			onclick="viewClientFn(<%=clientId%>);">
+																			<td><c:out
+																					value="<%=client.getAccountNumber()%>"
+																					escapeXml="true" /></td>
+																			<td><c:out value="<%=client.getForename()%>"
+																					escapeXml="true" /> <c:out
+																					value="<%=client.getSurname()%>" escapeXml="true" /></td>
+																		</tr>
+																		<%
+																			}
+																					}
+																		%>
 
-								<div class="modal-footer silver">
-									<button class="btn btn-warning">Cancel</button>
-									<button class="btn btn-primary">Save</button>
-								</div>
-							</div>
-							<div id="deleteuser" class="row client hide">
-								<div class="modal-header silver">
-									<h3 class="bolder">Delete</h3>
-								</div>
-								<div class="modal-body ">
-									<br></br>
-									<button class="btn btn-warning">Cancel</button>
-									<button class="btn btn-primary">Confirm</button>
-								</div>
-							</div>
-							<div class="well">
-								<div class="pull-right">
-									<div class="btn-group">
-										<a onclick="showRowSpan('adduserphoto');"
-											class="btn btn-primary"><i class="icon-edit icon-white"></i>
-											Add Photo</a>
-										<button type="button" class="btn btn-primary"
-											onclick="showRowSpan('deleteuser');">
-											<i class="icon-trash icon-white"></i>Delete
-										</button>
-										<button type="button" class="btn btn-primary"
-											onclick="showRowSpan('changepassword');">
-											<i class="icon-cog icon-white"></i> Change Password
-										</button>
-									</div>
-								</div>
-								<h3>
-									<strong><c:out value="${omfuser.forename }"
-											escapeXml="true" /> <c:out value="${omfuser.surname }"
-											escapeXml="true" /></strong>
-								</h3>
-								<div class="row client">
-									<div class="col-sm-6 col-md-6">
-										<table class="table table-striped table-bordered">
-											<tr>
-												<td class="graybg">userId</td>
-												<td><c:out value="${omfuser.username }"
-														escapeXml="true" /></td>
-											</tr>
-											<tr>
-												<td>Email</td>
-												<td><c:out value="${omfuser.email }" escapeXml="true" /></td>
-											</tr>
-											<tr>
-												<td class="graybg">Contact#</td>
-												<td><c:out value="${omfuser.contact }" escapeXml="true" /></td>
-											</tr>
-											<tr>
-												<td>Office</td>
-												<td><c:out value="${omfuser.main_office }"
-														escapeXml="true" /></td>
-											</tr>
-											<tr>
-												<td  class="graybg">Supervisor</td>
-												<td><c:out value="${omfuser.supervisor }"
-														escapeXml="true" /></td>
-											</tr>
-											<tr>
-												<td>Role:</td>
-												<td><c:out value="${omfuser.role }" escapeXml="true" /></td>
-											</tr>
-											<tr>
-												<td class="graybg">Address:</td>
-												<td><c:out value="${omfuser.address }" escapeXml="true" /></td>
-											</tr>
-											<tr>
-												<td valign="top" class="graybg">Creation Date :</td>
-												<td><c:out value="${omfuser.timestamp }" escapeXml="true" /></td>
-											</tr>
-										</table>
-									</div>
-								</div>
-								<div class="col-sm-3 col-md-3" style="margin:-20% 30% 10% 50%;">
-									<div class="thumbnail row">
-									<% if(photo == null) {%>
+																	</table>
+																</div>
+															</div>
+															<div>
+																<div>
+																	<div class="span gray-head">
+																		<span class="boldlabel"> <strong>Supervisor
+																				for groups</strong>
+																		</span>
+																	</div>
+																	<table class="table table-condensed">
+																		<tr class="graybg">
+																			<th>Group Acc#</th>
+																			<th>Group Name</th>
+																		</tr>
+																		<%
+																			for (OpenMFGroup group : groups) {
+																						long groupId = group.getId();
+																						if (group.isActive()) {
+																		%>
+																		<tr class="pointer"
+																			onclick="viewGroupFn(<%=groupId%>);">
+																			<td><c:out value="<%=group.getAccountnumber()%>"
+																					escapeXml="true" /></td>
+																			<td><c:out value="<%=group.getGroupname()%>"
+																					escapeXml="true" /></td>
+																		</tr>
+																		<%
+																			}
+																					}
+																		%>
+																	</table>
+																</div>
+															</div>
+														</div>
+
+														<div class="col-sm-3 col-md-3">
+															<div class="thumbnail row">
+																<h4>
+																	<strong><c:out value="${omfuser.forename }"
+																			escapeXml="true" /> <c:out
+																			value="${client.surname }" escapeXml="true" /> </strong>
+																</h4>
+																<%
+																	if (photo == null) {
+																%>
 																<img src="/static/images/demo_user.jpg" alt="Avatar" />
-																<%}else{ %>
-																<img src="<%=serviceManager.getImageDownloadUrl(photo)%>" alt="Photo Image"/>
-																<%} %>
-									</div>
-								</div>
-								<div id="adduserphoto" class="row client hide">
-									<div class="col-sm-6 col-md-6">
-										<form action="<%=serviceManager.getUploadUrl()%>"
-											method="post" enctype="multipart/form-data">
-											<input id="input-file" class="inactive file btn" type="file"
-												name="photo" onchange="onFileSelected()" /> <input
-												hidden="true" name="userId"
-												value="<c:out value="${omfuser.id}"/>" /> <input
-												hidden="true" name="type" value="<c:out value="user"/>" /> <input
-												id="btn-post" class="active btn" type="submit"
-												value="submit" />
-										</form>
+																<%
+																	} else {
+																%>
+																<img
+																	src="<%=serviceManager.getImageDownloadUrl(photo)%>"
+																	alt="Photo Image" />
+																<%
+																	}
+																%>
+																<table class="table-minified">
+																	<tr>
+																		<th class="table-bold">Username</th>
+																		<td><span class="padded-td"><c:out
+																					value="<%=omfuser.getUsername()%>"></c:out></span></td>
+																	</tr>
+																	<tr>
+																		<th class="table-bold">Mobile number</th>
+																		<td><span class="padded-td"><c:out
+																					value="<%=omfuser.getContact()%>"></c:out></span></td>
+																	</tr>
+																	<tr>
+																		<th class="table-bold">Email</th>
+																		<td><span class="padded-td"><c:out
+																					value="<%=omfuser.getEmail()%>"></c:out></span></td>
+																	</tr>
+																	<tr>
+																		<th class="table-bold">Office</th>
+																		<td><span class="padded-td"><c:out
+																					value="<%=omfuser.getMain_office()%>"></c:out></span></td>
+																	</tr>
+																	<tr>
+																		<th class="table-bold">Supervisor</th>
+																		<td><span class="padded-td"><c:out
+																					value="<%=omfuser.getSupervisor()%>"></c:out></span></td>
+																	</tr>
+																	<tr>
+																		<th class="table-bold">Role</th>
+																		<td><span class="padded-td"><c:out
+																					value="<%=omfuser.getRole()%>"></c:out></span></td>
+																	</tr>
+																	<tr>
+																		<th class="table-bold">Address</th>
+																		<td><span class="padded-td"><c:out
+																					value="<%=omfuser.getAddress()%>"></c:out></span></td>
+																	</tr>
+																	<tr>
+																		<th class="table-bold">Activation Date</th>
+																		<td><span class="padded-td"><c:out
+																					value="<%=OMFDateUtils.getDateFromTimestamp(omfuser
+								.getTimestamp())%>"></c:out></span></td>
+																	</tr>
+																</table>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- end of general tab -->
+											<div class="tab-pane" id="address">
+												<br></br>
+												<p>
+													<c:out value="<%=omfuser.getAddress()%>"></c:out>
+												</p>
+											</div>
+											<div class="tab-pane" id="changepassword">
+												<br />
+
+												<div id="changepassword" class="row client">
+													<div class="modal-header silver">
+														<h3 class="bolder">Change Password</h3>
+													</div>
+
+
+													<div class="modal-body form-horizontal">
+														<br></br>
+														<div class="form-group">
+															<label class="control-label col-sm-4" for="password">Password</label>
+
+															<div class="col-sm-5">
+																<input type="password" id="password"
+																	class="form-control" />
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="control-label col-sm-4"
+																for="repeatPassword">Repeat password</label>
+
+															<div class="col-sm-5">
+																<input type="password" id="repeatPassword"
+																	class="form-control" />
+															</div>
+														</div>
+													</div>
+
+													<div class="modal-footer silver">
+														<button class="btn btn-warning">Cancel</button>
+														<button class="btn btn-primary">Save</button>
+													</div>
+												</div>
+											</div>
+											<div class="tab-pane" id="addphoto">
+												<div id="adduserphoto" class="row client">
+													<div class="col-sm-6 col-md-6">
+														<form action="<%=serviceManager.getUploadUrl()%>"
+															method="post" enctype="multipart/form-data">
+															<input id="input-file" class="inactive file btn"
+																type="file" name="photo" onchange="onFileSelected()" />
+															<input hidden="true" name="userId"
+																value="<c:out value="${omfuser.id}"/>" /> <input
+																hidden="true" name="type" value="<c:out value="user"/>" />
+															<input id="btn-post" class="active btn" type="submit"
+																value="submit" />
+														</form>
+													</div>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
 						</c:when>
 					</c:choose>
 				</div>
+				<!-- Footer -->
 			</div>
+			<!-- /row-fluid -->
 		</div>
+		<!-- /blockui-->
 	</div>
+	<!-- /container -->
 </body>
 </html>
