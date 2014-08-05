@@ -32,7 +32,7 @@ public class UserController {
 	public String users(HttpServletRequest req) {
 		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		req.setAttribute("omfusers", OMFUtils.getUsersList());
-		return "/admin/users";
+		return "admin/users";
 	}
 
 	@RequestMapping(value = "/viewuser", method= RequestMethod.GET)

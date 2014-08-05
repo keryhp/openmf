@@ -33,7 +33,7 @@ public class CoAController {
 	public String coas(HttpServletRequest req) {
 		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
 		req.setAttribute("coas", OMFUtils.getAllCoAsList());
-		return "/finance/accountingcoa";
+		return "finance/accountingcoa";
 	}
 
 	@RequestMapping(value = "/finance/viewcoa", method= RequestMethod.GET)
@@ -51,7 +51,7 @@ public class CoAController {
 //		req.setAttribute("todaysjournal", OMFUtils.getTodaysGeneralJournalByMFIAccType(coa.getMfiaccounttype()));
 		req.setAttribute("todaysledger", OMFUtils.getTodaysGeneralLedgerByMFIAccType(coa.getCoaid()));
 		req.setAttribute("todaysjournal", OMFUtils.getTodaysGeneralJournalByMFIAccType(coa.getCoaid()));
-		return "/finance/viewcoa";
+		return "finance/viewcoa";
 	}
 
 	@RequestMapping(value = "/finance/createcoa", method= RequestMethod.GET)

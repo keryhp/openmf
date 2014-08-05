@@ -36,6 +36,12 @@ public class RolesController {
 		req.setAttribute("roles", OMFUtils.getAllRolesList());
         return new RolesForm();
     }
+
+	@RequestMapping(value = "/viewroles", method= RequestMethod.GET)
+    public String viewroles(HttpServletRequest req) {
+		req.setAttribute("currentUser", AppContext.getAppContext().getCurrentUser());
+        return "viewroles";
+    }
 	
 	/**
 	 * Simply selects the home view to render by returning its name.

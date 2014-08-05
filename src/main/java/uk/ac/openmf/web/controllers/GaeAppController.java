@@ -196,11 +196,5 @@ public class GaeAppController {
     @RequestMapping(value = "/charges", method= RequestMethod.GET)
     public String charges() {
         return "charges";
-    }
-    
-    @RequestMapping(value = "/viewroles", method= RequestMethod.GET)
-    public String viewroles() {
-        return "viewroles";
-    }
-    
+    }    
 }

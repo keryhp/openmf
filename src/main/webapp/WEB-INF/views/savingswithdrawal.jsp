@@ -73,91 +73,12 @@ $(document).ready(function (){
 </head>
 
 <body>
-	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-		<div class="container-fluid container">
-			<div class="collapse navbar-collapse"
-				id="bs-example-navbar-collapse-1">
-				<a class="navbar-brand" href="/">OpenMF</a>
-				<ul class="nav navbar-nav" id="main-menu-left">
-					<li class="dropdown"><a class="dropdown-toggle"
-						data-toggle="dropdown" href="#"><i class="fa fa-group"></i>
-							Clients<b class="caret"></b></a>
-						<ul class="dropdown-menu" id="swatch-menu">
-							<li><a href="/clients">Clients</a></li>
-							<li><a href="/groups">Groups</a></li>
-							
-						</ul></li>
-					<li><a href="/finance/accountingcoa"><i
-							class="fa fa-money"></i> Accounting</a></li>
-					<li class="dropdown" id="reports-menu"><a
-						class="dropdown-toggle" data-toggle="dropdown" href="#"><i
-							class="fa fa-bar-chart-o"></i> Reports<b class="caret"></b></a>
-						<ul class="dropdown-menu">
-							<li><a href="/reports/allrep">All</a></li>
-							<li><a href="/reports/clientsrep">Clients</a></li>
-							<li><a href="/reports/loansrep">Loans</a></li>
-							<li><a href="/reports/savingsrep">Savings</a></li>
-							<li><a href="/reports/fundsrep">Funds</a></li>
-							<li><a href="/reports/accountingrep">Accounting</a></li>
-						</ul></li>
-					<li class="dropdown" id="preview-menu"><a
-						class="dropdown-toggle" data-toggle="dropdown" href="#"><i
-							class="fa fa-wrench"></i> Admin<b class="caret"></b></a>
-						<ul class="dropdown-menu">
-							<li><a href="/admin/users">Users</a></li>
-							<li><a href="/admin/organization">Organization</a></li>
-							<li><a href="/admin/system">System</a></li>
-							<li><a href="/admin/products">Products</a></li>
-						</ul></li>
-				</ul>
-				<ul class="nav navbar-nav navbar-right" id="main-menu-right">
-					<li class="dropdown" id="user-menu"><a id="user-dropdown"
-						class="dropdown-toggle" data-toggle="dropdown" href="#"><c:out
-								value="<%=currentUser.getUsername()%>"></c:out><b class="caret"></b></a>
-						<ul class="dropdown-menu">
-							<li><a id="help" href="/help"><i
-									class="fa fa-question-circle"></i> Help</a></li>
-							<li><a href="/viewuser?omfuId=<%=currentUser.getId()%>"><i
-									class="fa fa-user"></i> Profile</a></li>
-							<li><a href="/usersetting"><i class="fa fa-cog"></i>
-									Settings</a></li>
-							<li><a href="/logout"><i class="fa fa-off"></i>Logout</a></li>
-						</ul></li>
-				</ul>
-				<form class="navbar-form navbar-right">
-					<input id="search" type="text" placeholder="Search"
-						class="form-control search-query col-md-4" />
-				</form>
-			</div>
-		</div>
-	</nav>
+	<jsp:include page="/WEB-INF/views/header.jsp">
+		<jsp:param name="username" value="<%=currentUser.getUsername()%>" />
+		<jsp:param name="userid" value="<%=currentUser.getId()%>" />
+	</jsp:include>
+	<jsp:include page="/WEB-INF/views/leftnav.jsp"/>
 
-<div class="left-nav">
-		<ul class="nav nav-pills nav-stacked margin-nav">
-			<li><a class="black" href="/"><i class="fa fa-desktop fa-fw"></i>Dashboard</a></li>
-			<li class="divider"></li>
-			<li><a class="black" href="/clients"><i
-					class="fa fa-group fa-fw"></i> Clients</a></li>
-			<li class="divider"></li>
-			<li><a class="black" href="/groups"><i
-					class="fa fa-group fa-fw"></i> Groups</a></li>
-			<li class="divider"></li>
-			<li><a class="black" href="/admin/users"><i
-					class="fa fa-user fa-fw"></i>Users</a></li>
-			<li class="divider"></li>
-			<li><a class="black" href="/finance/accountingcoa"><i
-					class="fa fa-tasks fa-fw"></i>Chart of Accounts</a></li>
-			<li class="divider"></li>
-			<li><a class="black" href="/admin/products"><i
-					class="fa fa-plus fa-fw"></i>Products</a></li>
-			<li class="divider"></li>
-			<li><a class="black" href="/admin/organization"><i
-					class="fa fa-sitemap fa-fw"></i>Organization</a></li>
-			<li class="divider"></li>
-			<li><a class="black" href="/help"><i
-					class="fa fa-question-circle fa-fw"></i>Help</a></li>
-		</ul>
-	</div>
 
 	<div class="container whitebg fullscreen">
 		<div>
