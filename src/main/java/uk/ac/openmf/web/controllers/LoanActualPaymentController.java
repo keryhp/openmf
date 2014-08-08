@@ -1,7 +1,7 @@
 package uk.ac.openmf.web.controllers;
 
 import java.text.ParseException;
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -85,7 +85,7 @@ public class LoanActualPaymentController {
 			lnpmntId = loanActualPayment.getId();
 			//TODO update scheduled payment
 			//get all schedules for this loan
-			ArrayList<OpenMFLoanRepayment> schedules = OMFUtils.getLoanRepaymentSchedulesForLoanAccountList(lnaccId);
+			List<OpenMFLoanRepayment> schedules = OMFUtils.getLoanRepaymentSchedulesForLoanAccountList(lnaccId);
 			//get first unpaid schedule
 			boolean flag = true;
 			OpenMFLoanAccount loanaccount = appContext.getAppContext().getLoanAccountManager().getLoanAccount(ServletUtils.validateEventId(lnaccId));

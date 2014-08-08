@@ -88,25 +88,7 @@
 										<form:input type="text" class="form-control" path="description"/>
 									</div>
 								</div>
-<!-- 								<h3>Select Permissions</h3>
-								<table>
-									<tr>
-										<td valign="top">
-											<table>
-												<tr>
-													<td width="50%"><label for="id1">Create User</label></td>
-													<td><input id="id1" type="checkbox"/></td>
-												</tr>
-												<tr>
-													<td width="50%"><label for="id2">Create Loan
-															Product</label></td>
-													<td><input id="id2" type="checkbox"/></td>
-												</tr>
-											</table>
-										</td>
-									</tr>
-								</table>
- -->								<div class="col-md-offset-3">
+								<div class="col-md-offset-3">
 									<a id="cancel" onclick="goback();" class="btn btn-default">Cancel</a>
 									<button id="save" type="submit" class="btn btn-primary">Save</button>
 								</div>

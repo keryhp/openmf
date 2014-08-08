@@ -40,7 +40,7 @@ implements OpenMFTransactionManager {
 	public Iterable<OpenMFTransaction> getAllTransaction() {
 		Query query = new Query(getKind());
 		query.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
-		FetchOptions options = FetchOptions.Builder.withLimit(100);
+		FetchOptions options = FetchOptions.Builder.withLimit(100000);
 		return queryEntities(query, options);
 	}
 
@@ -80,7 +80,7 @@ implements OpenMFTransactionManager {
 		Query query = new Query(getKind());
 		query.setFilter(FilterOperator.EQUAL.of(OpenMFConstants.FIELD_NAME_CLIENTID, clientId));
 		query.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
-		FetchOptions options = FetchOptions.Builder.withLimit(100);
+		FetchOptions options = FetchOptions.Builder.withLimit(100000);
 		PreparedQuery pq = DatastoreServiceFactory.getDatastoreService().prepare(query);
 		ArrayList<OpenMFTransaction> entries = new ArrayList<OpenMFTransaction>();
 		for (Entity result : pq.asIterable(options)) {

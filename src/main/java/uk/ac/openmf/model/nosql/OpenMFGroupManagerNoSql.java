@@ -39,7 +39,7 @@ public class OpenMFGroupManagerNoSql extends OpenMFEntityManagerNoSql<OpenMFGrou
 	  public Iterable<OpenMFGroup> getAllGroups() {
 	    Query query = new Query(getKind());
 	    query.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
-	    FetchOptions options = FetchOptions.Builder.withLimit(100);
+	    FetchOptions options = FetchOptions.Builder.withLimit(1000);
 	    return queryEntities(query, options);
 	  }
 
@@ -79,7 +79,7 @@ public class OpenMFGroupManagerNoSql extends OpenMFEntityManagerNoSql<OpenMFGrou
 		Query qry = new Query(getKind());
 		qry.setFilter(FilterOperator.EQUAL.of(OpenMFConstants.FIELD_NAME_SUPERVISOR, username));
 		qry.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
-		FetchOptions options = FetchOptions.Builder.withLimit(100);
+		FetchOptions options = FetchOptions.Builder.withLimit(1000);
 		PreparedQuery pq = DatastoreServiceFactory.getDatastoreService().prepare(qry);
 		ArrayList<OpenMFGroup> groups = new ArrayList<OpenMFGroup>();
 		for (Entity result : pq.asList(options)) {

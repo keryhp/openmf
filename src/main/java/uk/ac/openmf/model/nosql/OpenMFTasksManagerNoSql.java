@@ -44,7 +44,7 @@ implements OpenMFTasksManager {
 	public Iterable<OpenMFTask> getAllTasks() {
 		Query query = new Query(getKind());
 		query.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
-		FetchOptions options = FetchOptions.Builder.withLimit(100);
+		FetchOptions options = FetchOptions.Builder.withLimit(100000);
 		return queryEntities(query, options);
 	}
 
@@ -91,7 +91,7 @@ implements OpenMFTasksManager {
 		Filter filter = new Query.CompositeFilter(CompositeFilterOperator.AND, filters);
 		qry.setFilter(filter);		
 		//qry.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
-		FetchOptions options = FetchOptions.Builder.withLimit(100);
+		FetchOptions options = FetchOptions.Builder.withLimit(10000);
 		PreparedQuery pq = DatastoreServiceFactory.getDatastoreService().prepare(qry);
 		ArrayList<OpenMFTask> tasks = new ArrayList<OpenMFTask>();
 		for (Entity result : pq.asList(options)) {
@@ -105,7 +105,7 @@ implements OpenMFTasksManager {
 		Query qry = new Query(getKind());
 		qry.setFilter(FilterOperator.EQUAL.of(OpenMFConstants.FIELD_NAME_ASSIGNEDTO, username));
 		qry.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
-		FetchOptions options = FetchOptions.Builder.withLimit(100);
+		FetchOptions options = FetchOptions.Builder.withLimit(10000);
 		PreparedQuery pq = DatastoreServiceFactory.getDatastoreService().prepare(qry);
 		ArrayList<OpenMFTask> tasks = new ArrayList<OpenMFTask>();
 		for (Entity result : pq.asList(options)) {

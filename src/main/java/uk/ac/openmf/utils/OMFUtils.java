@@ -2,10 +2,9 @@ package uk.ac.openmf.utils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.List;
 import java.util.logging.Logger;
-
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import uk.ac.openmf.model.OpenMFChartOfAccounts;
 import uk.ac.openmf.model.OpenMFChartOfAccountsManager;
@@ -37,8 +36,11 @@ import uk.ac.openmf.model.OpenMFTransactionManager;
 import uk.ac.openmf.model.OpenMFUser;
 import uk.ac.openmf.model.OpenMFUserManager;
 import uk.ac.openmf.model.nosql.OpenMFPhotoNoSql;
-import uk.ac.openmf.model.nosql.OpenMFUserNoSql;
 import uk.ac.openmf.web.AppContext;
+import uk.ac.openmf.web.comparators.OpenMFLoanRepaymentComparator;
+import uk.ac.openmf.web.comparators.OpenMFLoanRepaymentComparator.OpenMFLoanRepaymentComparatorKey;
+import uk.ac.openmf.web.comparators.OpenMFSavingsScheduledDepositComparator;
+import uk.ac.openmf.web.comparators.OpenMFSavingsScheduledDepositComparator.OpenMFSavingsScheduledDepositComparatorKey;
 import uk.ac.openmf.web.controllers.ClientController;
 
 import com.google.appengine.api.blobstore.BlobKey;
@@ -356,10 +358,11 @@ public final class OMFUtils {
 		return schedules;
 	}
 
-	public static ArrayList<OpenMFLoanRepayment> getLoanRepaymentSchedulesForLoanAccountList(String loanproductid){
+	@SuppressWarnings("unchecked")
+	public static List<OpenMFLoanRepayment> getLoanRepaymentSchedulesForLoanAccountList(String loanproductid){
 		OpenMFLoanRepaymentManager loanRepaymentManager = AppContext.getAppContext().getLoanRepaymentManager();
 		Iterable<OpenMFLoanRepayment> schedulesiter = loanRepaymentManager.getLoanRepaymentSchedulesByLoanAccount(loanproductid);
-		ArrayList<OpenMFLoanRepayment> schedules = new ArrayList<OpenMFLoanRepayment>();
+		List schedules = new ArrayList<OpenMFLoanRepayment>();
 		try {
 			for (OpenMFLoanRepayment schedule : schedulesiter) {
 				schedules.add(schedule);
@@ -367,13 +370,15 @@ public final class OMFUtils {
 		} catch (DatastoreNeedIndexException e) {
 			//log error
 		}
+		Collections.sort(schedules, new OpenMFLoanRepaymentComparator(OpenMFLoanRepaymentComparatorKey.serialnumber.toString(), OpenMFLoanRepaymentComparator.ComparatorSortOrder.asc.toString()));
 		return schedules;
 	}
 
-	public static ArrayList<OpenMFSavingsScheduledDeposit> getSavingsScheduledDepositList(){
+	@SuppressWarnings("unchecked")
+	public static List<OpenMFSavingsScheduledDeposit> getSavingsScheduledDepositList(){
 		OpenMFSavingsScheduledDepositManager savingsScheduledDepositManager = AppContext.getAppContext().getSavingsScheduledDepositManager();
 		Iterable<OpenMFSavingsScheduledDeposit> schedulesiter = savingsScheduledDepositManager.getAllSavingsScheduledDeposits();
-		ArrayList<OpenMFSavingsScheduledDeposit> schedules = new ArrayList<OpenMFSavingsScheduledDeposit>();
+		List schedules = new ArrayList<OpenMFSavingsScheduledDeposit>();
 		try {
 			for (OpenMFSavingsScheduledDeposit schedule : schedulesiter) {
 				schedules.add(schedule);
@@ -381,6 +386,7 @@ public final class OMFUtils {
 		} catch (DatastoreNeedIndexException e) {
 			//log error
 		}
+		Collections.sort(schedules, new OpenMFLoanRepaymentComparator(OpenMFSavingsScheduledDepositComparatorKey.serialnumber.toString(), OpenMFSavingsScheduledDepositComparator.ComparatorSortOrder.asc.toString()));
 		return schedules;
 	}
 

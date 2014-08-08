@@ -120,8 +120,8 @@ $(document).ready(function (){
 									</form:label>
 
 									<div class="col-sm-3">
-										<form:input type="number" path="disbursedamount"
-											class="form-control" />
+										<form:input type="number" step="any" path="disbursedamount"
+											class="form-control" required="required" />
 									</div>
 									<form:label class="control-label col-sm-2" path="disbursedon">
 										<i class="fa fa-calendar fa-1x"></i>Disbursed on<span
@@ -129,7 +129,7 @@ $(document).ready(function (){
 									</form:label>
 									<div class="col-sm-2">
 										<form:input path="disbursedon"
-											class="form-control date-picker" />
+											class="form-control date-picker" required="required" />
 									</div>
 								</div>
 								<div class="form-group">
@@ -140,7 +140,7 @@ $(document).ready(function (){
 
 									<div class="col-sm-3">
 										<form:input type="text" path="transactionreference"
-											class="form-control" />
+											class="form-control" required="required" />
 									</div>
 									<form:label class="control-label col-sm-2"
 										path="transactionnote">Transaction Note

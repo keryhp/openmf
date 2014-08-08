@@ -39,7 +39,7 @@ public class OpenMFSavingsAccountManagerNoSql extends OpenMFEntityManagerNoSql<O
 	public Iterable<OpenMFSavingsAccount> getAllSavingsAccounts() {
 		Query query = new Query(getKind());
 		query.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
-		FetchOptions options = FetchOptions.Builder.withLimit(100);
+		FetchOptions options = FetchOptions.Builder.withLimit(10000);
 		return queryEntities(query, options);
 	}
 
@@ -79,7 +79,7 @@ public class OpenMFSavingsAccountManagerNoSql extends OpenMFEntityManagerNoSql<O
 		Query qry = new Query(getKind());
 		qry.setFilter(FilterOperator.EQUAL.of(OpenMFConstants.FIELD_NAME_CLIENTID, clientId));
 		qry.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
-		FetchOptions options = FetchOptions.Builder.withLimit(100);
+		FetchOptions options = FetchOptions.Builder.withLimit(10000);
 		return queryEntities(qry, options);
 	}
 
@@ -88,7 +88,7 @@ public class OpenMFSavingsAccountManagerNoSql extends OpenMFEntityManagerNoSql<O
 		Query qry = new Query(getKind());
 		qry.setFilter(FilterOperator.EQUAL.of(OpenMFConstants.FIELD_NAME_SAVINGSCODE, savingscode));
 		qry.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
-		FetchOptions options = FetchOptions.Builder.withLimit(100);
+		FetchOptions options = FetchOptions.Builder.withLimit(10000);
 		//return queryEntities(qry, options);
 		PreparedQuery pq = DatastoreServiceFactory.getDatastoreService().prepare(qry);
 		ArrayList<OpenMFSavingsAccount> savingsAccounts = new ArrayList<OpenMFSavingsAccount>();

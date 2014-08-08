@@ -189,8 +189,8 @@ $(document).ready(function (){
 												class="required">*</span>
 										</form:label>
 										<div class="col-sm-2">
-											<form:input type="number" path="approvedamount" min="0"
-												class="form-control" />
+											<form:input type="number" step="any" path="approvedamount" min="0"
+												class="form-control" required="required" />
 										</div>
 									</div>
 									<div class="form-group">
@@ -239,14 +239,14 @@ $(document).ready(function (){
 										</form:label>
 										<div class="col-sm-2">
 											<form:input path="loanstartdate"
-												class="form-control date-picker" />
+												class="form-control date-picker" required="required" />
 										</div>
 										<form:label class="control-label col-sm-2" path="approvedon">
 											<i class="fa fa-calendar fa-1x"></i>Approval Date
 										</form:label>
 										<div class="col-sm-2">
 											<form:input path="approvedon"
-												class="form-control date-picker" />
+												class="form-control date-picker" required="required" />
 										</div>
 									</div>
 
@@ -258,7 +258,7 @@ $(document).ready(function (){
 										</form:label>
 										<div class="col-sm-2">
 											<form:input path="submittedon"
-												class="form-control date-picker" />
+												class="form-control date-picker" required="required" />
 										</div>
 										<form:label class="control-label col-sm-2" path="disbursedon">
 											<i class="fa fa-calendar fa-1x"></i>Disbursement Date<span
@@ -266,7 +266,7 @@ $(document).ready(function (){
 										</form:label>
 										<div class="col-sm-2">
 											<form:input path="disbursedon"
-												class="form-control date-picker" />
+												class="form-control date-picker" required="required" />
 										</div>
 									</div>
 									<div class="form-group">
@@ -275,13 +275,13 @@ $(document).ready(function (){
 												class="required">*</span>
 										</form:label>
 										<div class="col-sm-2">
-											<form:input type="number" path="disbursedamount"
+											<form:input type="number" step="any" path="disbursedamount"
 												class="form-control" />
 										</div>
 										<form:label class="control-label col-sm-2" path="fees">Initial Fees (if any)
 										</form:label>
 										<div class="col-sm-2">
-											<form:input type="number" path="fees" class="form-control" />
+											<form:input type="number" step="any" path="fees" class="form-control" required="required" />
 										</div>
 									</div>
 									<div class="form-group">

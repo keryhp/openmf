@@ -126,10 +126,6 @@ $(document).ready(function (){
 											<form:input type="text" path="forename" class="form-control"
 												required="required" />
 										</div>
-										<%-- <div class="col-sm-2">
-											<form-validate valattributeform="createclientform"
-												valattribute="firstname" />
-										</div> --%>
 										<form:label class="control-label col-sm-2" path="midname">Middle
 											name</form:label>
 
@@ -146,10 +142,6 @@ $(document).ready(function (){
 											<form:input type="text" path="surname" class="form-control"
 												required="required" />
 										</div>
-										<%-- <div class="col-sm-2">
-											<form-validate valattributeform="createclientform"
-												valattribute="lastname" />
-										</div> --%>
 										<form:label class="control-label col-sm-2" path="address">Address</form:label>
 
 										<div class="col-sm-3">
@@ -161,14 +153,14 @@ $(document).ready(function (){
 											number</form:label>
 
 										<div class="col-sm-3">
-											<form:input type="number" path="contact" class="form-control" />
+											<form:input type="number" step="any" path="contact" class="form-control" required="required" />
 										</div>
 									</div>
 									<div class="form-group">
 										<form:label class="control-label col-sm-2" path="dateofbirth">Date of Birth</form:label>
 
 										<div class="col-sm-3">
-											<form:input path="dateofbirth" class="form-control" />
+											<form:input path="dateofbirth" class="form-control" required="required" />
 										</div>
 										<form:label class="control-label col-sm-2" path="gender">Gender</form:label>
 
@@ -248,7 +240,7 @@ $(document).ready(function (){
 
 												<div class="col-sm-3">
 													<form:input path="activationdate"
-														class="form-control date-picker" />
+														class="form-control date-picker" required="required" />
 												</div>
 											</div>
 										</div>
@@ -264,7 +256,7 @@ $(document).ready(function (){
 
 										<div class="col-sm-3">
 											<form:input path="submittedon"
-												class="form-control date-picker" />
+												class="form-control date-picker" required="required" />
 										</div>
 									</div>
 									<div class="col-md-offset-5">

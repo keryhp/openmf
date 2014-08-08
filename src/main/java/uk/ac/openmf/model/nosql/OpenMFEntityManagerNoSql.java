@@ -40,7 +40,7 @@ public abstract class OpenMFEntityManagerNoSql<T extends OpenMFEntity> implement
 	@Override
 	public Iterable<T> getEntities() {
 		Query query = new Query(getKind());
-		FetchOptions options = FetchOptions.Builder.withLimit(100);
+		FetchOptions options = FetchOptions.Builder.withLimit(10000);
 		return queryEntities(query, options);
 	}
 

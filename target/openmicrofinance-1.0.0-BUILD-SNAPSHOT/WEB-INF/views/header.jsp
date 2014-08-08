@@ -19,12 +19,9 @@
 					class="dropdown-toggle" data-toggle="dropdown" href="#"><i
 						class="fa fa-bar-chart-o"></i> Reports<b class="caret"></b></a>
 					<ul class="dropdown-menu">
-						<li><a href="/reports/allrep">All</a></li>
-						<li><a href="/reports/clientsrep">Clients</a></li>
-						<li><a href="/reports/loansrep">Loans</a></li>
-						<li><a href="/reports/savingsrep">Savings</a></li>
-						<li><a href="/reports/fundsrep">Funds</a></li>
-						<li><a href="/reports/accountingrep">Accounting</a></li>
+						<li><a href="/reports/clientsrep">Client Accounts</a></li>
+						<!-- <li><a href="/reports/savingsrep">Savings Accounts</a></li> -->
+						<li><a href="/reports/tasksrep">Today's Tasks</a></li>
 					</ul></li>
 				<li class="dropdown" id="preview-menu"><a
 					class="dropdown-toggle" data-toggle="dropdown" href="#"><i
@@ -32,7 +29,6 @@
 					<ul class="dropdown-menu">
 						<li><a href="/admin/users">Users</a></li>
 						<li><a href="/admin/organization">Organization</a></li>
-						<li><a href="/admin/system">System</a></li>
 						<li><a href="/admin/products">Products</a></li>
 					</ul></li>
 			</ul>
@@ -44,15 +40,9 @@
 								class="fa fa-question-circle"></i> Help</a></li>
 						<li><a href="/viewuser?omfuId=${param.userid}"><i
 								class="fa fa-user"></i> Profile</a></li>
-						<li><a href="/usersetting"><i class="fa fa-cog"></i>
-								Settings</a></li>
 						<li><a href="/logout"><i class="fa fa-off"></i>Logout</a></li>
 					</ul></li>
 			</ul>
-			<form class="navbar-form navbar-right">
-				<input id="search" type="text" placeholder="Search"
-					class="form-control search-query col-md-4" />
-			</form>
 		</div>
 	</div>
 </nav>

@@ -45,7 +45,7 @@ implements OpenMFGeneralLedgerManager {
 	public Iterable<OpenMFGeneralLedger> getAllGeneralLedger() {
 		Query query = new Query(getKind());
 		query.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
-		FetchOptions options = FetchOptions.Builder.withLimit(100);
+		FetchOptions options = FetchOptions.Builder.withLimit(10000);
 		return queryEntities(query, options);
 	}
 
@@ -91,7 +91,7 @@ implements OpenMFGeneralLedgerManager {
 		Filter filter = new Query.CompositeFilter(CompositeFilterOperator.AND, filters);
 		query.setFilter(filter);
 		//query.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
-		FetchOptions options = FetchOptions.Builder.withLimit(100);
+		FetchOptions options = FetchOptions.Builder.withLimit(10000);
 		PreparedQuery pq = DatastoreServiceFactory.getDatastoreService().prepare(query);
 		ArrayList<OpenMFGeneralLedger> entries = new ArrayList<OpenMFGeneralLedger>();
 		for (Entity result : pq.asIterable(options)) {
@@ -113,7 +113,7 @@ implements OpenMFGeneralLedgerManager {
 		Filter filter = new Query.CompositeFilter(CompositeFilterOperator.AND, filters);
 		query.setFilter(filter);
 		//query.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
-		FetchOptions options = FetchOptions.Builder.withLimit(100);
+		FetchOptions options = FetchOptions.Builder.withLimit(10000);
 		PreparedQuery pq = DatastoreServiceFactory.getDatastoreService().prepare(query);
 		OpenMFGeneralLedger generalLedgerEntry = null;
 		for (Entity result : pq.asIterable(options)) {

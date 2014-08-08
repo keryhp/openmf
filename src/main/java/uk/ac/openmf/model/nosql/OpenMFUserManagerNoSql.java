@@ -123,7 +123,7 @@ public class OpenMFUserManagerNoSql extends OpenMFEntityManagerNoSql<OpenMFUser>
 	public Iterable<OpenMFUser> getAllUsers() {
 		Query query = new Query(getKind());
 		query.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
-		FetchOptions options = FetchOptions.Builder.withLimit(100);
+		FetchOptions options = FetchOptions.Builder.withLimit(1000);
 		return queryEntities(query, options);
 	}
 }

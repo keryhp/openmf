@@ -41,7 +41,7 @@ implements OpenMFChartOfAccountsManager {
 	public Iterable<OpenMFChartOfAccounts> getAllChartOfAccounts() {
 		Query query = new Query(getKind());
 		query.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
-		FetchOptions options = FetchOptions.Builder.withLimit(100);
+		FetchOptions options = FetchOptions.Builder.withLimit(10000);
 		return queryEntities(query, options);
 	}
 

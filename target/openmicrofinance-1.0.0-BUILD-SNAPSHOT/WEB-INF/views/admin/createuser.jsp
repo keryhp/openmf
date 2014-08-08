@@ -89,12 +89,12 @@ $(document).ready(function (){
 									</form:label>
 
 									<div class="col-sm-3">
-										<form:input type="text" path="username" class="form-control" />
+										<form:input type="text" path="username" class="form-control"  required="required"/>
 									</div>
 								</div>
 								<div class="form-group">
 									<form:label class="control-label col-sm-2" path="forename">First
-										Name<span class="required">*</span>
+										Name
 									</form:label>
 
 									<div class="col-sm-3">
@@ -107,7 +107,7 @@ $(document).ready(function (){
 									</form:label>
 
 									<div class="col-sm-3">
-										<form:input type="text" path="surname" class="form-control" />
+										<form:input type="text" path="surname" class="form-control"  required="required"/>
 									</div>
 								</div>
 								<div>
@@ -118,7 +118,7 @@ $(document).ready(function (){
 											</form:label>
 
 											<div class="col-sm-3">
-												<form:input type="email" path="email" class="form-control" />
+												<form:input type="email" path="email" class="form-control" required="required" />
 											</div>
 										</div>
 									</div>
@@ -130,14 +130,13 @@ $(document).ready(function (){
 										</form:label>
 
 										<div class="col-sm-3">
-											<form:input type="number" path="contact" class="form-control" />
+											<form:input type="number" step="any" path="contact" class="form-control"  required="required"/>
 										</div>
 									</div>
 								</div>
 								<div>
 									<div class="form-group">
-										<form:label class="control-label col-sm-2" path="address">Address<span
-												class="required">*</span>
+										<form:label class="control-label col-sm-2" path="address">Address
 										</form:label>
 
 										<div class="col-sm-3">
@@ -154,19 +153,9 @@ $(document).ready(function (){
 
 											<div class="col-sm-3">
 												<form:input type="password" path="password"
-													class="form-control" />
+													class="form-control"  required="required"/>
 											</div>
 										</div>
-										<!-- 										<div class="form-group">
-											<label class="control-label col-sm-2" for="repeatPassword">Repeat
-												Password<span class="required">*</span>
-											</label>
-
-											<div class="col-sm-3">
-												<input type="password" id="repeatPassword"
-													name="repeatPassword" class="form-control" />
-											</div>
-										</div> -->
 									</div>
 								</div>
 								<div class="form-group">
@@ -180,9 +169,6 @@ $(document).ready(function (){
 											tabindex="2">
 											<form:option value="headoffice" selected="selected">Head
 												Office</form:option>
-											<!-- <form:option value="branch1">Branch one</form:option>
-											<form:option value="branch2">Branch two</form:option>
-											<form:option value="branch3">Branch three</form:option> -->
 										</form:select>
 									</div>
 								</div>
@@ -206,7 +192,7 @@ $(document).ready(function (){
 									</div>
 								</div>
 								<div class="form-group">
-									<form:label class="control-label col-sm-2" path="role">Select Roles<span
+									<form:label class="control-label col-sm-2" path="role" required="required">Select Roles<span
 											class="required">*</span>
 									</form:label>
 
@@ -233,7 +219,7 @@ $(document).ready(function (){
 								</div>
 								<div class="col-md-offset-3">
 									<a id="cancel" href="/admin/users" class="btn btn-default">Cancel</a>
-									<button id="save" type="submit" class="btn btn-primary">Save</button>
+									<input id="save" type="submit" class="btn btn-primary" value="Save"/>
 								</div>
 							</fieldset>
 						</form:form>

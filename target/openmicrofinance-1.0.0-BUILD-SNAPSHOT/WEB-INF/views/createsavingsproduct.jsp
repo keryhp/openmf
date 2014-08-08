@@ -90,14 +90,14 @@ $(document).ready(function (){
 										</form:label>
 										<div class="col-sm-2">
 											<form:input type="text" path="productname"
-												class="form-control" />
+												class="form-control" required="required" />
 										</div>
 										<form:label class="control-label col-sm-2" path="savingscode">Savings Id/code<span
 												class="required">*</span>
 										</form:label>
 										<div class="col-sm-2">
 											<form:input type="text" path="savingscode"
-												class="form-control" maxlength="4" />
+												class="form-control" maxlength="8" required="required" />
 										</div>
 									</div>
 									<div class="form-group">
@@ -126,13 +126,13 @@ $(document).ready(function (){
 										<form:label class="control-label col-sm-2" path="startdate">
 											<i class="fa fa-calendar fa-1x"></i>Start Date</form:label>
 										<div class="col-sm-2">
-											<form:input path="startdate" class="form-control date-picker" />
+											<form:input path="startdate" class="form-control date-picker" required="required" />
 										</div>
 										<form:label class="control-label col-sm-2" path="closedate">
 											<i class="fa fa-calendar fa-1x"></i>Close
 											Date</form:label>
 										<div class="col-sm-2">
-											<form:input path="closedate" class="form-control date-picker" />
+											<form:input path="closedate" class="form-control date-picker" required="required" />
 										</div>
 									</div>
 									<h3>Settings</h3>
@@ -142,7 +142,7 @@ $(document).ready(function (){
 												class="required">*</span>
 										</form:label>
 										<div class="col-sm-2">
-											<form:input type="number" path="tenure" class="form-control" />
+											<form:input type="number" step="any" path="tenure" class="form-control" required="required" />
 										</div>
 										<form:label class="control-label col-sm-2"
 											path="depositfrequency">Deposit Frequency<span
@@ -172,8 +172,8 @@ $(document).ready(function (){
 												class="required">*</span>
 										</form:label>
 										<div class="col-sm-2">
-											<form:input type="number" path="rateofinterest"
-												class="form-control" />
+											<form:input type="number" step="any" path="rateofinterest"
+												class="form-control" required="required" />
 										</div>
 									</div>
 									<div class="form-group">

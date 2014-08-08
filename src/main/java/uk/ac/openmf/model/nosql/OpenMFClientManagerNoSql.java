@@ -40,7 +40,7 @@ public class OpenMFClientManagerNoSql extends OpenMFEntityManagerNoSql<OpenMFCli
 	  public Iterable<OpenMFClient> getAllClients() {
 	    Query query = new Query(getKind());
 	    query.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
-	    FetchOptions options = FetchOptions.Builder.withLimit(100);
+	    FetchOptions options = FetchOptions.Builder.withLimit(10000);
 	    return queryEntities(query, options);
 	  }
 
@@ -80,7 +80,7 @@ public class OpenMFClientManagerNoSql extends OpenMFEntityManagerNoSql<OpenMFCli
 		Query qry = new Query(getKind());
 		qry.setFilter(FilterOperator.EQUAL.of(OpenMFConstants.FIELD_NAME_GROUPID, groupid));
 		qry.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
-		FetchOptions options = FetchOptions.Builder.withLimit(100);
+		FetchOptions options = FetchOptions.Builder.withLimit(10000);
 		//return queryEntities(qry, options);
 		PreparedQuery pq = DatastoreServiceFactory.getDatastoreService().prepare(qry);
 		ArrayList<OpenMFClient> clients = new ArrayList<OpenMFClient>();
@@ -95,7 +95,7 @@ public class OpenMFClientManagerNoSql extends OpenMFEntityManagerNoSql<OpenMFCli
 		Query qry = new Query(getKind());
 		qry.setFilter(FilterOperator.EQUAL.of(OpenMFConstants.FIELD_NAME_SUPERVISOR, username));
 		qry.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
-		FetchOptions options = FetchOptions.Builder.withLimit(100);
+		FetchOptions options = FetchOptions.Builder.withLimit(1000);
 		PreparedQuery pq = DatastoreServiceFactory.getDatastoreService().prepare(qry);
 		ArrayList<OpenMFClient> clients = new ArrayList<OpenMFClient>();
 		for (Entity result : pq.asList(options)) {

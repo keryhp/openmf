@@ -38,7 +38,7 @@ public class OpenMFLoanAccountManagerNoSql extends OpenMFEntityManagerNoSql<Open
 	public Iterable<OpenMFLoanAccount> getAllLoanAccounts() {
 		Query query = new Query(getKind());
 		query.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
-		FetchOptions options = FetchOptions.Builder.withLimit(100);
+		FetchOptions options = FetchOptions.Builder.withLimit(10000);
 		return queryEntities(query, options);
 	}
 
@@ -78,7 +78,7 @@ public class OpenMFLoanAccountManagerNoSql extends OpenMFEntityManagerNoSql<Open
 		Query qry = new Query(getKind());
 		qry.setFilter(FilterOperator.EQUAL.of(OpenMFConstants.FIELD_NAME_CLIENTID, clientId));
 		qry.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
-		FetchOptions options = FetchOptions.Builder.withLimit(100);
+		FetchOptions options = FetchOptions.Builder.withLimit(10000);
 		logger.info("getAllLoanAccountsByClient clientId:" + clientId);
 		//return queryEntities(qry, options);
 		PreparedQuery pq = DatastoreServiceFactory.getDatastoreService().prepare(qry);
@@ -94,7 +94,7 @@ public class OpenMFLoanAccountManagerNoSql extends OpenMFEntityManagerNoSql<Open
 		Query qry = new Query(getKind());
 		qry.setFilter(FilterOperator.EQUAL.of(OpenMFConstants.FIELD_NAME_LOANCODE, loancode));
 		qry.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
-		FetchOptions options = FetchOptions.Builder.withLimit(100);
+		FetchOptions options = FetchOptions.Builder.withLimit(10000);
 		//return queryEntities(qry, options);
 		PreparedQuery pq = DatastoreServiceFactory.getDatastoreService().prepare(qry);
 		ArrayList<OpenMFLoanAccount> loanAccounts = new ArrayList<OpenMFLoanAccount>();
@@ -109,7 +109,7 @@ public class OpenMFLoanAccountManagerNoSql extends OpenMFEntityManagerNoSql<Open
 		Query qry = new Query(getKind());
 		qry.setFilter(FilterOperator.EQUAL.of(OpenMFConstants.FIELD_NAME_GROUPID, groupid));
 		qry.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
-		FetchOptions options = FetchOptions.Builder.withLimit(100);
+		FetchOptions options = FetchOptions.Builder.withLimit(10000);
 		//return queryEntities(qry, options);
 		PreparedQuery pq = DatastoreServiceFactory.getDatastoreService().prepare(qry);
 		ArrayList<OpenMFLoanAccount> loanAccounts = new ArrayList<OpenMFLoanAccount>();

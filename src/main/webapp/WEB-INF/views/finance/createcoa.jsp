@@ -76,7 +76,7 @@
 									</form:label>
 
 									<div class="col-sm-3">
-										<form:input type="text" class="form-control" path="coaname" />
+										<form:input type="text" class="form-control" path="coaname" required="required" />
 									</div>
 								</div>
 								<div class="form-group">
@@ -85,7 +85,7 @@
 									</form:label>
 
 									<div class="col-sm-3">
-										<form:input type="number" class="form-control" path="funds" />
+										<form:input type="number" step="any" class="form-control" path="funds" required="required" />
 									</div>
 								</div>
 								<div class="form-group">

@@ -23,7 +23,7 @@ public class TaskService {
 		Calendar cal = new GregorianCalendar();
 		Date forDateVal = OMFDateUtils.formatter.parse(forDate);
 		cal.setTime(forDateVal);
-		cal.set(Calendar.DAY_OF_YEAR, +1);
+		cal.add(Calendar.DATE, +1);
 		Date tomoDateVal = cal.getTime();
 		generateTodaysTasksForAllSchDeposits(OMFDateUtils.formatter.format(tomoDateVal));
 		generateTodaysTasksForAllSchPayments(OMFDateUtils.formatter.format(tomoDateVal));	

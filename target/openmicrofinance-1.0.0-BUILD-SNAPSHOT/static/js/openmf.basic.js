@@ -8,6 +8,11 @@ function viewClientFn(clientId){
 	window.location.href = "/viewclient?clientId=" + clientId;
 };
 
+function viewClientsRepFn(clientId){
+	"use strict";
+	window.location.href = "/reports/clientsrep?clientId=" + clientId;
+};
+
 function viewChartOfAccountsFn(coaId){
 	"use strict";
 	window.location.href = "/finance/viewcoa?coaId=" + coaId;
@@ -68,11 +73,11 @@ function onFileSelected() {
 	var filename = document.getElementById("input-file").value;
 	if (filename == null || filename == "") {
 		document.getElementById("btn-post").setAttribute("class",
-				"inactive btn");
+		"inactive btn");
 		document.getElementById("btn-post").disabled = true;
 	} else {
 		document.getElementById("btn-post").setAttribute("class",
-				"active btn");
+		"active btn");
 		document.getElementById("btn-post").disabled = false;
 	}
 };
@@ -144,4 +149,14 @@ function showOrHideGroup(sel){
 function assignGroupFn(clientId){
 	"use strict";
 	window.location.href = "/assigngroup?clientId=" + clientId;
+};
+
+function formvalidate(){
+	"use strict";
+	var f = document.getElementsByTagName('form')[0];
+	if(f.checkValidity()) {
+		f.submit();
+	} else {
+		alert("Please provide proper input values");
+	}
 };

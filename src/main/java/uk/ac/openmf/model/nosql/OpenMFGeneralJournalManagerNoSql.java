@@ -45,7 +45,7 @@ implements OpenMFGeneralJournalManager {
 	public Iterable<OpenMFGeneralJournal> getAllGeneralJournal() {
 		Query query = new Query(getKind());
 		query.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
-		FetchOptions options = FetchOptions.Builder.withLimit(100);
+		FetchOptions options = FetchOptions.Builder.withLimit(100000);
 		return queryEntities(query, options);
 	}
 
@@ -92,7 +92,7 @@ implements OpenMFGeneralJournalManager {
 		Filter filter = new Query.CompositeFilter(CompositeFilterOperator.AND, filters);
 		query.setFilter(filter);
 		//query.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
-		FetchOptions options = FetchOptions.Builder.withLimit(100);
+		FetchOptions options = FetchOptions.Builder.withLimit(100000);
 		PreparedQuery pq = DatastoreServiceFactory.getDatastoreService().prepare(query);
 		ArrayList<OpenMFGeneralJournal> entries = new ArrayList<OpenMFGeneralJournal>();
 		for (Entity result : pq.asIterable(options)) {
@@ -114,7 +114,7 @@ implements OpenMFGeneralJournalManager {
 		Filter filter = new Query.CompositeFilter(CompositeFilterOperator.AND, filters);
 		query.setFilter(filter);
 		//query.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
-		FetchOptions options = FetchOptions.Builder.withLimit(100);
+		FetchOptions options = FetchOptions.Builder.withLimit(100000);
 		PreparedQuery pq = DatastoreServiceFactory.getDatastoreService().prepare(query);
 		OpenMFGeneralJournal generalJournalEntry = null;
 		for (Entity result : pq.asIterable(options)) {

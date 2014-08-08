@@ -43,7 +43,7 @@ public class OpenMFLoanRepaymentManagerNoSql extends OpenMFEntityManagerNoSql<Op
 	public Iterable<OpenMFLoanRepayment> getAllLoanRepaymentSchedules() {
 		Query query = new Query(getKind());
 		query.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
-		FetchOptions options = FetchOptions.Builder.withLimit(100);
+		FetchOptions options = FetchOptions.Builder.withLimit(100000);
 		return queryEntities(query, options);
 	}
 
@@ -83,7 +83,7 @@ public class OpenMFLoanRepaymentManagerNoSql extends OpenMFEntityManagerNoSql<Op
 		Query qry = new Query(getKind());
 		qry.setFilter(FilterOperator.EQUAL.of(OpenMFConstants.FIELD_NAME_LOANACCOUNTID, loanaccountid));
 		qry.addSort(OpenMFConstants.FIELD_NAME_SERIALNUMBER, SortDirection.ASCENDING);
-		FetchOptions options = FetchOptions.Builder.withLimit(100);
+		FetchOptions options = FetchOptions.Builder.withLimit(100000);
 		PreparedQuery pq = DatastoreServiceFactory.getDatastoreService().prepare(qry);
 		ArrayList<OpenMFLoanRepayment> schedules = new ArrayList<OpenMFLoanRepayment>();
 		for (Entity result : pq.asIterable(options)) {
@@ -105,7 +105,7 @@ public class OpenMFLoanRepaymentManagerNoSql extends OpenMFEntityManagerNoSql<Op
 		Filter filter = new Query.CompositeFilter(CompositeFilterOperator.AND, filters);
 		qry.setFilter(filter);		
 		//qry.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.ASCENDING);
-		FetchOptions options = FetchOptions.Builder.withLimit(100);
+		FetchOptions options = FetchOptions.Builder.withLimit(100000);
 		PreparedQuery pq = DatastoreServiceFactory.getDatastoreService().prepare(qry);
 		ArrayList<OpenMFLoanRepayment> schedules = new ArrayList<OpenMFLoanRepayment>();
 		for (Entity result : pq.asIterable(options)) {
@@ -121,7 +121,7 @@ public class OpenMFLoanRepaymentManagerNoSql extends OpenMFEntityManagerNoSql<Op
 		Query qry = new Query(getKind());
 		qry.setFilter(FilterOperator.EQUAL.of(OpenMFConstants.FIELD_NAME_SCHEDULEDATE, date));
 		//qry.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.ASCENDING);
-		FetchOptions options = FetchOptions.Builder.withLimit(100);
+		FetchOptions options = FetchOptions.Builder.withLimit(100000);
 		PreparedQuery pq = DatastoreServiceFactory.getDatastoreService().prepare(qry);
 		ArrayList<OpenMFLoanRepayment> schedules = new ArrayList<OpenMFLoanRepayment>();
 		for (Entity result : pq.asIterable(options)) {

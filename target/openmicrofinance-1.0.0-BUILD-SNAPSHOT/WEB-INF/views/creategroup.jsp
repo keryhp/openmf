@@ -134,7 +134,7 @@ $(document).ready(function (){
 											number</form:label>
 
 										<div class="col-sm-3">
-											<form:input type="number" path="contact" class="form-control" />
+											<form:input type="number" step="any" path="contact" class="form-control" required="required" />
 										</div>
 										<form:label class="control-label col-sm-2" path="externalId">External
 											Id</form:label>
@@ -159,7 +159,7 @@ $(document).ready(function (){
 
 												<div class="col-sm-3">
 													<form:input path="activationdate"
-														class="form-control date-picker" />
+														class="form-control date-picker" required="required" />
 												</div>
 											</div>
 										</div>
@@ -175,7 +175,7 @@ $(document).ready(function (){
 
 										<div class="col-sm-3">
 											<form:input path="submittedon"
-												class="form-control date-picker" />
+												class="form-control date-picker" required="required" />
 										</div>
 									</div>
 									<div class="col-md-offset-5">

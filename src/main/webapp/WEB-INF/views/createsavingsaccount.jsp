@@ -181,14 +181,14 @@ $(document).ready(function (){
 										</form:label>
 										<div class="col-sm-2">
 											<form:input path="savingsstartdate"
-												class="form-control date-picker" />
+												class="form-control date-picker" required="required" />
 										</div>
 										<form:label class="control-label col-sm-2" path="approvedon">
 											<i class="fa fa-calendar fa-1x"></i>Approval Date
 										</form:label>
 										<div class="col-sm-2">
 											<form:input path="approvedon"
-												class="form-control date-picker" />
+												class="form-control date-picker" required="required" />
 										</div>
 									</div>
 
@@ -200,7 +200,7 @@ $(document).ready(function (){
 										</form:label>
 										<div class="col-sm-2">
 											<form:input path="submittedon"
-												class="form-control date-picker" />
+												class="form-control date-picker" required="required" />
 										</div>
 										<form:label class="control-label col-sm-2" path="matureson">
 											<i class="fa fa-calendar fa-1x"></i>Maturity Date<span
@@ -208,7 +208,7 @@ $(document).ready(function (){
 										</form:label>
 										<div class="col-sm-2">
 											<form:input path="matureson"
-												class="form-control date-picker" />
+												class="form-control date-picker" required="required" />
 										</div>
 									</div>
 									<div class="form-group">
@@ -217,8 +217,8 @@ $(document).ready(function (){
 												class="required">*</span>
 										</form:label>
 										<div class="col-sm-2">
-											<form:input type="number" path="totalprincipaldeposit"
-												class="form-control" />
+											<form:input type="number" step="any" path="totalprincipaldeposit"
+												class="form-control" required="required" />
 										</div>
 									</div>
 									<div class="form-group">

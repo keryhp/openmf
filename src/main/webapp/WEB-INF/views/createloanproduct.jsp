@@ -87,14 +87,14 @@ $(document).ready(function (){
 										</form:label>
 										<div class="col-sm-2">
 											<form:input type="text" path="productname"
-												class="form-control" />
+												class="form-control" required="required" />
 										</div>
 										<form:label class="control-label col-sm-2" path="loancode">Loan Id/code<span
 												class="required">*</span>
 										</form:label>
 										<div class="col-sm-2">
 											<form:input type="text" path="loancode" class="form-control"
-												maxlength="4" />
+												maxlength="8" required="required" />
 										</div>
 									</div>
 									<div class="form-group">
@@ -116,7 +116,7 @@ $(document).ready(function (){
 									<div class="form-group">
 										<form:label class="control-label col-sm-2" path="loanamount">Loan Amount in GBP</form:label>
 										<div class="col-sm-2">
-											<form:input rows="2" type="number" class="form-control" path="loanamount" />
+											<form:input rows="2" type="number" step="any" class="form-control" path="loanamount" required="required" />
 										</div>
 										<form:label class="control-label col-sm-2" path="loantype">Type</form:label>
 										<div class="col-sm-2">
@@ -132,13 +132,13 @@ $(document).ready(function (){
 										<form:label class="control-label col-sm-2" path="startdate">
 											<i class="fa fa-calendar fa-1x"></i>Start Date</form:label>
 										<div class="col-sm-2">
-											<form:input path="startdate" class="form-control date-picker" />
+											<form:input path="startdate" class="form-control date-picker" required="required" />
 										</div>
 										<form:label class="control-label col-sm-2" path="closedate">
 											<i class="fa fa-calendar fa-1x"></i>Close
 											Date</form:label>
 										<div class="col-sm-2">
-											<form:input path="closedate" class="form-control date-picker" />
+											<form:input path="closedate" class="form-control date-picker" required="required" />
 										</div>
 									</div>
 									<h3>Settings</h3>
@@ -164,8 +164,8 @@ $(document).ready(function (){
 												class="required">*</span>
 										</form:label>
 										<div class="col-sm-2">
-											<form:input type="number" path="repaymentperiod"
-												class="form-control" />
+											<form:input type="number" step="any" path="repaymentperiod"
+												class="form-control" required="required" />
 										</div>
 										<form:label class="control-label col-sm-2"
 											path="repaymentfrequency">Repayment Frequency<span
@@ -175,7 +175,8 @@ $(document).ready(function (){
 											<form:select data-placeholder="Choose a frequency"
 												class="form-control chosen-select" path="repaymentfrequency"
 												tabindex="2">
-												<form:option value="7" selected="selected">Weekly</form:option>
+												<form:option value="1" selected="selected">Daily</form:option>
+												<form:option value="7">Weekly</form:option>
 												<form:option value="15">Fortnight</form:option>
 												<form:option value="30">Monthly</form:option>
 												<form:option value="90">Three Months</form:option>
@@ -191,12 +192,12 @@ $(document).ready(function (){
 											<p>Same as repayment period</p>
 										</div>
 										<form:label class="control-label col-sm-2"
-											path="rateofinterest" type="number">% Rate of Interest<span
+											path="rateofinterest" type="number" step="any">% Rate of Interest<span
 												class="required">*</span>
 										</form:label>
 										<div class="col-sm-2">
 											<form:input type="text" path="rateofinterest"
-												class="form-control" />
+												class="form-control" required="required" />
 										</div>
 									</div>
 									<h3>Charges</h3>

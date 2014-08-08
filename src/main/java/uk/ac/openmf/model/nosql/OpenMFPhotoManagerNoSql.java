@@ -45,7 +45,7 @@ public class OpenMFPhotoManagerNoSql extends OpenMFEntityManagerNoSql<OpenMFPhot
 	        FilterOperator.EQUAL, true);
 	    query.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
 	    query.setFilter(filter);
-	    FetchOptions options = FetchOptions.Builder.withLimit(100);
+	    FetchOptions options = FetchOptions.Builder.withLimit(1000);
 	    return queryEntities(query, options);    
   }
 
@@ -66,7 +66,7 @@ public class OpenMFPhotoManagerNoSql extends OpenMFEntityManagerNoSql<OpenMFPhot
         FilterOperator.EQUAL, true);
     query.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
     query.setFilter(filter);
-    FetchOptions options = FetchOptions.Builder.withLimit(100);
+    FetchOptions options = FetchOptions.Builder.withLimit(10000);
     return queryEntities(query, options);    
   }
 
@@ -77,7 +77,7 @@ public class OpenMFPhotoManagerNoSql extends OpenMFEntityManagerNoSql<OpenMFPhot
     Query.Filter filter = new Query.FilterPredicate(OpenMFConstants.FIELD_NAME_ACTIVE,
         FilterOperator.EQUAL, true);
     query.setFilter(filter);
-    FetchOptions options = FetchOptions.Builder.withLimit(100);
+    FetchOptions options = FetchOptions.Builder.withLimit(1000);
     return queryEntities(query, options);
   }
 
@@ -87,7 +87,7 @@ public class OpenMFPhotoManagerNoSql extends OpenMFEntityManagerNoSql<OpenMFPhot
     Query.Filter filter = new Query.FilterPredicate(OpenMFConstants.FIELD_NAME_ACTIVE,
         FilterOperator.EQUAL, false);
     query.setFilter(filter);
-    FetchOptions options = FetchOptions.Builder.withLimit(100);
+    FetchOptions options = FetchOptions.Builder.withLimit(1000);
     return queryEntities(query, options);
   }
 

@@ -117,11 +117,6 @@ public class GaeAppController {
         return "allrep";
     }
     
-    @RequestMapping(value = "/reports/clientsrep", method= RequestMethod.GET)
-    public String clientsrep() {
-        return "clientsrep";
-    }
-    
     @RequestMapping(value = "/reports/loansrep", method= RequestMethod.GET)
     public String loansrep() {
         return "loansrep";
