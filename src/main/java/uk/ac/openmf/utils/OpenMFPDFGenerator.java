@@ -5,10 +5,11 @@ import java.util.Date;
 
 import uk.ac.openmf.model.OpenMFLoanAccount;
 import uk.ac.openmf.model.OpenMFSavingsAccount;
+import uk.ac.openmf.model.OpenMFTask;
+import uk.ac.openmf.model.OpenMFUser;
+import uk.ac.openmf.web.AppContext;
 
 import com.itextpdf.text.Anchor;
-import com.itextpdf.text.BadElementException;
-import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chapter;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -67,12 +68,14 @@ public class OpenMFPDFGenerator {
 		Chapter catPart = new Chapter(new Paragraph(anchor), 1);
 
 		Paragraph subPara = new Paragraph("Loan Account Overview", catFont);
+		addEmptyLine(subPara, 1);
 		Section subCatPart = catPart.addSection(subPara);
 
 		// add a table
 		createLAOTable(subCatPart, clientId);
 		
 		Paragraph subPara1 = new Paragraph("Savings Account Overview", catFont);
+		addEmptyLine(subPara1, 1);
 		Section subCatPart1 = catPart.addSection(subPara1);
 
 		// add a table
@@ -131,14 +134,9 @@ public class OpenMFPDFGenerator {
 	}
 	
 	private static void createSAOTable(Section subCatPart, String clientId)
-			throws BadElementException {
-		PdfPTable table = new PdfPTable(3);
-
-		// t.setBorderColor(BaseColor.GRAY);
-		// t.setPadding(4);
-		// t.setSpacing(4);
-		// t.setBorderWidth(1);
-
+			throws DocumentException {
+		PdfPTable table = new PdfPTable(5);
+		
 		PdfPCell c1 = new PdfPCell(new Phrase("Savings Acc#"));
 		c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 		table.addCell(c1);
@@ -159,6 +157,8 @@ public class OpenMFPDFGenerator {
 		c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 		table.addCell(c1);
 
+		float[] columnWidths = new float[] {10f, 10f, 15f, 15f, 10f};
+        table.setWidths(columnWidths);
 		table.setHeaderRows(1);
 
 		ArrayList<OpenMFSavingsAccount> savingsAccounts = OMFUtils.getSavingsAccountsByClientList(clientId);
@@ -174,6 +174,69 @@ public class OpenMFPDFGenerator {
 
 	}
 
+	public static void addTaskContent(Document document, String title, String omfuId) throws DocumentException {
+		Anchor anchor = new Anchor(title, catFont);
+		anchor.setName(title);
+
+		// Second parameter is the number of the chapter
+		Chapter catPart = new Chapter(new Paragraph(anchor), 1);
+
+		Paragraph subPara = new Paragraph("User Tasks Overview", catFont);
+		addEmptyLine(subPara, 1);
+		Section subCatPart = catPart.addSection(subPara);
+
+		// add a table
+		createTasksTable(subCatPart, omfuId);
+
+		// now add all this to the document
+		document.add(catPart);
+	}
+	
+	private static void createTasksTable(Section subCatPart, String omfuId)
+			throws DocumentException {
+		PdfPTable table = new PdfPTable(5);
+		
+		PdfPCell c1 = new PdfPCell(new Phrase("Task#"));
+		c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+		table.addCell(c1);
+
+		c1 = new PdfPCell(new Phrase("Date Assigned"));
+		c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+		table.addCell(c1);
+
+		c1 = new PdfPCell(new Phrase("Amount"));
+		c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+		table.addCell(c1);
+
+		c1 = new PdfPCell(new Phrase("Acc#"));
+		c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+		table.addCell(c1);
+
+		c1 = new PdfPCell(new Phrase("Type"));
+		c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+		table.addCell(c1);
+
+		float[] columnWidths = new float[] {10f, 10f, 15f, 15f, 10f};
+        table.setWidths(columnWidths);
+		table.setHeaderRows(1);
+
+		OpenMFUser omfuser = null;
+		if (omfuId != null) {
+			omfuser = AppContext.getAppContext().getUserManager().getUser(ServletUtils.validateEventId(omfuId));
+		}
+		
+		ArrayList<OpenMFTask> tasks = OMFUtils.getTasksByUsername(omfuser.getUsername(), false);
+		for (OpenMFTask task : tasks) {
+			table.addCell(task.getTaskId());
+			table.addCell(task.getDateassigned());
+			table.addCell(task.getAmount());
+			table.addCell(task.getAccountnumber());
+			table.addCell(task.getCollectiontype());			
+		}
+
+		subCatPart.add(table);
+
+	}
 	private static void addEmptyLine(Paragraph paragraph, int number) {
 		for (int i = 0; i < number; i++) {
 			paragraph.add(new Paragraph(" "));

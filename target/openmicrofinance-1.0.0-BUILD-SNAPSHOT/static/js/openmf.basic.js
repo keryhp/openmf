@@ -28,6 +28,11 @@ function viewUserDetailsFn(omfuId){
 	window.location.href = "/viewuser?omfuId=" + omfuId;
 };
 
+function viewUserTaskDetailsFn(omfuId){
+	"use strict";
+	window.location.href = "/reports/tasksrep?omfuId=" + omfuId;
+};
+
 function viewLoanDetailsFn(lpId){
 	"use strict";
 	window.location.href = "/loanproductdetails?lpId=" + lpId;
@@ -164,4 +169,9 @@ function formvalidate(){
 function exportFromHTML(clientId){
 	"use strict";
 	window.location.href = "/reports/clientspdf?clientId=" + clientId;
+};
+
+function exportTasksFromHTML(omfuId){
+	"use strict";
+	window.location.href = "/reports/taskspdf?omfuId=" + omfuId;
 };

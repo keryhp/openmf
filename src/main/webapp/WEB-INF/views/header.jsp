@@ -20,8 +20,7 @@
 						class="fa fa-bar-chart-o"></i> Reports<b class="caret"></b></a>
 					<ul class="dropdown-menu">
 						<li><a href="/reports/clients">Client Accounts</a></li>
-						<!-- <li><a href="/reports/savingsrep">Savings Accounts</a></li> -->
-						<li><a href="/reports/tasksrep">Today's Tasks</a></li>
+						<li><a href="/reports/users">Today's Tasks</a></li>
 					</ul></li>
 				<li class="dropdown" id="preview-menu"><a
 					class="dropdown-toggle" data-toggle="dropdown" href="#"><i

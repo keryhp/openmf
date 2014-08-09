@@ -69,10 +69,6 @@
 							</ul>
 						</div>
 						<div class="col-md-12">
-							<div class="pull-right">
-								<a href="/createclient" class="btn btn-primary"><i
-									class="fa fa-plus fa fa-white"></i>Create Client</a>
-							</div>
 							<input type="search"
 								class="light-table-filter marginbottom0px form-control"
 								data-table="order-table"
