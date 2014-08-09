@@ -2,6 +2,10 @@ package uk.ac.openmf.web;
 
 import java.util.logging.Logger;
 
+import javax.servlet.ServletContext;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import uk.ac.openmf.model.OpenMFChartOfAccountsManager;
 import uk.ac.openmf.model.OpenMFClientManager;
 import uk.ac.openmf.model.OpenMFEntityManagerFactory;
@@ -47,6 +51,10 @@ public class AppContext {
 	private PhotoServiceManager photoServiceManager;
 	private EmailServiceManager emailServiceManager;
 	private OpenMFUser openMFUser = null;
+
+	@Autowired
+	ServletContext context;
+
 	// Prevent the class being instantiated externally.
 	private AppContext() {
 		configManager = new ConfigManager();
@@ -187,5 +195,9 @@ public class AppContext {
 
 	public void setCurrentUser(OpenMFUser openMFUser){
 		this.openMFUser = openMFUser;
+	}
+	
+	public ServletContext getServletContext(){
+		return this.context;
 	}
 }

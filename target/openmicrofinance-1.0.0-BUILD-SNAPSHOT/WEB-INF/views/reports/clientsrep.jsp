@@ -14,18 +14,18 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%
 	OpenMFUser currentUser = (OpenMFUser) request
-			.getAttribute("currentUser");
+	.getAttribute("currentUser");
 	OpenMFClient client = (OpenMFClient) request.getAttribute("client");
 	ArrayList<OpenMFLoanAccount> loanAccounts = (ArrayList<OpenMFLoanAccount>) request
-			.getAttribute("loanAccounts");
+	.getAttribute("loanAccounts");
 	ArrayList<OpenMFSavingsAccount> savingsAccounts = (ArrayList<OpenMFSavingsAccount>) request
-			.getAttribute("savingsAccounts");
+	.getAttribute("savingsAccounts");
 	ArrayList<OpenMFTransaction> transactions = (ArrayList<OpenMFTransaction>) request
-			.getAttribute("transactions");
+	.getAttribute("transactions");
 	ArrayList<OpenMFLoanRepayment> repaymentschedules = (ArrayList<OpenMFLoanRepayment>) request
-			.getAttribute("repaymentschedules");
+	.getAttribute("repaymentschedules");
 	ArrayList<OpenMFSavingsScheduledDeposit> depositschedules = (ArrayList<OpenMFSavingsScheduledDeposit>) request
-			.getAttribute("depositschedules");
+	.getAttribute("depositschedules");
 %>
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB" xml:lang="en-GB">
@@ -71,12 +71,17 @@
 			<div class="row whitebg">
 				<div class="col-md-12 pull-right whitebg">
 
-					<div class="col-md-12">
+					<div id="reportdata" class="col-md-12">
 						<ul class="breadcrumb">
 							<li><a href="/reports/clients">Reports</a></li>
 							<li class="active">Clients Report</li>
 						</ul>
 						<div>
+							<div class="pull-right">
+								<button onclick="exportFromHTML(<%=client.getId() %>);" class="btn btn-primary">
+									<i class="fa fa-plus fa fa-white"></i>Export
+								</button>
+							</div>
 							<div class="span gray-head">
 								<span class="boldlabel"> <strong class="">Loan
 										Account Overview</strong>
@@ -135,11 +140,13 @@
 										if (savingsAccount.isActive()) {
 								%>
 								<tr>
-									<td><c:out value="<%=savingsAccount.getSavingsaccountnumber()%>"
+									<td><c:out
+											value="<%=savingsAccount.getSavingsaccountnumber()%>"
 											escapeXml="true" /></td>
 									<td><c:out value="<%=savingsAccount.getSavingscode()%>"
 											escapeXml="true" /></td>
-									<td><c:out value="<%=savingsAccount.getAvailablebalance()%>"
+									<td><c:out
+											value="<%=savingsAccount.getAvailablebalance()%>"
 											escapeXml="true" /></td>
 									<td><c:out
 											value="<%=savingsAccount.getTotalnumdeposits()%>"
@@ -157,7 +164,7 @@
 						<div>
 							<div class="span gray-head">
 								<span class="boldlabel"> <strong class="">Loan
-										Account Overview</strong>
+										Repayment Schedules</strong>
 								</span>
 							</div>
 							<table class="table table-striped">
@@ -236,8 +243,8 @@
 						</div>
 						<div>
 							<div class="span gray-head">
-								<span class="boldlabel"> <strong class="">Loan
-										Account Overview</strong>
+								<span class="boldlabel"> <strong class="">Savings
+										Deposit Schedules</strong>
 								</span>
 							</div>
 							<table class="table table-striped">
@@ -304,8 +311,7 @@
 						</div>
 						<div>
 							<div class="span gray-head">
-								<span class="boldlabel"> <strong class="">Loan
-										Account Overview</strong>
+								<span class="boldlabel"> <strong class="">Transaction</strong>
 								</span>
 							</div>
 							<table class="order-table table">

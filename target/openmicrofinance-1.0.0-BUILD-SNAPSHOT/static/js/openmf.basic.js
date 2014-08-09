@@ -160,3 +160,8 @@ function formvalidate(){
 		alert("Please provide proper input values");
 	}
 };
+
+function exportFromHTML(clientId){
+	"use strict";
+	window.location.href = "/reports/clientspdf?clientId=" + clientId;
+};
