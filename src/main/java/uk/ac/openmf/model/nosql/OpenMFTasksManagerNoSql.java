@@ -86,7 +86,7 @@ implements OpenMFTasksManager {
 //		qry.setFilter(FilterOperator.EQUAL.of(OpenMFConstants.FIELD_NAME_ASSIGNEDTO, username));
 //		qry.setFilter(FilterOperator.EQUAL.of(OpenMFConstants.FIELD_NAME_STATUS, status));
 		Query.Filter f1 = new Query.FilterPredicate(OpenMFConstants.FIELD_NAME_ASSIGNEDTO, FilterOperator.EQUAL, username);
-		Query.Filter f2 = new Query.FilterPredicate(OpenMFConstants.FIELD_NAME_STATUS, FilterOperator.GREATER_THAN_OR_EQUAL, status);
+		Query.Filter f2 = new Query.FilterPredicate(OpenMFConstants.FIELD_NAME_STATUS, FilterOperator.EQUAL, status);
 		List<Filter> filters = Arrays.asList(f1, f2);
 		Filter filter = new Query.CompositeFilter(CompositeFilterOperator.AND, filters);
 		qry.setFilter(filter);		

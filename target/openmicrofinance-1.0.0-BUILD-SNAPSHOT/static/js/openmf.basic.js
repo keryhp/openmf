@@ -175,3 +175,21 @@ function exportTasksFromHTML(omfuId){
 	"use strict";
 	window.location.href = "/reports/taskspdf?omfuId=" + omfuId;
 };
+
+//OnResponseBack is a function pointer which will be called by the ajax return function. 
+//the prototype should be responseBack(error, orderObj), if error == true, then orderObj will be null
+function markTaskcomplete(taskId){
+	"use strict";
+
+	$.ajax({
+		url: "taskcomplete",
+		type: "post",
+		cache: false,
+		data: {taskId : taskId}
+	}).done(function(){
+		$("#" + taskId).empty();
+		$("#" + taskId).text("Complete");
+	}).fail(function(a, b, c){
+		return false;
+	});		
+}

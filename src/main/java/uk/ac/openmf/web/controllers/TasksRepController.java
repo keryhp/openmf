@@ -10,7 +10,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import uk.ac.openmf.model.OpenMFTask;
 import uk.ac.openmf.model.OpenMFUser;
 import uk.ac.openmf.utils.OMFUtils;
 import uk.ac.openmf.utils.OpenMFPDFGenerator;
@@ -72,4 +75,13 @@ public class TasksRepController {
 		req.setAttribute("tasks", OMFUtils.getTasksByUsername(omfuser.getUsername(), false));
         return "reports/tasksrep";
     }
+	
+	@RequestMapping(value = "/taskcomplete", method= RequestMethod.POST)
+    public @ResponseBody void taskcomplete(@RequestParam(value = "taskId", defaultValue = "", required = true) String taskId) {
+		OpenMFTask task = OMFUtils.getTaskByTaskId(taskId);
+		if(task != null){
+			task.setStatus(true);
+			AppContext.getAppContext().getTasksManager().upsertEntity(task);
+		}
+	}
 }

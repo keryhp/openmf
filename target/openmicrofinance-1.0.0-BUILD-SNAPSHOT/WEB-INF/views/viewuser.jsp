@@ -200,6 +200,7 @@
 																			<th>Amount</th>
 																			<th>Acc#</th>
 																			<th>Type</th>
+																			<th>Action</th>
 																		</tr>
 																		<%
 																			for (OpenMFTask task : tasks) {
@@ -220,6 +221,7 @@
 																					escapeXml="true" /></td>
 																					<td><c:out value="<%=task.getCollectiontype()%>"
 																					escapeXml="true" /></td>
+																					<td id="<%=taskId %>"><a onclick="markTaskcomplete(<%=taskId%>);" class="btn btn-xs btn-primary"><i class="fa fa-plus-square fa-white"></i></a> </td>
 																		</tr>
 																		<%
 																					}

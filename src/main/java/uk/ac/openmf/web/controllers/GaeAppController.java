@@ -30,9 +30,9 @@ public class GaeAppController {
     @RequestMapping(value = "/", method= RequestMethod.GET)
     public String landing(HttpServletRequest req) {
     	OpenMFUser currentUser = (OpenMFUser)AppContext.getAppContext().getCurrentUser();
-    	if(currentUser == null){
+    	/*if(currentUser == null){
     		return "redirect: /register";
-    	}
+    	}*/
 		req.setAttribute("currentUser", currentUser);
 		logger.info("User details:" + currentUser.toString());
         return "landing";

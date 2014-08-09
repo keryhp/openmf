@@ -239,6 +239,10 @@ public final class OMFUtils {
 		}
 		return tasks;
 	}
+	
+	public static OpenMFTask getTaskByTaskId(String taskId){
+		return AppContext.getAppContext().getTasksManager().getTask(ServletUtils.validateEventId(taskId));
+	}
 
 	public static ArrayList<OpenMFTask> getAllTasksByUsername(String username){
 		Iterable<OpenMFTask> tasksiter = AppContext.getAppContext().getTasksManager().getAllTasksByUsername(username);

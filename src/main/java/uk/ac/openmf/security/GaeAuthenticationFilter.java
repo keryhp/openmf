@@ -52,7 +52,7 @@ public class GaeAuthenticationFilter extends GenericFilterBean {
 			authentication = null;
 			((HttpServletRequest)request).getSession().invalidate();
 		}
-
+		logger.info("Authentication " + authentication);
 		if (authentication == null) {
 			if (googleUser != null) {
 				logger.debug("Currently logged on to GAE as user " + googleUser);
@@ -66,9 +66,8 @@ public class GaeAuthenticationFilter extends GenericFilterBean {
 					SecurityContextHolder.getContext().setAuthentication(authentication);
 
 					if (authentication.getAuthorities().contains(AppRole.NEW_USER)) {
-						logger.debug("New user authenticated. Redirecting to registration page");
+						logger.debug("New user authenticated. Redirecting to Registration page");
 						((HttpServletResponse) response).sendRedirect(REGISTRATION_URL);
-
 						return;
 					}
 				} catch (AuthenticationException e) {
