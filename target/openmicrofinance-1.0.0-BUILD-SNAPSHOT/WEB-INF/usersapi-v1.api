@@ -127,10 +127,10 @@
           "username" : {
             "type" : "string"
           },
-          "main_office" : {
+          "createdById" : {
             "type" : "string"
           },
-          "createdById" : {
+          "main_office" : {
             "type" : "string"
           },
           "role" : {
@@ -142,10 +142,10 @@
           "email" : {
             "type" : "string"
           },
-          "forename" : {
+          "supervisor" : {
             "type" : "string"
           },
-          "supervisor" : {
+          "forename" : {
             "type" : "string"
           },
           "contact" : {

@@ -121,58 +121,58 @@
           "active" : {
             "type" : "boolean"
           },
-          "clientclassification" : {
+          "createdById" : {
             "type" : "string"
           },
           "accountNumber" : {
             "type" : "string"
           },
-          "dateofbirth" : {
+          "submittedon" : {
             "type" : "string"
           },
-          "submittedon" : {
+          "clientclassification" : {
+            "type" : "string"
+          },
+          "dateofbirth" : {
             "type" : "string"
           },
           "activationdate" : {
             "type" : "string"
           },
-          "createdById" : {
-            "type" : "string"
-          },
-          "balance" : {
-            "type" : "string"
-          },
-          "groupid" : {
-            "type" : "string"
-          },
-          "midname" : {
-            "type" : "string"
-          },
-          "gender" : {
-            "type" : "string"
-          },
-          "eligible" : {
-            "type" : "boolean"
-          },
-          "externalId" : {
-            "type" : "string"
-          },
-          "office" : {
-            "type" : "string"
-          },
-          "clienttype" : {
-            "type" : "string"
-          },
           "blacklisted" : {
             "type" : "boolean"
           },
-          "forename" : {
+          "balance" : {
             "type" : "string"
           },
           "supervisor" : {
             "type" : "string"
           },
+          "forename" : {
+            "type" : "string"
+          },
           "contact" : {
+            "type" : "string"
+          },
+          "office" : {
+            "type" : "string"
+          },
+          "midname" : {
+            "type" : "string"
+          },
+          "groupid" : {
+            "type" : "string"
+          },
+          "eligible" : {
+            "type" : "boolean"
+          },
+          "clienttype" : {
+            "type" : "string"
+          },
+          "externalId" : {
+            "type" : "string"
+          },
+          "gender" : {
             "type" : "string"
           }
         }

@@ -34,6 +34,7 @@ public class TaskServiceAPI {
 	public OpenMFTask updateOpenMFTask(@Named("taskId") String taskId) throws Exception {
 		OpenMFTask currentOpenMFTask = getOpenMFTask(taskId);
 		currentOpenMFTask.setStatus(true);
+		AppContext.getAppContext().getTasksManager().upsertEntity(currentOpenMFTask);
 		return currentOpenMFTask;
 	}
 

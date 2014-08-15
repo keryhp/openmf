@@ -127,19 +127,7 @@
           "username" : {
             "type" : "string"
           },
-          "createdById" : {
-            "type" : "string"
-          },
-          "main_office" : {
-            "type" : "string"
-          },
           "role" : {
-            "type" : "string"
-          },
-          "userId" : {
-            "type" : "string"
-          },
-          "email" : {
             "type" : "string"
           },
           "supervisor" : {
@@ -149,6 +137,18 @@
             "type" : "string"
           },
           "contact" : {
+            "type" : "string"
+          },
+          "userId" : {
+            "type" : "string"
+          },
+          "email" : {
+            "type" : "string"
+          },
+          "main_office" : {
+            "type" : "string"
+          },
+          "createdById" : {
             "type" : "string"
           }
         }

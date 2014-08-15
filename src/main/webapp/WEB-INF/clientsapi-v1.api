@@ -121,29 +121,8 @@
           "active" : {
             "type" : "boolean"
           },
-          "createdById" : {
-            "type" : "string"
-          },
-          "accountNumber" : {
-            "type" : "string"
-          },
-          "submittedon" : {
-            "type" : "string"
-          },
-          "clientclassification" : {
-            "type" : "string"
-          },
-          "dateofbirth" : {
-            "type" : "string"
-          },
-          "activationdate" : {
-            "type" : "string"
-          },
           "blacklisted" : {
             "type" : "boolean"
-          },
-          "balance" : {
-            "type" : "string"
           },
           "supervisor" : {
             "type" : "string"
@@ -154,25 +133,46 @@
           "contact" : {
             "type" : "string"
           },
-          "office" : {
-            "type" : "string"
-          },
-          "midname" : {
-            "type" : "string"
-          },
-          "groupid" : {
+          "clienttype" : {
             "type" : "string"
           },
           "eligible" : {
             "type" : "boolean"
           },
-          "clienttype" : {
+          "balance" : {
+            "type" : "string"
+          },
+          "groupid" : {
+            "type" : "string"
+          },
+          "midname" : {
             "type" : "string"
           },
           "externalId" : {
             "type" : "string"
           },
           "gender" : {
+            "type" : "string"
+          },
+          "office" : {
+            "type" : "string"
+          },
+          "createdById" : {
+            "type" : "string"
+          },
+          "dateofbirth" : {
+            "type" : "string"
+          },
+          "accountNumber" : {
+            "type" : "string"
+          },
+          "clientclassification" : {
+            "type" : "string"
+          },
+          "activationdate" : {
+            "type" : "string"
+          },
+          "submittedon" : {
             "type" : "string"
           }
         }
