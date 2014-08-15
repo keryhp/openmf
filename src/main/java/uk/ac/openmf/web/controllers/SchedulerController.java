@@ -17,7 +17,7 @@ import uk.ac.openmf.model.OpenMFGeneralLedger;
 import uk.ac.openmf.model.OpenMFTask;
 import uk.ac.openmf.model.OpenMFUser;
 import uk.ac.openmf.services.GeneralLedgerService;
-import uk.ac.openmf.services.TaskService;
+import uk.ac.openmf.services.GenerateTaskService;
 import uk.ac.openmf.utils.OMFUtils;
 import uk.ac.openmf.utils.OpenMFConstants;
 import uk.ac.openmf.web.AppContext;
@@ -84,7 +84,7 @@ public class SchedulerController {
 
 	@RequestMapping(value = "/generatetasks", method= RequestMethod.GET)
 	public void generatetasks(HttpServletRequest req) throws UnsupportedEncodingException, ParseException {
-		if(TaskService.generateScheduledTasks()){
+		if(GenerateTaskService.generateScheduledTasks()){
 			for (OpenMFUser user : OMFUtils.getUsersList()) {
 				StringBuilder sb = new StringBuilder();
 				String subject = OpenMFConstants.FIELD_VALUE_TASKLIST;

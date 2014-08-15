@@ -1,0 +1,213 @@
+{
+  "extends" : "thirdParty.api",
+  "abstract" : false,
+  "root" : "https://openmicrofinance.appspot.com/_ah/api",
+  "name" : "clientsapi",
+  "version" : "v1",
+  "description" : "An API to manage clients",
+  "defaultVersion" : false,
+  "adapter" : {
+    "bns" : "https://openmicrofinance.appspot.com/_ah/spi",
+    "deadline" : 10.0,
+    "type" : "lily"
+  },
+  "auth" : {
+    "allowCookieAuth" : false
+  },
+  "frontendLimits" : {
+    "unregisteredUserQps" : -1,
+    "unregisteredQps" : -1,
+    "unregisteredDaily" : -1,
+    "rules" : [ ]
+  },
+  "cacheControl" : {
+    "type" : "no-cache",
+    "maxAge" : 0
+  },
+  "methods" : {
+    "clientsapi.list" : {
+      "path" : "openmfclientcollection",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "uk.ac.openmf.apis.ClientServiceAPI.getOpenMFClients",
+      "request" : {
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "clientsapi.add" : {
+      "path" : "addOpenMFClient",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "uk.ac.openmf.apis.ClientServiceAPI.addOpenMFClient",
+      "request" : {
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "clientsapi.remove" : {
+      "path" : "openmfclient/{id}",
+      "httpMethod" : "DELETE",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "uk.ac.openmf.apis.ClientServiceAPI.removeOpenMFClient",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "empty"
+      }
+    },
+    "clientsapi.getClientById" : {
+      "path" : "openmfclient/{clientId}",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "uk.ac.openmf.apis.ClientServiceAPI.getOpenMFClientsById",
+      "request" : {
+        "parameters" : {
+          "clientId" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    }
+  },
+  "descriptor" : {
+    "schemas" : {
+      "OpenMFClient" : {
+        "id" : "OpenMFClient",
+        "type" : "object",
+        "properties" : {
+          "address" : {
+            "type" : "string"
+          },
+          "id" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "timestamp" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "surname" : {
+            "type" : "string"
+          },
+          "active" : {
+            "type" : "boolean"
+          },
+          "createdById" : {
+            "type" : "string"
+          },
+          "accountNumber" : {
+            "type" : "string"
+          },
+          "submittedon" : {
+            "type" : "string"
+          },
+          "clientclassification" : {
+            "type" : "string"
+          },
+          "dateofbirth" : {
+            "type" : "string"
+          },
+          "activationdate" : {
+            "type" : "string"
+          },
+          "blacklisted" : {
+            "type" : "boolean"
+          },
+          "balance" : {
+            "type" : "string"
+          },
+          "supervisor" : {
+            "type" : "string"
+          },
+          "forename" : {
+            "type" : "string"
+          },
+          "contact" : {
+            "type" : "string"
+          },
+          "office" : {
+            "type" : "string"
+          },
+          "midname" : {
+            "type" : "string"
+          },
+          "groupid" : {
+            "type" : "string"
+          },
+          "eligible" : {
+            "type" : "boolean"
+          },
+          "clienttype" : {
+            "type" : "string"
+          },
+          "externalId" : {
+            "type" : "string"
+          },
+          "gender" : {
+            "type" : "string"
+          }
+        }
+      },
+      "OpenMFClientCollection" : {
+        "id" : "OpenMFClientCollection",
+        "type" : "object",
+        "properties" : {
+          "items" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "OpenMFClient"
+            }
+          }
+        }
+      }
+    },
+    "methods" : {
+      "uk.ac.openmf.apis.ClientServiceAPI.getOpenMFClients" : {
+        "response" : {
+          "$ref" : "OpenMFClientCollection"
+        }
+      },
+      "uk.ac.openmf.apis.ClientServiceAPI.addOpenMFClient" : {
+        "response" : {
+          "$ref" : "OpenMFClient"
+        }
+      },
+      "uk.ac.openmf.apis.ClientServiceAPI.removeOpenMFClient" : {
+      },
+      "uk.ac.openmf.apis.ClientServiceAPI.getOpenMFClientsById" : {
+        "response" : {
+          "$ref" : "OpenMFClient"
+        }
+      }
+    }
+  }
+}

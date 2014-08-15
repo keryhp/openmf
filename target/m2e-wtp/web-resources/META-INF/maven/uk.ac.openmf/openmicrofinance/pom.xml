@@ -49,6 +49,12 @@
 			<version>${gae.version}</version>
 			<scope>test</scope>
 		</dependency>
+		
+		<dependency>
+			<groupId>com.google.appengine</groupId>
+			<artifactId>appengine-endpoints</artifactId>
+			<version>${gae.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>com.google.appengine</groupId>

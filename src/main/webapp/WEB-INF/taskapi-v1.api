@@ -1,0 +1,238 @@
+{
+  "extends" : "thirdParty.api",
+  "abstract" : false,
+  "root" : "https://openmicrofinance.appspot.com/_ah/api",
+  "name" : "taskapi",
+  "version" : "v1",
+  "description" : "An API to manage tasks",
+  "defaultVersion" : false,
+  "adapter" : {
+    "bns" : "https://openmicrofinance.appspot.com/_ah/spi",
+    "deadline" : 10.0,
+    "type" : "lily"
+  },
+  "auth" : {
+    "allowCookieAuth" : false
+  },
+  "frontendLimits" : {
+    "unregisteredUserQps" : -1,
+    "unregisteredQps" : -1,
+    "unregisteredDaily" : -1,
+    "rules" : [ ]
+  },
+  "cacheControl" : {
+    "type" : "no-cache",
+    "maxAge" : 0
+  },
+  "methods" : {
+    "taskapi.listByUsername" : {
+      "path" : "openmftaskcollection/{omfuId}",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "uk.ac.openmf.apis.TaskServiceAPI.getOpenMFTasksByUsername",
+      "request" : {
+        "parameters" : {
+          "omfuId" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "taskapi.list" : {
+      "path" : "openmftaskcollection",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "uk.ac.openmf.apis.TaskServiceAPI.getOpenMFTasks",
+      "request" : {
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "taskapi.update" : {
+      "path" : "openmftask/{taskId}",
+      "httpMethod" : "PUT",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "uk.ac.openmf.apis.TaskServiceAPI.updateOpenMFTask",
+      "request" : {
+        "parameters" : {
+          "taskId" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "taskapi.remove" : {
+      "path" : "openmftask/{id}",
+      "httpMethod" : "DELETE",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "uk.ac.openmf.apis.TaskServiceAPI.removeOpenMFTask",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "empty"
+      }
+    },
+    "taskapi.getTask" : {
+      "path" : "openmftask/{taskId}",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "uk.ac.openmf.apis.TaskServiceAPI.getOpenMFTask",
+      "request" : {
+        "parameters" : {
+          "taskId" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "taskapi.add" : {
+      "path" : "addOpenMFTask",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "uk.ac.openmf.apis.TaskServiceAPI.addOpenMFTask",
+      "request" : {
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    }
+  },
+  "descriptor" : {
+    "schemas" : {
+      "OpenMFTask" : {
+        "id" : "OpenMFTask",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "timestamp" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "status" : {
+            "type" : "boolean"
+          },
+          "taskId" : {
+            "type" : "string"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "createdById" : {
+            "type" : "string"
+          },
+          "collectiontype" : {
+            "type" : "string"
+          },
+          "datecompleted" : {
+            "type" : "string"
+          },
+          "accountnumber" : {
+            "type" : "string"
+          },
+          "dateassigned" : {
+            "type" : "string"
+          },
+          "assignedto" : {
+            "type" : "string"
+          },
+          "amount" : {
+            "type" : "string"
+          },
+          "cashier" : {
+            "type" : "string"
+          },
+          "newclient" : {
+            "type" : "boolean"
+          }
+        }
+      },
+      "OpenMFTaskCollection" : {
+        "id" : "OpenMFTaskCollection",
+        "type" : "object",
+        "properties" : {
+          "items" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "OpenMFTask"
+            }
+          }
+        }
+      }
+    },
+    "methods" : {
+      "uk.ac.openmf.apis.TaskServiceAPI.getOpenMFTasksByUsername" : {
+        "response" : {
+          "$ref" : "OpenMFTaskCollection"
+        }
+      },
+      "uk.ac.openmf.apis.TaskServiceAPI.getOpenMFTasks" : {
+        "response" : {
+          "$ref" : "OpenMFTaskCollection"
+        }
+      },
+      "uk.ac.openmf.apis.TaskServiceAPI.updateOpenMFTask" : {
+        "response" : {
+          "$ref" : "OpenMFTask"
+        }
+      },
+      "uk.ac.openmf.apis.TaskServiceAPI.removeOpenMFTask" : {
+      },
+      "uk.ac.openmf.apis.TaskServiceAPI.getOpenMFTask" : {
+        "response" : {
+          "$ref" : "OpenMFTask"
+        }
+      },
+      "uk.ac.openmf.apis.TaskServiceAPI.addOpenMFTask" : {
+        "response" : {
+          "$ref" : "OpenMFTask"
+        }
+      }
+    }
+  }
+}

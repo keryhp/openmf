@@ -2,6 +2,13 @@ package uk.ac.openmf.utils;
 
 public class OpenMFConstants {
 
+	public static final String WEB_CLIENT_ID = "931446465214-3k5m3euevh5idu090qbuqtd3jn1ol5mh.apps.googleusercontent.com";
+	public static final String ANDROID_CLIENT_ID = "931446465214-me9l8tsdr5j3h5b9f26f27965ddq6nb2.apps.googleusercontent.com";
+	public static final String IOS_CLIENT_ID = "replace this with your iOS client ID";
+	public static final String ANDROID_AUDIENCE = WEB_CLIENT_ID;
+
+	public static final String EMAIL_SCOPE = "https://www.googleapis.com/auth/userinfo.email";
+
 	public static final String ENTITY_USER_TYPE_GAE = "GaeUser";
 	public static final String FIELD_NAME_USER_AUTHORITIES = "authorities";
 	public static final String FIELD_VALUE_DEBIT ="debit";
@@ -17,7 +24,7 @@ public class OpenMFConstants {
 	public static final String FIELD_VALUE_TASKLIST= "[Daily] List of Tasks";
 	public static final String FIELD_VALUE_TASKLISTFAIL = "[TASK GENRATION FAILED] List of Tasks";
 	public static final String FIELD_VALUE_SYSTEM = "System";
-	
+
 	public static final String FIELD_NAME_ID = "id";
 	public static final String FIELD_NAME_USERID = "userId";
 	public static final String FIELD_NAME_USERNAME = "username";

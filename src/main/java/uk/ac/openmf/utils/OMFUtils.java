@@ -256,6 +256,20 @@ public final class OMFUtils {
 		}
 		return tasks;
 	}
+	
+	public static ArrayList<OpenMFTask> getAllTasks(){
+		Iterable<OpenMFTask> tasksiter = AppContext.getAppContext().getTasksManager().getAllTasks();
+		ArrayList<OpenMFTask> tasks = new ArrayList<OpenMFTask>();
+		try {
+			for (OpenMFTask task : tasksiter) {
+				if(!task.isStatus())
+					tasks.add(task);
+			}
+		} catch (DatastoreNeedIndexException e) {
+			//log the error
+		}
+		return tasks;
+	}
 
 	public static ArrayList<OpenMFClient> getAllClientsList(){
 		OpenMFClientManager clientManager = AppContext.getAppContext().getClientManager();

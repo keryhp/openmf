@@ -1,0 +1,218 @@
+{
+ "kind": "discovery#rpcDescription",
+ "etag": "\"MKGA2miAJpVGF7yQTQhsoDXpye8/bbpS0Qk0bMtTEU2bt86RjSihknc\"",
+ "discoveryVersion": "v1",
+ "id": "clientsapi:v1",
+ "name": "clientsapi",
+ "version": "v1",
+ "description": "An API to manage clients",
+ "icons": {
+  "x16": "http://www.google.com/images/icons/product/search-16.gif",
+  "x32": "http://www.google.com/images/icons/product/search-32.gif"
+ },
+ "protocol": "rpc",
+ "rootUrl": "https://openmicrofinance.appspot.com/_ah/api/",
+ "rpcUrl": "https://openmicrofinance.appspot.com/_ah/api/rpc",
+ "rpcPath": "/_ah/api/rpc",
+ "parameters": {
+  "alt": {
+   "type": "string",
+   "description": "Data format for the response.",
+   "default": "json",
+   "enum": [
+    "json"
+   ],
+   "enumDescriptions": [
+    "Responses with Content-Type of application/json"
+   ],
+   "location": "query"
+  },
+  "fields": {
+   "type": "string",
+   "description": "Selector specifying which fields to include in a partial response.",
+   "location": "query"
+  },
+  "key": {
+   "type": "string",
+   "description": "API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.",
+   "location": "query"
+  },
+  "oauth_token": {
+   "type": "string",
+   "description": "OAuth 2.0 token for the current user.",
+   "location": "query"
+  },
+  "prettyPrint": {
+   "type": "boolean",
+   "description": "Returns response with indentations and line breaks.",
+   "default": "true",
+   "location": "query"
+  },
+  "quotaUser": {
+   "type": "string",
+   "description": "Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. Overrides userIp if both are provided.",
+   "location": "query"
+  },
+  "userIp": {
+   "type": "string",
+   "description": "IP address of the site where the request originates. Use this if you want to enforce per-user limits.",
+   "location": "query"
+  }
+ },
+ "auth": {
+  "oauth2": {
+   "scopes": {
+    "https://www.googleapis.com/auth/userinfo.email": {
+     "description": "View your email address"
+    }
+   }
+  }
+ },
+ "schemas": {
+  "OpenMFClient": {
+   "id": "OpenMFClient",
+   "type": "object",
+   "properties": {
+    "accountNumber": {
+     "type": "string"
+    },
+    "activationdate": {
+     "type": "string"
+    },
+    "active": {
+     "type": "boolean"
+    },
+    "address": {
+     "type": "string"
+    },
+    "balance": {
+     "type": "string"
+    },
+    "blacklisted": {
+     "type": "boolean"
+    },
+    "clientclassification": {
+     "type": "string"
+    },
+    "clienttype": {
+     "type": "string"
+    },
+    "contact": {
+     "type": "string"
+    },
+    "createdById": {
+     "type": "string"
+    },
+    "dateofbirth": {
+     "type": "string"
+    },
+    "eligible": {
+     "type": "boolean"
+    },
+    "externalId": {
+     "type": "string"
+    },
+    "forename": {
+     "type": "string"
+    },
+    "gender": {
+     "type": "string"
+    },
+    "groupid": {
+     "type": "string"
+    },
+    "id": {
+     "type": "string",
+     "format": "int64"
+    },
+    "midname": {
+     "type": "string"
+    },
+    "office": {
+     "type": "string"
+    },
+    "submittedon": {
+     "type": "string"
+    },
+    "supervisor": {
+     "type": "string"
+    },
+    "surname": {
+     "type": "string"
+    },
+    "timestamp": {
+     "type": "string",
+     "format": "int64"
+    }
+   }
+  },
+  "OpenMFClientCollection": {
+   "id": "OpenMFClientCollection",
+   "type": "object",
+   "properties": {
+    "items": {
+     "type": "array",
+     "items": {
+      "$ref": "OpenMFClient"
+     }
+    }
+   }
+  }
+ },
+ "methods": {
+  "clientsapi.add": {
+   "id": "clientsapi.add",
+   "returns": {
+    "$ref": "OpenMFClient"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "clientsapi.getClientById": {
+   "id": "clientsapi.getClientById",
+   "allowGet": true,
+   "parameters": {
+    "clientId": {
+     "type": "string",
+     "required": true
+    }
+   },
+   "parameterOrder": [
+    "clientId"
+   ],
+   "returns": {
+    "$ref": "OpenMFClient"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "clientsapi.list": {
+   "id": "clientsapi.list",
+   "allowGet": true,
+   "returns": {
+    "$ref": "OpenMFClientCollection"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "clientsapi.remove": {
+   "id": "clientsapi.remove",
+   "parameters": {
+    "id": {
+     "type": "string",
+     "required": true,
+     "format": "int64"
+    }
+   },
+   "parameterOrder": [
+    "id"
+   ],
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  }
+ }
+}

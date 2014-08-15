@@ -1,0 +1,189 @@
+{
+  "extends" : "thirdParty.api",
+  "abstract" : false,
+  "root" : "https://openmicrofinance.appspot.com/_ah/api",
+  "name" : "usersapi",
+  "version" : "v1",
+  "description" : "An API to manage users",
+  "defaultVersion" : false,
+  "adapter" : {
+    "bns" : "https://openmicrofinance.appspot.com/_ah/spi",
+    "deadline" : 10.0,
+    "type" : "lily"
+  },
+  "auth" : {
+    "allowCookieAuth" : false
+  },
+  "frontendLimits" : {
+    "unregisteredUserQps" : -1,
+    "unregisteredQps" : -1,
+    "unregisteredDaily" : -1,
+    "rules" : [ ]
+  },
+  "cacheControl" : {
+    "type" : "no-cache",
+    "maxAge" : 0
+  },
+  "methods" : {
+    "usersapi.getUserById" : {
+      "path" : "openmfuser/{omfuId}",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "uk.ac.openmf.apis.UserServiceAPI.getOpenMFUsersById",
+      "request" : {
+        "parameters" : {
+          "omfuId" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "usersapi.list" : {
+      "path" : "openmfusercollection",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "uk.ac.openmf.apis.UserServiceAPI.getOpenMFUsers",
+      "request" : {
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "usersapi.add" : {
+      "path" : "addOpenMFUser",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "uk.ac.openmf.apis.UserServiceAPI.addOpenMFUser",
+      "request" : {
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "usersapi.remove" : {
+      "path" : "openmfuser/{id}",
+      "httpMethod" : "DELETE",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "uk.ac.openmf.apis.UserServiceAPI.removeOpenMFUser",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "empty"
+      }
+    }
+  },
+  "descriptor" : {
+    "schemas" : {
+      "OpenMFUser" : {
+        "id" : "OpenMFUser",
+        "type" : "object",
+        "properties" : {
+          "address" : {
+            "type" : "string"
+          },
+          "id" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "timestamp" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "surname" : {
+            "type" : "string"
+          },
+          "enabled" : {
+            "type" : "boolean"
+          },
+          "password" : {
+            "type" : "string"
+          },
+          "username" : {
+            "type" : "string"
+          },
+          "createdById" : {
+            "type" : "string"
+          },
+          "main_office" : {
+            "type" : "string"
+          },
+          "role" : {
+            "type" : "string"
+          },
+          "userId" : {
+            "type" : "string"
+          },
+          "email" : {
+            "type" : "string"
+          },
+          "supervisor" : {
+            "type" : "string"
+          },
+          "forename" : {
+            "type" : "string"
+          },
+          "contact" : {
+            "type" : "string"
+          }
+        }
+      },
+      "OpenMFUserCollection" : {
+        "id" : "OpenMFUserCollection",
+        "type" : "object",
+        "properties" : {
+          "items" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "OpenMFUser"
+            }
+          }
+        }
+      }
+    },
+    "methods" : {
+      "uk.ac.openmf.apis.UserServiceAPI.getOpenMFUsersById" : {
+        "response" : {
+          "$ref" : "OpenMFUser"
+        }
+      },
+      "uk.ac.openmf.apis.UserServiceAPI.getOpenMFUsers" : {
+        "response" : {
+          "$ref" : "OpenMFUserCollection"
+        }
+      },
+      "uk.ac.openmf.apis.UserServiceAPI.addOpenMFUser" : {
+        "response" : {
+          "$ref" : "OpenMFUser"
+        }
+      },
+      "uk.ac.openmf.apis.UserServiceAPI.removeOpenMFUser" : {
+      }
+    }
+  }
+}
