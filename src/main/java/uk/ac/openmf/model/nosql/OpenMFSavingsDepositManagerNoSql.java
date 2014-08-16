@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import uk.ac.openmf.model.OpenMFSavingsDeposit;
 import uk.ac.openmf.model.OpenMFSavingsDepositManager;
+import uk.ac.openmf.model.OpenMFSavingsWithdrawal;
 import uk.ac.openmf.utils.OpenMFConstants;
 
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -85,5 +86,23 @@ public class OpenMFSavingsDepositManagerNoSql extends OpenMFEntityManagerNoSql<O
 			deposits.add(deposit);
 		}
 		return deposits;
+	}
+
+	@Override
+	public String getTotalSavingsDepositAmtByDates(String fromdate,
+			String todate) {
+		Query qry = new Query(getKind());
+		qry.setFilter(FilterOperator.GREATER_THAN_OR_EQUAL.of(OpenMFConstants.FIELD_NAME_PAIDDATE, fromdate));
+		qry.setFilter(FilterOperator.LESS_THAN_OR_EQUAL.of(OpenMFConstants.FIELD_NAME_PAIDDATE, todate));
+		FetchOptions options = FetchOptions.Builder.withLimit(10000);
+		PreparedQuery pq = DatastoreServiceFactory.getDatastoreService().prepare(qry);
+		Double total = 0.0;
+		for (Entity result : pq.asIterable(options)) {
+			OpenMFSavingsDeposit savingsdepsch = new OpenMFSavingsDepositNoSql(result);
+			if(savingsdepsch.getAmountpaid() == null || savingsdepsch.getAmountpaid() == "")
+				savingsdepsch.setAmountpaid("0.00");
+			total += new Double(savingsdepsch.getAmountpaid());
+		}
+		return total.toString();
 	}
 }

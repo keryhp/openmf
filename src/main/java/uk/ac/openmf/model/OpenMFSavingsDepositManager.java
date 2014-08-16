@@ -17,4 +17,5 @@ public interface OpenMFSavingsDepositManager extends OpenMFEntityManager<OpenMFS
 	   * @return a Client entity.
 	   */
 	  OpenMFSavingsDeposit newSavingsDeposit(String userId);
+	  String getTotalSavingsDepositAmtByDates(String fromdate, String todate);
 }

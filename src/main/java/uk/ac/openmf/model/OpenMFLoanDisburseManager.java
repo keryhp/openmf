@@ -17,4 +17,5 @@ public interface OpenMFLoanDisburseManager extends OpenMFEntityManager<OpenMFLoa
 	   * @return a Client entity.
 	   */
 	  OpenMFLoanDisburse newLoanDisburse(String userId);
+	  String getTotalLoanDisburseAmtByDates(String fromdate, String todate);
 }

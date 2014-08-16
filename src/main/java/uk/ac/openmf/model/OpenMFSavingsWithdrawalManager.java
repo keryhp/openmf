@@ -17,4 +17,5 @@ public interface OpenMFSavingsWithdrawalManager extends OpenMFEntityManager<Open
 	   * @return a Client entity.
 	   */
 	  OpenMFSavingsWithdrawal newSavingsWithdrawal(String userId);
+	  String getTotalSavingsWithdrawalAmtByDates(String fromdate, String todate);
 }

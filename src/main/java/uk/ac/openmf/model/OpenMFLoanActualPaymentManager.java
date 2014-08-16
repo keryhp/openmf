@@ -17,4 +17,5 @@ public interface OpenMFLoanActualPaymentManager extends OpenMFEntityManager<Open
 	   * @return a Client entity.
 	   */
 	  OpenMFLoanActualPayment newLoanActualPayment(String userId);
+	  String getTotalActualPaymentAmtByDates(String fromdate, String todate);
 }

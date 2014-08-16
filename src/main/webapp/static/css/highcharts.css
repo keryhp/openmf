@@ -1,0 +1,18 @@
+.highchart {
+	display: none;
+}
+
+.hc_container {
+	width: 500px;
+	float: left;
+	margin: 30px;
+	padding: 10px;
+	background-color: #eee;
+	-webkit-box-shadow: 0px 1px 15px rgba(50, 50, 50, 0.75);
+	-moz-box-shadow: 0px 1px 15px rgba(50, 50, 50, 0.75);
+	box-shadow: 0px 1px 15px rgba(50, 50, 50, 0.75);
+}
+
+#parent {
+	margin-bottom: 10%;
+}

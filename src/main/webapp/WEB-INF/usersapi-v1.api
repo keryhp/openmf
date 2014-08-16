@@ -115,13 +115,16 @@
             "type" : "string",
             "format" : "int64"
           },
-          "surname" : {
-            "type" : "string"
-          },
           "enabled" : {
             "type" : "boolean"
           },
+          "surname" : {
+            "type" : "string"
+          },
           "password" : {
+            "type" : "string"
+          },
+          "userId" : {
             "type" : "string"
           },
           "username" : {
@@ -130,19 +133,16 @@
           "role" : {
             "type" : "string"
           },
-          "supervisor" : {
+          "email" : {
             "type" : "string"
           },
           "forename" : {
             "type" : "string"
           },
+          "supervisor" : {
+            "type" : "string"
+          },
           "contact" : {
-            "type" : "string"
-          },
-          "userId" : {
-            "type" : "string"
-          },
-          "email" : {
             "type" : "string"
           },
           "main_office" : {

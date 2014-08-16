@@ -128,4 +128,21 @@ public class OpenMFSavingsScheduledDepositManagerNoSql extends OpenMFEntityManag
 		}
 		return schedules;
 	}
+	
+	@Override
+	public String getTotalScheduledSavingsDepositAmtByDates(String fromdate, String todate) {
+		Query qry = new Query(getKind());
+		qry.setFilter(FilterOperator.GREATER_THAN_OR_EQUAL.of(OpenMFConstants.FIELD_NAME_SCHEDULEDATE, fromdate));
+		qry.setFilter(FilterOperator.LESS_THAN_OR_EQUAL.of(OpenMFConstants.FIELD_NAME_SCHEDULEDATE, todate));
+		FetchOptions options = FetchOptions.Builder.withLimit(10000);
+		PreparedQuery pq = DatastoreServiceFactory.getDatastoreService().prepare(qry);
+		Double total = 0.0;
+		for (Entity result : pq.asIterable(options)) {
+			OpenMFSavingsScheduledDeposit savingsdepsch = new OpenMFSavingsScheduledDepositNoSql(result);
+			if(savingsdepsch.getBalanceoutstandingamount() == null || savingsdepsch.getBalanceoutstandingamount() == "")
+				savingsdepsch.setBalanceoutstandingamount("0.00");
+			total += new Double(savingsdepsch.getBalanceoutstandingamount());
+		}
+		return total.toString();
+	}
 }

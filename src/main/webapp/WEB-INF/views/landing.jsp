@@ -16,6 +16,8 @@
 	OpenMFUser currentUser = (OpenMFUser) request
 			.getAttribute("currentUser");
 	pageContext.setAttribute("currentUser", currentUser);
+	List<String> clientStat = (List) request.getAttribute("clientStat");
+	List<String> amountStat = (List) request.getAttribute("amountStat");	
 %>
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB" xml:lang="en-GB">
@@ -40,11 +42,29 @@
 	href="/static/css/font-awesome.min.css" />
 <link type="text/css" rel="stylesheet" href="/static/css/generic.css" />
 <link type="text/css" rel="stylesheet" href="/static/css/openmf.app.css" />
-<script src="/static/js/jquery.min.js"></script>
-<script src="/static/js/chosen.jquery.min.js"></script>
-<script src="/static/js/bootstrap.min.js"></script>
-<script src="/static/js/tablefilter.js"></script>
-<script src="/static/js/openmf.basic.js"></script>
+<link type="text/css" rel="stylesheet" href="/static/css/highcharts.css" />
+<script src="/static/js/jquery.min.js" type="text/javascript"></script>
+<script src="/static/js/chosen.jquery.min.js" type="text/javascript"></script>
+<script src="/static/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="/static/js/tablefilter.js" type="text/javascript"></script>
+<script src="/static/js/openmf.basic.js" type="text/javascript"></script>
+<script src="/static/js/highcharts.js" type="text/javascript"></script>
+<script src="/static/js/jquery.highchartTable.js" type="text/javascript"></script>
+<script type="text/javascript">
+	/*
+		jQuery document ready
+		The HighchartsTable plugin takes data
+		and attributes from a table
+		and parses them to simply create an Hight-charts chart
+	 */
+	$(document).ready(function() {
+		/*
+			simply call highchartTable on a selector
+			that selects the prepared table. Like this : 
+		 */
+		$('table.highchart').highchartTable();
+	});
+</script>
 <!--[if lt IE 9]>
 <script src="/static/js/html5shiv.js"></script>
 <script src="/static/js/respond.min.js"></script>
@@ -56,13 +76,13 @@
 		<jsp:param name="username" value="<%=currentUser.getUsername()%>" />
 		<jsp:param name="userid" value="<%=currentUser.getId()%>" />
 	</jsp:include>
-	<jsp:include page="/WEB-INF/views/leftnav.jsp"/>
+	<jsp:include page="/WEB-INF/views/leftnav.jsp" />
 
 	<div class="container whitebg fullscreen">
 		<div>
 			<div class="row whitebg">
 				<div class="col-md-12 pull-right whitebg">
-					<div class="whitebg">
+					<%-- <div class="whitebg">
 						<table class="table table-striped">
 							<colgroup span="4"></colgroup>
 							<thead>
@@ -441,7 +461,119 @@
 								</tr>
 							</tbody>
 						</table>
+					</div> --%>
+					<div class="whitebg">
+						<!-- chart generated and placed into below divs. which defined into tables data-graph-container attributes -->
+						<div id="parent">
+							<div class="highchart-container hc_container"></div>
+							<div class="highchart-container_first hc_container"></div>
+							<!-- <div class="highchart-container_second hc_container"></div> 
+							<div style="clear: both;"></div>-->
+						</div>
 
+						<!-- There are two ways to define where the graph must be rendered. If you want a graph before the table you can use "data-graph-container-before" otherwise use "data-graph-container" and use a CSS selector to choose where to display the graph. -->
+						<!-- data-graph-type :  The data-graph-type attribute is required available options are : column line area spline pie -->
+						<!-- table structure for first example -->
+						<table class="highchart"
+							data-graph-container=".highchart-container"
+							data-graph-type="area">
+							<thead>
+								<tr>
+									<th>Week</th>
+									<th>Savings Deposit</th>
+									<th>Loan Payment</th>									
+									<th>Savings Withdrawal</th>
+									<th>Loan Disbursal</th>									
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>Prev Week</td>
+									<td><%=amountStat.get(1) %></td>
+									<td><%=amountStat.get(3) %></td>
+									<td><%=amountStat.get(5) %></td>
+									<td><%=amountStat.get(7) %></td>
+								</tr>
+								<tr>
+									<td>This Week</td>
+									<td><%=amountStat.get(0) %></td>
+									<td><%=amountStat.get(2) %></td>
+									<td><%=amountStat.get(4) %></td>
+									<td><%=amountStat.get(6) %></td>
+								</tr>
+							</tbody>
+						</table>
+
+						<!--
+		table structure for second example
+	-->
+						<table data-graph-type="spline"
+							data-graph-container=".highchart-container_first"
+							class="highchart">
+							<thead>
+								<tr>
+									<th>Weeks</th>
+									<th>Client Count</th>
+									<th>Sch. Savings</th>
+									<th>Sch. Deposit</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>Prev Week</td>
+									<td><%= clientStat.get(1) %></td>
+									<td><%= clientStat.get(3) %></td>
+									<td><%= clientStat.get(5) %></td>
+								</tr>
+								<tr>
+									<td>This Week</td>
+									<td><%= clientStat.get(0) %></td>
+									<td><%= clientStat.get(2) %></td>
+									<td><%= clientStat.get(4) %></td>
+								</tr>
+							</tbody>
+						</table>
+
+<!-- 						table structure for third example
+						<table class="highchart"
+							data-graph-container=".highchart-container_second"
+							data-graph-type="pie">
+							<thead>
+								<tr>
+									<th>Month</th>
+									<th>Sales</th>
+									<th data-graph-type="area">Benefits</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>January</td>
+									<td>8000</td>
+									<td>2000</td>
+								</tr>
+								<tr>
+									<td>February</td>
+									<td>12000</td>
+									<td>3000</td>
+								</tr>
+								<tr>
+									<td>March</td>
+									<td>18000</td>
+									<td>4000</td>
+								</tr>
+								<tr>
+									<td>April</td>
+									<td>2000</td>
+									<td>-1000</td>
+								</tr>
+								<tr>
+									<td>May</td>
+									<td>500</td>
+									<td>-2500</td>
+								</tr>
+							</tbody>
+						</table>
+ -->
 					</div>
 				</div>
 			</div>

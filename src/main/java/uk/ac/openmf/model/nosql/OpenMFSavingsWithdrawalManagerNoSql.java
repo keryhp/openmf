@@ -2,6 +2,7 @@ package uk.ac.openmf.model.nosql;
 
 import java.util.ArrayList;
 
+import uk.ac.openmf.model.OpenMFLoanRepayment;
 import uk.ac.openmf.model.OpenMFSavingsWithdrawal;
 import uk.ac.openmf.model.OpenMFSavingsWithdrawalManager;
 import uk.ac.openmf.utils.OpenMFConstants;
@@ -85,5 +86,24 @@ public class OpenMFSavingsWithdrawalManagerNoSql extends OpenMFEntityManagerNoSq
 			schedules.add(actualpayment);
 		}
 		return schedules;
+	}
+
+	@Override
+	public String getTotalSavingsWithdrawalAmtByDates(String fromdate,
+			String todate) {
+		Query qry = new Query(getKind());
+		qry.setFilter(FilterOperator.GREATER_THAN_OR_EQUAL.of(OpenMFConstants.FIELD_NAME_DATEOFWITHDRAWAL, fromdate));
+		qry.setFilter(FilterOperator.LESS_THAN_OR_EQUAL.of(OpenMFConstants.FIELD_NAME_DATEOFWITHDRAWAL, todate));
+		FetchOptions options = FetchOptions.Builder.withLimit(10000);
+		PreparedQuery pq = DatastoreServiceFactory.getDatastoreService().prepare(qry);
+		Double total = 0.0;
+		for (Entity result : pq.asIterable(options)) {
+			OpenMFSavingsWithdrawal savingsdepsch = new OpenMFSavingsWithdrawalNoSql(result);
+			if(savingsdepsch.getWithdrawalamount() == null || savingsdepsch.getWithdrawalamount() == "")
+				savingsdepsch.setWithdrawalamount("0.00");
+			total += new Double(savingsdepsch.getWithdrawalamount());
+		}
+		return total.toString();
+
 	}
 }

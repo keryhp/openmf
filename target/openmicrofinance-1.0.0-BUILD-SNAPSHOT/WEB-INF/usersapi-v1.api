@@ -115,40 +115,40 @@
             "type" : "string",
             "format" : "int64"
           },
-          "surname" : {
-            "type" : "string"
-          },
           "enabled" : {
             "type" : "boolean"
           },
+          "surname" : {
+            "type" : "string"
+          },
           "password" : {
-            "type" : "string"
-          },
-          "username" : {
-            "type" : "string"
-          },
-          "createdById" : {
-            "type" : "string"
-          },
-          "main_office" : {
-            "type" : "string"
-          },
-          "role" : {
             "type" : "string"
           },
           "userId" : {
             "type" : "string"
           },
-          "email" : {
+          "username" : {
             "type" : "string"
           },
-          "supervisor" : {
+          "role" : {
+            "type" : "string"
+          },
+          "email" : {
             "type" : "string"
           },
           "forename" : {
             "type" : "string"
           },
+          "supervisor" : {
+            "type" : "string"
+          },
           "contact" : {
+            "type" : "string"
+          },
+          "main_office" : {
+            "type" : "string"
+          },
+          "createdById" : {
             "type" : "string"
           }
         }

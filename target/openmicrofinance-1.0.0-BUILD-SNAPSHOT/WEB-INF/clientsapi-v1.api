@@ -115,22 +115,52 @@
             "type" : "string",
             "format" : "int64"
           },
+          "active" : {
+            "type" : "boolean"
+          },
           "surname" : {
             "type" : "string"
           },
-          "active" : {
+          "blacklisted" : {
             "type" : "boolean"
+          },
+          "forename" : {
+            "type" : "string"
+          },
+          "supervisor" : {
+            "type" : "string"
+          },
+          "contact" : {
+            "type" : "string"
+          },
+          "clienttype" : {
+            "type" : "string"
+          },
+          "midname" : {
+            "type" : "string"
+          },
+          "office" : {
+            "type" : "string"
+          },
+          "eligible" : {
+            "type" : "boolean"
+          },
+          "externalId" : {
+            "type" : "string"
+          },
+          "gender" : {
+            "type" : "string"
+          },
+          "balance" : {
+            "type" : "string"
+          },
+          "groupid" : {
+            "type" : "string"
           },
           "createdById" : {
             "type" : "string"
           },
           "accountNumber" : {
-            "type" : "string"
-          },
-          "submittedon" : {
-            "type" : "string"
-          },
-          "clientclassification" : {
             "type" : "string"
           },
           "dateofbirth" : {
@@ -139,40 +169,10 @@
           "activationdate" : {
             "type" : "string"
           },
-          "blacklisted" : {
-            "type" : "boolean"
-          },
-          "balance" : {
+          "clientclassification" : {
             "type" : "string"
           },
-          "supervisor" : {
-            "type" : "string"
-          },
-          "forename" : {
-            "type" : "string"
-          },
-          "contact" : {
-            "type" : "string"
-          },
-          "office" : {
-            "type" : "string"
-          },
-          "midname" : {
-            "type" : "string"
-          },
-          "groupid" : {
-            "type" : "string"
-          },
-          "eligible" : {
-            "type" : "boolean"
-          },
-          "clienttype" : {
-            "type" : "string"
-          },
-          "externalId" : {
-            "type" : "string"
-          },
-          "gender" : {
+          "submittedon" : {
             "type" : "string"
           }
         }

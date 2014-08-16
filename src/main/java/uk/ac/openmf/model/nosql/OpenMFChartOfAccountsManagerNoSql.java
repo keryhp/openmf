@@ -81,7 +81,7 @@ implements OpenMFChartOfAccountsManager {
 			String mfiaccounttype) {
 		Query qry = new Query(getKind());
 		qry.setFilter(FilterOperator.EQUAL.of(OpenMFConstants.FIELD_NAME_MFIACCOUNTTYPE, mfiaccounttype));
-		qry.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
+		//qry.addSort(OpenMFConstants.FIELD_NAME_TIMESTAMP, SortDirection.DESCENDING);
 		PreparedQuery pq = DatastoreServiceFactory.getDatastoreService().prepare(qry);
 		OpenMFChartOfAccounts coa = null;
 		for (Entity result : pq.asIterable()) {

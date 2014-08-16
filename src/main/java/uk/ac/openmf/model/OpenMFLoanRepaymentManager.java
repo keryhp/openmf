@@ -19,4 +19,5 @@ public interface OpenMFLoanRepaymentManager extends OpenMFEntityManager<OpenMFLo
 	   * @return a Client entity.
 	   */
 	  OpenMFLoanRepayment newLoanRepaymentSchedule(String userId);
+	  String getTotalScheduledRepmntAmtByDates(String fromdate, String todate);
 }

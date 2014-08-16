@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import uk.ac.openmf.model.OpenMFLoanActualPayment;
 import uk.ac.openmf.model.OpenMFLoanActualPaymentManager;
+import uk.ac.openmf.model.OpenMFLoanDisburse;
 import uk.ac.openmf.model.OpenMFLoanRepayment;
 import uk.ac.openmf.utils.OpenMFConstants;
 
@@ -86,5 +87,22 @@ public class OpenMFLoanActualPaymentManagerNoSql extends OpenMFEntityManagerNoSq
 			schedules.add(actualpayment);
 		}
 		return schedules;
+	}
+
+	@Override
+	public String getTotalActualPaymentAmtByDates(String fromdate, String todate) {
+		Query qry = new Query(getKind());
+		qry.setFilter(FilterOperator.GREATER_THAN_OR_EQUAL.of(OpenMFConstants.FIELD_NAME_PAIDDATE, fromdate));
+		qry.setFilter(FilterOperator.LESS_THAN_OR_EQUAL.of(OpenMFConstants.FIELD_NAME_PAIDDATE, todate));
+		FetchOptions options = FetchOptions.Builder.withLimit(10000);
+		PreparedQuery pq = DatastoreServiceFactory.getDatastoreService().prepare(qry);
+		Double total = 0.0;
+		for (Entity result : pq.asIterable(options)) {
+			OpenMFLoanActualPayment savingsdepsch = new OpenMFLoanActualPaymentNoSql(result);
+			if(savingsdepsch.getAmountpaid() == null || savingsdepsch.getAmountpaid() == "")
+				savingsdepsch.setAmountpaid("0.00");
+			total += new Double(savingsdepsch.getAmountpaid());
+		}
+		return total.toString();
 	}
 }

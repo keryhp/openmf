@@ -67,6 +67,21 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
+    "taskapi.list" : {
+      "path" : "openmftaskcollection",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "uk.ac.openmf.apis.TaskServiceAPI.getOpenMFTasks",
+      "request" : {
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
     "taskapi.remove" : {
       "path" : "openmftask/{id}",
       "httpMethod" : "DELETE",
@@ -86,21 +101,6 @@
       },
       "response" : {
         "body" : "empty"
-      }
-    },
-    "taskapi.list" : {
-      "path" : "openmftaskcollection",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "uk.ac.openmf.apis.TaskServiceAPI.getOpenMFTasks",
-      "request" : {
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
       }
     },
     "taskapi.getTask" : {
@@ -163,25 +163,25 @@
           "description" : {
             "type" : "string"
           },
-          "amount" : {
-            "type" : "string"
-          },
-          "assignedto" : {
-            "type" : "string"
-          },
           "cashier" : {
             "type" : "string"
           },
           "newclient" : {
             "type" : "boolean"
           },
+          "amount" : {
+            "type" : "string"
+          },
+          "assignedto" : {
+            "type" : "string"
+          },
           "createdById" : {
             "type" : "string"
           },
-          "dateassigned" : {
+          "accountnumber" : {
             "type" : "string"
           },
-          "accountnumber" : {
+          "dateassigned" : {
             "type" : "string"
           },
           "collectiontype" : {
@@ -216,12 +216,12 @@
           "$ref" : "OpenMFTask"
         }
       },
-      "uk.ac.openmf.apis.TaskServiceAPI.removeOpenMFTask" : {
-      },
       "uk.ac.openmf.apis.TaskServiceAPI.getOpenMFTasks" : {
         "response" : {
           "$ref" : "OpenMFTaskCollection"
         }
+      },
+      "uk.ac.openmf.apis.TaskServiceAPI.removeOpenMFTask" : {
       },
       "uk.ac.openmf.apis.TaskServiceAPI.getOpenMFTask" : {
         "response" : {

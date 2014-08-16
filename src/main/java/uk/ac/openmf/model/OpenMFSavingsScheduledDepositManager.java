@@ -18,4 +18,6 @@ public interface OpenMFSavingsScheduledDepositManager extends OpenMFEntityManage
 	   * @return a Client entity.
 	   */
 	  OpenMFSavingsScheduledDeposit newSavingsScheduledDeposits(String userId);
+
+	String getTotalScheduledSavingsDepositAmtByDates(String fromdate, String todate);
 }

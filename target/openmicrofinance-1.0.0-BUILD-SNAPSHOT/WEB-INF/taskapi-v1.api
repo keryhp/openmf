@@ -46,21 +46,6 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "taskapi.list" : {
-      "path" : "openmftaskcollection",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "uk.ac.openmf.apis.TaskServiceAPI.getOpenMFTasks",
-      "request" : {
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "taskapi.update" : {
       "path" : "openmftask/{taskId}",
       "httpMethod" : "PUT",
@@ -76,6 +61,21 @@
             "required" : true
           }
         },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "taskapi.list" : {
+      "path" : "openmftaskcollection",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "uk.ac.openmf.apis.TaskServiceAPI.getOpenMFTasks",
+      "request" : {
         "body" : "empty"
       },
       "response" : {
@@ -163,13 +163,19 @@
           "description" : {
             "type" : "string"
           },
+          "cashier" : {
+            "type" : "string"
+          },
+          "newclient" : {
+            "type" : "boolean"
+          },
+          "amount" : {
+            "type" : "string"
+          },
+          "assignedto" : {
+            "type" : "string"
+          },
           "createdById" : {
-            "type" : "string"
-          },
-          "collectiontype" : {
-            "type" : "string"
-          },
-          "datecompleted" : {
             "type" : "string"
           },
           "accountnumber" : {
@@ -178,17 +184,11 @@
           "dateassigned" : {
             "type" : "string"
           },
-          "assignedto" : {
+          "collectiontype" : {
             "type" : "string"
           },
-          "amount" : {
+          "datecompleted" : {
             "type" : "string"
-          },
-          "cashier" : {
-            "type" : "string"
-          },
-          "newclient" : {
-            "type" : "boolean"
           }
         }
       },
@@ -211,14 +211,14 @@
           "$ref" : "OpenMFTaskCollection"
         }
       },
-      "uk.ac.openmf.apis.TaskServiceAPI.getOpenMFTasks" : {
-        "response" : {
-          "$ref" : "OpenMFTaskCollection"
-        }
-      },
       "uk.ac.openmf.apis.TaskServiceAPI.updateOpenMFTask" : {
         "response" : {
           "$ref" : "OpenMFTask"
+        }
+      },
+      "uk.ac.openmf.apis.TaskServiceAPI.getOpenMFTasks" : {
+        "response" : {
+          "$ref" : "OpenMFTaskCollection"
         }
       },
       "uk.ac.openmf.apis.TaskServiceAPI.removeOpenMFTask" : {

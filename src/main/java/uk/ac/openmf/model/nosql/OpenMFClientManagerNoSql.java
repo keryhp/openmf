@@ -1,11 +1,13 @@
 package uk.ac.openmf.model.nosql;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import uk.ac.openmf.model.OpenMFClient;
 import uk.ac.openmf.model.OpenMFClientManager;
 import uk.ac.openmf.model.OpenMFLoanAccount;
 import uk.ac.openmf.model.OpenMFUser;
+import uk.ac.openmf.utils.OMFDateUtils;
 import uk.ac.openmf.utils.OpenMFConstants;
 
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -102,5 +104,22 @@ public class OpenMFClientManagerNoSql extends OpenMFEntityManagerNoSql<OpenMFCli
 			clients.add(new OpenMFClientNoSql(result));
 		}
 		return clients;
+	}
+
+	@Override
+	public List<String> getClientStat() {
+		Query qry = new Query(getKind());
+		qry.setFilter(FilterOperator.GREATER_THAN_OR_EQUAL.of(OpenMFConstants.FIELD_NAME_TIMESTAMP, OMFDateUtils.getThisWeekStartDate()));
+		FetchOptions options = FetchOptions.Builder.withLimit(1000);
+		PreparedQuery pq = DatastoreServiceFactory.getDatastoreService().prepare(qry);
+		List<String> list = new ArrayList<String>();
+		list.add(new Integer(pq.asList(options).size()).toString());
+		qry = new Query(getKind());
+		qry.setFilter(FilterOperator.GREATER_THAN_OR_EQUAL.of(OpenMFConstants.FIELD_NAME_TIMESTAMP, OMFDateUtils.getPrevWeekStartDate()));
+		qry.setFilter(FilterOperator.LESS_THAN_OR_EQUAL.of(OpenMFConstants.FIELD_NAME_TIMESTAMP, OMFDateUtils.getThisWeekStartDate()));
+		options = FetchOptions.Builder.withLimit(1000);
+		pq = DatastoreServiceFactory.getDatastoreService().prepare(qry);
+		list.add(new Integer(pq.asList(options).size()).toString());
+		return list;
 	}
 }

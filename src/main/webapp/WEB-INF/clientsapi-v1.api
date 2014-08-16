@@ -115,19 +115,19 @@
             "type" : "string",
             "format" : "int64"
           },
-          "surname" : {
-            "type" : "string"
-          },
           "active" : {
             "type" : "boolean"
+          },
+          "surname" : {
+            "type" : "string"
           },
           "blacklisted" : {
             "type" : "boolean"
           },
-          "supervisor" : {
+          "forename" : {
             "type" : "string"
           },
-          "forename" : {
+          "supervisor" : {
             "type" : "string"
           },
           "contact" : {
@@ -136,17 +136,14 @@
           "clienttype" : {
             "type" : "string"
           },
-          "eligible" : {
-            "type" : "boolean"
-          },
-          "balance" : {
-            "type" : "string"
-          },
-          "groupid" : {
-            "type" : "string"
-          },
           "midname" : {
             "type" : "string"
+          },
+          "office" : {
+            "type" : "string"
+          },
+          "eligible" : {
+            "type" : "boolean"
           },
           "externalId" : {
             "type" : "string"
@@ -154,22 +151,25 @@
           "gender" : {
             "type" : "string"
           },
-          "office" : {
+          "balance" : {
+            "type" : "string"
+          },
+          "groupid" : {
             "type" : "string"
           },
           "createdById" : {
             "type" : "string"
           },
-          "dateofbirth" : {
-            "type" : "string"
-          },
           "accountNumber" : {
             "type" : "string"
           },
-          "clientclassification" : {
+          "dateofbirth" : {
             "type" : "string"
           },
           "activationdate" : {
+            "type" : "string"
+          },
+          "clientclassification" : {
             "type" : "string"
           },
           "submittedon" : {

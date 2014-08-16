@@ -7,6 +7,7 @@ import java.util.List;
 
 import uk.ac.openmf.model.OpenMFLoanRepayment;
 import uk.ac.openmf.model.OpenMFLoanRepaymentManager;
+import uk.ac.openmf.model.OpenMFSavingsScheduledDeposit;
 import uk.ac.openmf.utils.OpenMFConstants;
 
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -129,5 +130,23 @@ public class OpenMFLoanRepaymentManagerNoSql extends OpenMFEntityManagerNoSql<Op
 			schedules.add(repayment);
 		}
 		return schedules;
+	}
+
+	@Override
+	public String getTotalScheduledRepmntAmtByDates(String fromdate,
+			String todate) {
+		Query qry = new Query(getKind());
+		qry.setFilter(FilterOperator.GREATER_THAN_OR_EQUAL.of(OpenMFConstants.FIELD_NAME_SCHEDULEDATE, fromdate));
+		qry.setFilter(FilterOperator.LESS_THAN_OR_EQUAL.of(OpenMFConstants.FIELD_NAME_SCHEDULEDATE, todate));
+		FetchOptions options = FetchOptions.Builder.withLimit(10000);
+		PreparedQuery pq = DatastoreServiceFactory.getDatastoreService().prepare(qry);
+		Double total = 0.0;
+		for (Entity result : pq.asIterable(options)) {
+			OpenMFLoanRepayment savingsdepsch = new OpenMFLoanRepaymentNoSql(result);
+			if(savingsdepsch.getBalanceoutstandingamount() == null || savingsdepsch.getBalanceoutstandingamount() == "")
+				savingsdepsch.setBalanceoutstandingamount("0.00");
+			total += new Double(savingsdepsch.getBalanceoutstandingamount());
+		}
+		return total.toString();
 	}
 }

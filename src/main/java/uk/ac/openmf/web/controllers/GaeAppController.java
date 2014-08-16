@@ -1,6 +1,9 @@
 package uk.ac.openmf.web.controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import uk.ac.openmf.model.OpenMFUser;
 import uk.ac.openmf.model.nosql.OpenMFEntityManagerNoSql;
+import uk.ac.openmf.utils.OMFDateUtils;
 import uk.ac.openmf.web.AppContext;
 
 import com.google.appengine.api.users.UserServiceFactory;
@@ -30,11 +34,28 @@ public class GaeAppController {
     @RequestMapping(value = "/", method= RequestMethod.GET)
     public String landing(HttpServletRequest req) {
     	OpenMFUser currentUser = (OpenMFUser)AppContext.getAppContext().getCurrentUser();
-    	/*if(currentUser == null){
-    		return "redirect: /register";
-    	}*/
 		req.setAttribute("currentUser", currentUser);
 		logger.info("User details:" + currentUser.toString());
+		List<String> clientStat = AppContext.getAppContext().getClientManager().getClientStat();//0,1
+		//2,3
+		clientStat.add(AppContext.getAppContext().getSavingsScheduledDepositManager().getTotalScheduledSavingsDepositAmtByDates(OMFDateUtils.getDateFromTimestamp(OMFDateUtils.getThisWeekStartDate()), OMFDateUtils.getDateFromTimestamp(System.currentTimeMillis())));
+		clientStat.add(AppContext.getAppContext().getSavingsScheduledDepositManager().getTotalScheduledSavingsDepositAmtByDates(OMFDateUtils.getDateFromTimestamp(OMFDateUtils.getPrevWeekStartDate()), OMFDateUtils.getDateFromTimestamp(OMFDateUtils.getThisWeekStartDate())));
+		//4,5
+		clientStat.add(AppContext.getAppContext().getLoanRepaymentManager().getTotalScheduledRepmntAmtByDates(OMFDateUtils.getDateFromTimestamp(OMFDateUtils.getThisWeekStartDate()), OMFDateUtils.getDateFromTimestamp(System.currentTimeMillis())));
+		clientStat.add(AppContext.getAppContext().getLoanRepaymentManager().getTotalScheduledRepmntAmtByDates(OMFDateUtils.getDateFromTimestamp(OMFDateUtils.getPrevWeekStartDate()), OMFDateUtils.getDateFromTimestamp(OMFDateUtils.getThisWeekStartDate())));
+		req.setAttribute("clientStat", clientStat);
+		
+		List<String> amountStat = new ArrayList<String>();
+		amountStat.add(AppContext.getAppContext().getSavingsDepositManager().getTotalSavingsDepositAmtByDates(OMFDateUtils.getDateFromTimestamp(OMFDateUtils.getThisWeekStartDate()), OMFDateUtils.getDateFromTimestamp(System.currentTimeMillis())));
+		amountStat.add(AppContext.getAppContext().getSavingsDepositManager().getTotalSavingsDepositAmtByDates(OMFDateUtils.getDateFromTimestamp(OMFDateUtils.getPrevWeekStartDate()), OMFDateUtils.getDateFromTimestamp(OMFDateUtils.getThisWeekStartDate())));
+		amountStat.add(AppContext.getAppContext().getLoanActualPaymentManager().getTotalActualPaymentAmtByDates(OMFDateUtils.getDateFromTimestamp(OMFDateUtils.getThisWeekStartDate()), OMFDateUtils.getDateFromTimestamp(System.currentTimeMillis())));
+		amountStat.add(AppContext.getAppContext().getLoanActualPaymentManager().getTotalActualPaymentAmtByDates(OMFDateUtils.getDateFromTimestamp(OMFDateUtils.getPrevWeekStartDate()), OMFDateUtils.getDateFromTimestamp(OMFDateUtils.getThisWeekStartDate())));
+		amountStat.add(AppContext.getAppContext().getSavingsWithdrawalManager().getTotalSavingsWithdrawalAmtByDates(OMFDateUtils.getDateFromTimestamp(OMFDateUtils.getThisWeekStartDate()), OMFDateUtils.getDateFromTimestamp(System.currentTimeMillis())));
+		amountStat.add(AppContext.getAppContext().getSavingsWithdrawalManager().getTotalSavingsWithdrawalAmtByDates(OMFDateUtils.getDateFromTimestamp(OMFDateUtils.getPrevWeekStartDate()), OMFDateUtils.getDateFromTimestamp(OMFDateUtils.getThisWeekStartDate())));
+		amountStat.add(AppContext.getAppContext().getLoanDisburseManager().getTotalLoanDisburseAmtByDates(OMFDateUtils.getDateFromTimestamp(OMFDateUtils.getThisWeekStartDate()), OMFDateUtils.getDateFromTimestamp(System.currentTimeMillis())));
+		amountStat.add(AppContext.getAppContext().getLoanDisburseManager().getTotalLoanDisburseAmtByDates(OMFDateUtils.getDateFromTimestamp(OMFDateUtils.getPrevWeekStartDate()), OMFDateUtils.getDateFromTimestamp(OMFDateUtils.getThisWeekStartDate())));		
+		req.setAttribute("amountStat", amountStat);
+		
         return "landing";
     }
     

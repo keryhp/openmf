@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import uk.ac.openmf.model.OpenMFLoanDisburse;
 import uk.ac.openmf.model.OpenMFLoanDisburseManager;
+import uk.ac.openmf.model.OpenMFSavingsDeposit;
 import uk.ac.openmf.utils.OpenMFConstants;
 
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -85,5 +86,22 @@ public class OpenMFLoanDisburseManagerNoSql extends OpenMFEntityManagerNoSql<Ope
 			schedules.add(disburse);
 		}
 		return schedules;
+	}
+
+	@Override
+	public String getTotalLoanDisburseAmtByDates(String fromdate, String todate) {
+		Query qry = new Query(getKind());
+		qry.setFilter(FilterOperator.GREATER_THAN_OR_EQUAL.of(OpenMFConstants.FIELD_NAME_DISBURSEDON, fromdate));
+		qry.setFilter(FilterOperator.LESS_THAN_OR_EQUAL.of(OpenMFConstants.FIELD_NAME_DISBURSEDON, todate));
+		FetchOptions options = FetchOptions.Builder.withLimit(10000);
+		PreparedQuery pq = DatastoreServiceFactory.getDatastoreService().prepare(qry);
+		Double total = 0.0;
+		for (Entity result : pq.asIterable(options)) {
+			OpenMFLoanDisburse savingsdepsch = new OpenMFLoanDisburseNoSql(result);
+			if(savingsdepsch.getDisbursedamount() == null || savingsdepsch.getDisbursedamount() == "")
+				savingsdepsch.setDisbursedamount("0.00");
+			total += new Double(savingsdepsch.getDisbursedamount());
+		}
+		return total.toString();
 	}
 }
